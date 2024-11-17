@@ -27,6 +27,7 @@ class TNTTimer : Module("TNTTimer", Category.Utility) {
         var using = false
         @JvmStatic
         fun doRender(entity: EntityTNTPrimed) {
+            if (!using) return
             val mc = Minecraft.getMinecraft()
             GL11.glPushMatrix()
             GL11.glEnable(3042)
@@ -55,10 +56,9 @@ class TNTTimer : Module("TNTTimer", Category.Utility) {
             val xRight = 10.0
             val yUp = -20.0
             val yDown = -10.0
-            GlStateManager.disableLighting()
             drawRect(xLeft.toFloat(), yUp.toFloat(), xRight.toFloat(), yDown.toFloat(), Color(0, 0, 0, 100).rgb)
-            GL11.glEnable(3553)
             drawTime(entity)
+            GL11.glEnable(3553)
             GL11.glEnable(2929)
             GlStateManager.disableBlend()
             GL11.glDisable(3042)

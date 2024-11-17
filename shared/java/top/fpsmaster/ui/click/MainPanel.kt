@@ -12,7 +12,6 @@ import top.fpsmaster.features.manager.Module
 import top.fpsmaster.ui.click.component.ScrollContainer
 import top.fpsmaster.ui.click.music.MusicPanel
 import top.fpsmaster.ui.click.music.MusicPanel.draw
-import top.fpsmaster.ui.click.ornaments.OrnamentPanel
 import top.fpsmaster.ui.click.modules.ModuleRenderer
 import top.fpsmaster.ui.click.themes.DarkTheme
 import top.fpsmaster.ui.click.themes.LightTheme
@@ -246,16 +245,6 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
         moduleListAlpha = base(moduleListAlpha.toDouble(), 255.0, 0.1).toFloat()
         if (curType === Category.Music) {
             draw(x + leftWidth, y.toFloat(), Companion.width - leftWidth, Companion.height, mouseX, mouseY)
-        } else if (curType === Category.ORNAMENTS) {
-            ornamentPanel!!.drawScreen(
-                x + leftWidth,
-                y.toFloat(),
-                Companion.width - leftWidth,
-                Companion.height,
-                mouseX,
-                mouseY,
-                partialTicks
-            )
         } else {
             var modsY = y + 10f
             modHeight = 20f
@@ -329,7 +318,6 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             }
         }
         selection = (y + 70).toFloat()
-        ornamentPanel = OrnamentPanel()
     }
 
     override fun onGuiClosed() {
@@ -418,8 +406,6 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
         }
         if (curType === Category.Music) {
             MusicPanel.mouseClicked(mouseX, mouseY, mouseButton)
-        } else if (curType === Category.ORNAMENTS) {
-            ornamentPanel!!.mouseClicked(mouseX, mouseY, mouseButton)
         } else {
             // modules click
             var modsY = y + 10 + modsContainer.getRealScroll()
@@ -455,6 +441,5 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
         var bindLock = ""
         var curModule: Module? = null
         var dragLock = "null"
-        var ornamentPanel: OrnamentPanel? = null
     }
 }

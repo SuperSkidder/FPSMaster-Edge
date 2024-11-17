@@ -12,7 +12,6 @@ import top.fpsmaster.interfaces.ProviderManager
 import top.fpsmaster.modules.music.MusicPlayer
 import top.fpsmaster.ui.screens.account.GuiWaiting
 import top.fpsmaster.ui.screens.oobe.GuiLogin
-import top.fpsmaster.ui.screens.plugins.GuiPlugins
 import top.fpsmaster.utils.os.FileUtils
 import top.fpsmaster.utils.render.Render2DUtils
 import top.fpsmaster.wrapper.TextFormattingProvider
@@ -206,10 +205,6 @@ class MainMenu : GuiScreen() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-            }
-
-            if (Render2DUtils.isHovered((this.width - 16).toFloat(), 15f, 12f, 12f, mouseX, mouseY)) {
-                Minecraft.getMinecraft().displayGuiScreen(GuiPlugins())
             }
         }
     }

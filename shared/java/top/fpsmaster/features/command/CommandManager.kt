@@ -6,7 +6,6 @@ import top.fpsmaster.event.Subscribe
 import top.fpsmaster.event.events.EventSendChatMessage
 import top.fpsmaster.features.command.impl.chat.IRCChat
 import top.fpsmaster.features.command.impl.dev.DevMode
-import top.fpsmaster.features.command.impl.dev.Plugins
 import top.fpsmaster.features.impl.utility.ClientCommand
 import top.fpsmaster.utils.Utility
 
@@ -16,7 +15,6 @@ class CommandManager {
     fun init() {
         // add commands
         commands.add(DevMode())
-        commands.add(Plugins())
         commands.add(IRCChat())
         EventDispatcher.registerListener(this)
     }

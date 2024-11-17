@@ -6,12 +6,10 @@ import top.fpsmaster.features.manager.ModuleManager
 import top.fpsmaster.font.FontManager
 import top.fpsmaster.modules.account.AccountManager
 import top.fpsmaster.modules.client.AsyncTask
-import top.fpsmaster.modules.client.PlayerManager
 import top.fpsmaster.modules.config.ConfigManager
 import top.fpsmaster.modules.logger.Logger
 import top.fpsmaster.modules.music.MusicPlayer
 import top.fpsmaster.modules.music.netease.NeteaseApi
-import top.fpsmaster.modules.plugin.PluginManager
 import top.fpsmaster.ui.click.music.MusicPanel
 import top.fpsmaster.ui.click.themes.DarkTheme
 import top.fpsmaster.ui.click.themes.LightTheme
@@ -86,13 +84,6 @@ class FPSMaster {
         commandManager.init()
     }
 
-    private fun initializePlugins() {
-        Logger.info("Start loading plugins")
-        plugins.init()
-        Logger.info("Loaded ${PluginManager.plugins.size} plugins!")
-        Logger.info("Initialized")
-    }
-
     private fun initializeModules() {
         moduleManager.init()
         submitter.init()
@@ -129,7 +120,6 @@ class FPSMaster {
         initializeComponents()
         initializeConfigures()
         initializeCommands()
-        initializePlugins()
 
         checkUpdate()
         checkOptifine()
@@ -172,9 +162,6 @@ class FPSMaster {
         var configManager: ConfigManager = ConfigManager()
 
         @JvmField
-        var playerManager: PlayerManager = PlayerManager()
-
-        @JvmField
         var oobeScreen: OOBEScreen = OOBEScreen()
 
         @JvmField
@@ -182,9 +169,6 @@ class FPSMaster {
 
         @JvmField
         var submitter: GlobalSubmitter = GlobalSubmitter()
-
-        @JvmField
-        var plugins: PluginManager = PluginManager()
 
         @JvmField
         var commandManager: CommandManager = CommandManager()

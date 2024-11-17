@@ -47,12 +47,6 @@ class TargetHUDComponent : Component(TargetDisplay::class.java) {
                 y + 5,
                 -1
             )
-            assert(FPSMaster.playerManager != null)
-            FPSMaster.fontManager.s16.drawStringWithShadow(
-                FPSMaster.playerManager.getPlayerRank(
-                    target1.name
-                ), x + 27, y + 15, -1
-            )
             Render2DUtils.drawPlayerHead(target1, x + 5, y + 5, 20, 20)
         }
     }

@@ -6,5 +6,4 @@ enum class Category(val category: String) {
     Utility("Utility"),
     Interface("Interface"),
     Music("Music"),
-    ORNAMENTS("Ornament");
 }
