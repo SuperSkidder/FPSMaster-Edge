@@ -20,7 +20,6 @@ import top.fpsmaster.features.impl.render.FireModifier;
 
 import java.awt.*;
 
-import static top.fpsmaster.features.impl.optimizes.OldAnimations.*;
 import static top.fpsmaster.utils.Utility.mc;
 
 @Mixin(ItemRenderer.class)

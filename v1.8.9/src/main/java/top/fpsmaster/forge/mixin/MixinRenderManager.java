@@ -13,12 +13,11 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import top.fpsmaster.features.impl.render.FreeLook;
 import top.fpsmaster.forge.api.IRenderManager;
 import top.fpsmaster.features.impl.optimizes.CheckEntity;
 import top.fpsmaster.features.impl.optimizes.Performance;
-import top.fpsmaster.features.impl.render.FreeLook;
 
 @Mixin(value = RenderManager.class,priority = 999)
 @Implements(@Interface(iface = IRenderManager.class, prefix = "fpsmaster$"))

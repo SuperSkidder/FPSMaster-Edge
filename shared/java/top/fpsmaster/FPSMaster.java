@@ -6,12 +6,10 @@ import top.fpsmaster.features.manager.ModuleManager;
 import top.fpsmaster.font.FontManager;
 import top.fpsmaster.modules.account.AccountManager;
 import top.fpsmaster.modules.client.AsyncTask;
-import top.fpsmaster.modules.client.PlayerManager;
 import top.fpsmaster.modules.config.ConfigManager;
 import top.fpsmaster.modules.logger.Logger;
 import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.modules.music.netease.NeteaseApi;
-import top.fpsmaster.modules.plugin.PluginManager;
 import top.fpsmaster.ui.click.music.MusicPanel;
 import top.fpsmaster.ui.click.themes.DarkTheme;
 import top.fpsmaster.ui.click.themes.LightTheme;
@@ -81,13 +79,6 @@ public class FPSMaster {
         commandManager.init();
     }
 
-    private void initializePlugins() {
-        Logger.info("Start loading plugins");
-        plugins.init();
-        Logger.info("Loaded " + PluginManager.Companion.getPlugins().size() + " plugins!");
-        Logger.info("Initialized");
-    }
-
     private void initializeModules() {
         moduleManager.init();
         submitter.init();
@@ -125,7 +116,6 @@ public class FPSMaster {
         initializeComponents();
         initializeConfigures();
         initializeCommands();
-        initializePlugins();
 
         checkUpdate();
         checkOptifine();
@@ -152,11 +142,9 @@ public class FPSMaster {
     public static ModuleManager moduleManager = new ModuleManager();
     public static FontManager fontManager = new FontManager();
     public static ConfigManager configManager = new ConfigManager();
-    public static PlayerManager playerManager = new PlayerManager();
     public static OOBEScreen oobeScreen = new OOBEScreen();
     public static AccountManager accountManager = new AccountManager();
     public static GlobalSubmitter submitter = new GlobalSubmitter();
-    public static PluginManager plugins = new PluginManager();
     public static CommandManager commandManager = new CommandManager();
     public static ComponentsManager componentsManager = new ComponentsManager();
     public static Language i18n = new Language();
