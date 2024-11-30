@@ -73,7 +73,7 @@ public class WsClient extends WebSocketClient {
     public void onClose(int code, String reason, boolean remote) {
         if (FPSMaster.debug)
             Utility.sendClientMessage("连接关闭:" + reason);
-        FPSMaster.INSTANCE.setWsClient(null);
+        FPSMaster.INSTANCE.wsClient = null;
     }
 
     @Override
