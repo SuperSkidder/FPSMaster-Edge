@@ -67,9 +67,14 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
     }
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        var mouseY = mouseY
         super.drawScreen(mouseX, mouseY, partialTicks)
         val sr = ScaledResolution(mc)
+        val factor = sr.scaleFactor
+        var mouseX = mouseX * factor / 2;
+        var mouseY = mouseY * factor / 2;
+        val scaledWidth = sr.scaledWidth * sr.scaleFactor / 2
+        val scaledHeight = sr.scaledHeight * sr.scaleFactor / 2
+
         GL11.glPushMatrix()
         if (!Mouse.isButtonDown(0)) {
             dragLock = "null"
@@ -81,18 +86,18 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             mouseY -= dragY.toInt()
             y = mouseY
         }
-        x = max(min(x, (sr.scaledWidth - Companion.width - 5).toInt()), 5)
-        y = max(min(y, (sr.scaledHeight - Companion.height - 5).toInt()), 5)
-        val w: Float = min(mouseX + sizeDragX, sr.scaledWidth - 5f) - x
-        val h: Float = min(mouseY + sizeDragY, sr.scaledHeight - 5f) - y
+        x = max(min(x, (scaledWidth - Companion.width - 5).toInt()), 5)
+        y = max(min(y, (scaledHeight - Companion.height - 5).toInt()), 5)
+        val w: Float = min(mouseX + sizeDragX, scaledWidth - 5f) - x
+        val h: Float = min(mouseY + sizeDragY, scaledHeight - 5f) - y
         if (sizeDrag && (Companion.width > 400 || w > Companion.width)) {
             Companion.width = w
         }
         if (sizeDrag && (Companion.height > 240 || h > Companion.height)) {
             Companion.height = h
         }
-        Companion.width = max(min(Companion.width, sr.scaledWidth - 10f), 400f)
-        Companion.height = max(min(Companion.height, sr.scaledHeight - 10f), 220f)
+        Companion.width = max(min(Companion.width, scaledWidth - 10f), 400f)
+        Companion.height = max(min(Companion.height, scaledHeight - 10f), 220f)
         if (close) {
             if (scaleAnimation.value <= 0.5) {
                 mc.displayGuiScreen(null)
@@ -104,9 +109,9 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             scaleAnimation.start(scaleAnimation.value, 1.0, 0.2f, Type.EASE_OUT_BACK)
         }
         scaleAnimation.update()
-        GlStateManager.translate(sr.scaledWidth / 2.0, sr.scaledHeight / 2.0, 0.0)
-        GL11.glScaled(scaleAnimation.value, scaleAnimation.value, 1.0)
-        GlStateManager.translate(-sr.scaledWidth / 2.0, -sr.scaledHeight / 2.0, 0.0)
+//        GlStateManager.translate(scaledWidth / 2.0, scaledHeight / 2.0, 0.0)
+        GL11.glScaled(scaleAnimation.value / sr.scaleFactor * 2.0, scaleAnimation.value / sr.scaleFactor * 2.0, 1.0)
+//        GlStateManager.translate(-scaledWidth / 2.0, -scaledHeight / 2.0, 0.0)
 
         //绘制主窗体
         Render2DUtils.drawOptimizedRoundedRect(
@@ -140,7 +145,7 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             sizeDragBorder.start(sizeDragBorder.color, Color(255, 255, 255, 0), 0.2f, Type.EASE_IN_OUT_QUAD)
         }
         sizeDragBorder.update()
-        if (Render2DUtils.isHovered(x + Companion.width - 10, y + Companion.height - 10, 10f, 10f, mouseX, mouseY)) {
+        if (Render2DUtils.isHoveredWithoutScale(x + Companion.width - 10, y + Companion.height - 10, 10f, 10f, mouseX, mouseY)) {
             Render2DUtils.drawImage(
                 ResourceLocation("client/gui/settings/drag.png"),
                 x + Companion.width - 5,
@@ -180,7 +185,7 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             FPSMaster.theme.primary
         )
         for (m in categories) {
-            if (Render2DUtils.isHovered(x.toFloat(), my - 6, leftWidth - 10, 20f, mouseX, mouseY)) {
+            if (Render2DUtils.isHoveredWithoutScale(x.toFloat(), my - 6, leftWidth - 10, 20f, mouseX, mouseY)) {
                 m.categorySelectionColor.base(FPSMaster.theme.typeSelectionBackground)
             } else {
                 m.categorySelectionColor.base(Render2DUtils.reAlpha(FPSMaster.theme.typeSelectionBackground, 0))
@@ -233,7 +238,7 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             y + Companion.height - 20,
             FPSMaster.theme.categoryTextSelected.rgb
         )
-        if (Render2DUtils.isHovered((x + 40).toFloat(), y + Companion.height - 22, 34f, 14f, mouseX, mouseY)) {
+        if (Render2DUtils.isHoveredWithoutScale((x + 40).toFloat(), y + Companion.height - 22, 34f, 14f, mouseX, mouseY)) {
             modeColor.base(FPSMaster.theme.primary)
         } else {
             modeColor.base(FPSMaster.theme.typeSelectionBackground)
@@ -241,7 +246,8 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
 
         // 绘制功能列表
         GL11.glEnable(GL11.GL_SCISSOR_TEST)
-        Render2DUtils.doGlScissor(x.toFloat(), y.toFloat(), Companion.width, Companion.height - 4)
+        Render2DUtils.doGlScissor(x.toFloat(), y.toFloat(), Companion.width,
+            (Companion.height - 4))
         moduleListAlpha = base(moduleListAlpha.toDouble(), 255.0, 0.1).toFloat()
         if (curType === Category.Music) {
             draw(x + leftWidth, y.toFloat(), Companion.width - leftWidth, Companion.height, mouseX, mouseY)
@@ -272,6 +278,7 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             }
 
         }
+
         GL11.glEnable(GL11.GL_BLEND)
         Render2DUtils.drawRect(
             x + leftWidth, y.toFloat(), Companion.width - leftWidth, Companion.height, Render2DUtils.reAlpha(
@@ -279,34 +286,40 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             )
         )
         GL11.glDisable(GL11.GL_SCISSOR_TEST)
+        FPSMaster.fontManager.s16.drawString("x: " + x + ", y: " + y + ", width: " + leftWidth + ", height: 34" + ", mouseX: " + mouseX/2 + ", mouseY: " + mouseY/2,10,10,-1)
+
         GL11.glPopMatrix()
     }
 
     override fun updateScreen() {
         super.updateScreen()
         val sr = ScaledResolution(mc)
-        if (sr.scaledWidth < Companion.width) {
+        val scaledWidth = sr.scaledWidth
+        val scaledHeight = sr.scaledHeight
+        if (scaledWidth < Companion.width) {
             x = 5
-            Companion.width = (sr.scaledWidth - 10).toFloat()
+            Companion.width = (scaledWidth - 10).toFloat()
         }
-        if (sr.scaledHeight < Companion.height) {
+        if (scaledHeight < Companion.height) {
             y = 5
-            Companion.height = (sr.scaledHeight - 10).toFloat()
+            Companion.height = (scaledHeight - 10).toFloat()
         }
     }
 
     override fun initGui() {
         super.initGui()
         val sr = ScaledResolution(mc)
+        val scaledWidth = sr.scaledWidth
+        val scaledHeight = sr.scaledHeight
         scaleAnimation.value = 0.6
         close = false
         if (Companion.width == 0f || Companion.height == 0f) {
-            Companion.width = sr.scaledWidth / 2f
-            Companion.height = sr.scaledHeight / 2f
+            Companion.width = scaledWidth / 2f
+            Companion.height = scaledHeight / 2f
         }
         if (x == -1 || y == -1) {
-            x = ((sr.scaledWidth - Companion.width) / 2).toInt()
-            y = ((sr.scaledHeight - Companion.height) / 2).toInt()
+            x = ((scaledWidth - Companion.width) / 2).toInt()
+            y = ((scaledHeight - Companion.height) / 2).toInt()
         }
         categories.clear()
         for (c in Category.entries) {
@@ -346,7 +359,13 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
     @Throws(IOException::class)
     override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
         super.mouseClicked(mouseX, mouseY, mouseButton)
-        if (!Render2DUtils.isHovered(
+        val sr = ScaledResolution(mc)
+        val factor = sr.scaleFactor
+        var mouseX = mouseX * factor / 2
+        var mouseY = mouseY * factor / 2
+        val scaledWidth = sr.scaledWidth * factor / 2
+        val scaledHeight = sr.scaledHeight * factor / 2
+        if (!Render2DUtils.isHoveredWithoutScale(
                 x.toFloat(),
                 y.toFloat(),
                 Companion.width,
@@ -356,7 +375,7 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             )
         ) return
         // theme switch
-        if (mouseButton == 0 && Render2DUtils.isHovered(
+        if (mouseButton == 0 && Render2DUtils.isHoveredWithoutScale(
                 (x + 40).toFloat(),
                 y + Companion.height - 22,
                 34f,
@@ -374,12 +393,13 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             }
         }
 
-        if (mouseButton == 0 && Render2DUtils.isHovered(x.toFloat(), y.toFloat(), leftWidth, 34f, mouseX, mouseY)) {
+
+        if (mouseButton == 0 && Render2DUtils.isHoveredWithoutScale(x.toFloat(), y.toFloat(), leftWidth, 34f, mouseX, mouseY)) {
             drag = true
             dragX = (mouseX - x).toFloat()
             dragY = (mouseY - y).toFloat()
         }
-        if (mouseButton == 0 && Render2DUtils.isHovered(
+        if (mouseButton == 0 && Render2DUtils.isHoveredWithoutScale(
                 x + Companion.width - 20,
                 y + Companion.height - 20,
                 20f,
@@ -391,12 +411,12 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : GuiScreen() {
             val sr = ScaledResolution(mc)
             sizeDrag = true
             dragLock = "sizeDrag"
-            sizeDragX = x + Companion.width - min(mouseX, sr.scaledWidth)
-            sizeDragY = y + Companion.height - min(mouseY, sr.scaledHeight)
+            sizeDragX = x + Companion.width - min(mouseX, scaledWidth)
+            sizeDragY = y + Companion.height - min(mouseY, scaledHeight)
         }
         var my = (y + 60).toFloat()
         for (m in Category.entries) {
-            if (Render2DUtils.isHovered(x.toFloat(), my - 8, leftWidth, 24f, mouseX, mouseY)) {
+            if (Render2DUtils.isHoveredWithoutScale(x.toFloat(), my - 8, leftWidth, 24f, mouseX, mouseY)) {
                 wheelTemp = 0f
                 modsWheel = 0f
                 if (curType !== m) moduleListAlpha = 0f

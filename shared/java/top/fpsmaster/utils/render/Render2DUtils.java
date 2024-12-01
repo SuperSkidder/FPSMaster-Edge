@@ -2,6 +2,7 @@ package top.fpsmaster.utils.render;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -148,7 +149,8 @@ public class Render2DUtils extends Utility {
 
     public static void doGlScissor(float x, float y, float width, float height) {
         if (mc.currentScreen != null) {
-            GL11.glScissor((int) (x * mc.displayWidth / mc.currentScreen.width), (int) (mc.displayHeight - (y + height) * mc.displayHeight / mc.currentScreen.height), (int) (width * mc.displayWidth / mc.currentScreen.width), (int) (height * mc.displayHeight / mc.currentScreen.height));
+             ScaledResolution sr = new ScaledResolution(mc);
+            GL11.glScissor((int) (x), (int) (sr.getScaledHeight() / 2f - (y + height)), (int) (width), (int) (height));
         }
     }
 
@@ -168,6 +170,21 @@ public class Render2DUtils extends Utility {
     }
 
     public static boolean isHovered(float x, float y, float width, float height, int mouseX, int mouseY) {
+        return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
+    }
+
+    public static boolean isHoveredWithoutScale(float x, float y, float width, float height, int mouseX, int mouseY) {
+        ScaledResolution sr = new ScaledResolution(mc);
+//        var mouseX = mouseX * sr.scaleFactor
+//        var mouseY = mouseY * sr.scaleFactor
+//        val scaledWidth = sr.scaledWidth * sr.scaleFactor / 2
+//        val scaledHeight = sr.scaledHeight * sr.scaleFactor / 2
+//        mouseX *= sr.getScaleFactor() / 2;
+//        mouseY *= sr.getScaleFactor() / 2f;
+
+//        val scaledWidth = sr.scaledWidth * sr.scaleFactor / 2
+//        val scaledHeight = sr.scaledHeight * sr.scaleFactor / 2
+
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 }
