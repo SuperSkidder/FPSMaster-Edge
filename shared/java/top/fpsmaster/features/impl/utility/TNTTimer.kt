@@ -6,12 +6,18 @@ import net.minecraft.entity.item.EntityTNTPrimed
 import org.lwjgl.opengl.GL11
 import top.fpsmaster.features.manager.Category
 import top.fpsmaster.features.manager.Module
+import top.fpsmaster.features.settings.impl.BooleanSetting
+import top.fpsmaster.features.settings.impl.NumberSetting
 import top.fpsmaster.interfaces.ProviderManager
 import top.fpsmaster.wrapper.entities.EntityTNTPrimedUtil
 import java.awt.Color
 import java.text.DecimalFormat
 
 class TNTTimer : Module("TNTTimer", Category.Utility) {
+    init {
+        addSettings(duration)
+    }
+
     override fun onEnable() {
         super.onEnable()
         using = true
@@ -25,6 +31,8 @@ class TNTTimer : Module("TNTTimer", Category.Utility) {
     companion object {
         @JvmField
         var using = false
+        var duration = NumberSetting("Duration", 4, 1, 10, 0.1)
+
         @JvmStatic
         fun doRender(entity: EntityTNTPrimed) {
             if (!using) return
@@ -51,7 +59,7 @@ class TNTTimer : Module("TNTTimer", Category.Utility) {
             )
             GL11.glNormal3f(0.0f, 1.0f, 0.0f)
             GlStateManager.rotate(-mc.renderManager.playerViewY, 0.0f, 1.0f, 0.0f)
-            GL11.glScalef((-2.0f).let { scale /= it; scale }, -scale, -scale)
+            GL11.glScalef(-scale / 2, -scale, -scale)
             val xLeft = -10.0
             val xRight = 10.0
             val yUp = -20.0
@@ -71,13 +79,23 @@ class TNTTimer : Module("TNTTimer", Category.Utility) {
             val width = ProviderManager.mcProvider.getFontRenderer().getStringWidth("0.00").toFloat() / 2.0f + 6.0f
             GlStateManager.disableDepth()
             GlStateManager.disableBlend()
+            GlStateManager.disableLighting()
             val df = DecimalFormat("0.00")
+            var color = Color(255, 255, 255)
+            var time = EntityTNTPrimedUtil.getFuse(entity) / 20.0 + duration.value.toFloat() - 4
+            if (time < 2.5) {
+                color = Color(255, 255, 0)
+            }
+            if (time < 1.0) {
+                color = Color(255, 0, 0)
+            }
             ProviderManager.mcProvider.getFontRenderer().drawStringWithShadow(
-                df.format(EntityTNTPrimedUtil.getFuse(entity) / 20.0),
+                df.format(time),
                 -width + 5,
                 -20f,
-                -1
+                color.rgb
             )
+            GlStateManager.enableLighting()
             GlStateManager.enableBlend()
             GlStateManager.enableDepth()
         }

@@ -155,9 +155,6 @@ public class Render2DUtils extends Utility {
             height *= 1f / sr.getScaleFactor() * 2;
             y *= 1f / sr.getScaleFactor() * 2;
             x *= 1f / sr.getScaleFactor() * 2;
-            System.out.println(mc.displayWidth + " " + mc.currentScreen.width);
-
-            System.out.println("do scissor :x " + (int) (x * mc.displayWidth / mc.currentScreen.width) + " y " + y + " width " + width + " height " + height);
             GL11.glScissor((int) (x * mc.displayWidth / mc.currentScreen.width), (int) (mc.displayHeight - (y + height) * mc.displayHeight / mc.currentScreen.height), (int) (width * mc.displayWidth / mc.currentScreen.width), (int) (height * mc.displayHeight / mc.currentScreen.height));
         }
     }

@@ -42,8 +42,6 @@ class OldAnimations : Module("OldAnimations", Category.OPTIMIZE) {
 
     @Subscribe
     fun onTick(event: EventTick) {
-        if (!this.isEnabled)
-            return
         lastEyeHeight = eyeHeight
 
         val player = ProviderManager.mcProvider.getPlayer() ?: run {
