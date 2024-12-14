@@ -29,7 +29,7 @@ public class ScaledGuiScreen extends GuiScreen {
 
         GL11.glPushMatrix();
         GL11.glScaled((double) 1 / scaleFactor * 2.0, (double) 1 / scaleFactor * 2.0, 1.0);
-        render(realMouseX, realMouseY);
+        render(realMouseX, realMouseY, partialTicks);
         GL11.glPopMatrix();
     }
 
@@ -47,7 +47,7 @@ public class ScaledGuiScreen extends GuiScreen {
         return sr.getScaleFactor();
     }
 
-    public void render(int mouseX, int mouseY) {
+    public void render(int mouseX, int mouseY, float partialTicks) {
 
     }
 

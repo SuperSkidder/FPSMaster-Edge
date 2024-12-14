@@ -14,13 +14,14 @@ import top.fpsmaster.ui.screens.account.GuiWaiting
 import top.fpsmaster.ui.screens.oobe.GuiLogin
 import top.fpsmaster.utils.os.FileUtils
 import top.fpsmaster.utils.render.Render2DUtils
+import top.fpsmaster.utils.render.ScaledGuiScreen
 import top.fpsmaster.wrapper.TextFormattingProvider
 import java.awt.Color
 import java.awt.Desktop
 import java.io.IOException
 import java.net.URI
 
-class MainMenu : GuiScreen() {
+class MainMenu : ScaledGuiScreen() {
     private var singlePlayer: GuiButton = GuiButton("mainmenu.single") {
         ProviderManager.mainmenuProvider.showSinglePlayer(
             this
@@ -65,7 +66,7 @@ class MainMenu : GuiScreen() {
     /**
      * Draws the screen and all the components in it.
      */
-    override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
+    override fun render(mouseX: Int, mouseY: Int, partialTicks: Float) {
 //        if (FPSMaster.configManager.configure.getOrCreate("firstStart", "true") == "true") {
 //            Minecraft.getMinecraft().displayGuiScreen(FPSMaster.oobeScreen)
 //        }
@@ -77,53 +78,53 @@ class MainMenu : GuiScreen() {
                 val textureArt = ThreadDownloadImageData(file, null, null, null)
                 textureManager.loadTexture(textureLocation, textureArt)
             }
-            Render2DUtils.drawImage(textureLocation, 0f, 0f, this.width.toFloat(), this.height.toFloat(), -1)
+            Render2DUtils.drawImage(textureLocation, 0f, 0f, this.guiWidth.toFloat(), this.guiHeight.toFloat(), -1)
             Render2DUtils.drawRect(
                 0f, 0f,
-                width.toFloat(),
-                height.toFloat(), Color(22, 22, 22, 50)
+                guiWidth.toFloat(),
+                guiHeight.toFloat(), Color(22, 22, 22, 50)
             )
         } else {
             ProviderManager.mainmenuProvider.renderSkybox(
                 mouseX,
                 mouseY,
                 partialTicks,
-                this.width,
-                this.height,
+                this.guiWidth.toInt(),
+                this.guiHeight.toInt(),
                 this.zLevel
             )
             Render2DUtils.drawRect(
                 0f, 0f,
-                width.toFloat(),
-                height.toFloat(), Color(26, 59, 109, 60)
+                guiWidth.toFloat(),
+                guiHeight.toFloat(), Color(26, 59, 109, 60)
             )
         }
 
 
 
         checkNotNull(FPSMaster.fontManager)
-        val stringWidth = FPSMaster.fontManager.s16.getStringWidth(mc.session.username)
+        val stringguiWidth = FPSMaster.fontManager.s16.getStringWidth(mc.session.username)
         if (Render2DUtils.isHovered(10f, 10f, 80f, 20f, mouseX, mouseY)) {
-            Render2DUtils.drawOptimizedRoundedRect(10f, 10f, (30 + stringWidth).toFloat(), 20f, Color(0, 0, 0, 100))
+            Render2DUtils.drawOptimizedRoundedRect(10f, 10f, (30 + stringguiWidth).toFloat(), 20f, Color(0, 0, 0, 100))
             if (Mouse.isButtonDown(0)) {
                 Minecraft.getMinecraft().displayGuiScreen(GuiWaiting())
             }
         } else {
-            Render2DUtils.drawOptimizedRoundedRect(10f, 10f, (30 + stringWidth).toFloat(), 20f, Color(0, 0, 0, 60))
+            Render2DUtils.drawOptimizedRoundedRect(10f, 10f, (30 + stringguiWidth).toFloat(), 20f, Color(0, 0, 0, 60))
         }
         Render2DUtils.drawImage(ResourceLocation("client/gui/screen/avatar.png"), 14f, 15f, 10f, 10f, -1)
         FPSMaster.fontManager.s16.drawString(mc.session.username, 28, 16, Color(255, 255, 255).rgb)
         Render2DUtils.drawImage(
             ResourceLocation("client/gui/logo.png"),
-            width / 2f - 153 / 4f,
-            height / 2f - 100,
+            guiWidth / 2f - 153 / 4f,
+            guiHeight / 2f - 100,
             153 / 2f,
             67f,
             -1
         )
 
-        val x = width / 2 - 50
-        val y = height / 2 - 30
+        val x = guiWidth / 2 - 50
+        val y = guiHeight / 2 - 30
 
         singlePlayer.render(x.toFloat(), y.toFloat(), 100f, 20f, mouseX.toFloat(), mouseY.toFloat())
         multiPlayer.render(x.toFloat(), (y + 24).toFloat(), 100f, 20f, mouseX.toFloat(), mouseY.toFloat())
@@ -134,9 +135,9 @@ class MainMenu : GuiScreen() {
         val w = FPSMaster.fontManager.s16.getStringWidth("Copyright Mojang AB. Do not distribute!").toFloat()
         FPSMaster.fontManager.s16.drawString(
             "Copyright Mojang AB. Do not distribute!",
-            this.width - w - 4,
-            this.height - 14,
-            Color(255, 255, 255, 50).rgb
+            this.guiWidth - w - 4,
+            this.guiHeight - 14,
+            Color(255, 255, 255).rgb
         )
         welcome = if (FPSMaster.INSTANCE.loggedIn) {
             TextFormattingProvider.getGreen()
@@ -151,7 +152,7 @@ class MainMenu : GuiScreen() {
                 .toString() + TextFormattingProvider.getBold()
                 .toString() + FPSMaster.i18n["mainmenu.notlogin"]
         }
-        FPSMaster.fontManager.s16.drawString(welcome, 4, this.height - 52, Color(255, 255, 255).rgb)
+        FPSMaster.fontManager.s16.drawString(welcome, 4, this.guiHeight.toInt() - 52, Color(255, 255, 255).rgb)
 
         if (FPSMaster.updateFailed) {
             info = TextFormattingProvider.getGreen().toString() + FPSMaster.i18n["mainmenu.failed"]
@@ -164,26 +165,23 @@ class MainMenu : GuiScreen() {
                 needUpdate = true
             }
         }
-        FPSMaster.fontManager.s16.drawString(info, 4, this.height - 40, Color(255, 255, 255).rgb)
+        FPSMaster.fontManager.s16.drawString(info, 4, this.guiHeight.toInt() - 40, Color(255, 255, 255).rgb)
 
         Render2DUtils.drawRect(0f, 0f, 0f, 0f, -1)
-        FPSMaster.fontManager.s16.drawString(FPSMaster.COPYRIGHT, 4, this.height - 14, Color(255, 255, 255).rgb)
+        FPSMaster.fontManager.s16.drawString(FPSMaster.COPYRIGHT, 4, this.guiHeight.toInt() - 14, Color(255, 255, 255).rgb)
         FPSMaster.fontManager.s16.drawString(
             FPSMaster.CLIENT_NAME + " Client " + FPSMaster.CLIENT_VERSION + " (Minecraft " + FPSMaster.EDITION + ")",
             4,
-            this.height - 28,
+            this.guiHeight.toInt() - 28,
             Color(255, 255, 255).rgb
         )
-
-        super.drawScreen(mouseX, mouseY, partialTicks)
     }
 
     /**
      * Called when the mouse is clicked. Args : mouseX, mouseY, clickedButton
      */
     @Throws(IOException::class)
-    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
-        super.mouseClicked(mouseX, mouseY, mouseButton)
+    override fun onClick(mouseX: Int, mouseY: Int, mouseButton: Int) {
         singlePlayer.mouseClick(mouseX.toFloat(), mouseY.toFloat(), mouseButton)
         multiPlayer.mouseClick(mouseX.toFloat(), mouseY.toFloat(), mouseButton)
         multiPlayer.mouseClick(mouseX.toFloat(), mouseY.toFloat(), mouseButton)
@@ -194,11 +192,11 @@ class MainMenu : GuiScreen() {
         val nw = FPSMaster.fontManager.s16.getStringWidth(info).toFloat()
 
         if (mouseButton == 0) {
-            if (Render2DUtils.isHovered(4f, (this.height - 52).toFloat(), nw, 14f, mouseX, mouseY)) {
+            if (Render2DUtils.isHovered(4f, (this.guiHeight - 52).toFloat(), nw, 14f, mouseX, mouseY)) {
                 Minecraft.getMinecraft().displayGuiScreen(GuiLogin())
             }
 
-            if (Render2DUtils.isHovered(4f, (this.height - 40).toFloat(), uw, 14f, mouseX, mouseY) && needUpdate) {
+            if (Render2DUtils.isHovered(4f, (this.guiHeight - 40).toFloat(), uw, 14f, mouseX, mouseY) && needUpdate) {
                 val desktop = Desktop.getDesktop()
                 try {
                     desktop.browse(URI("https://fpsmaster.top/download"))

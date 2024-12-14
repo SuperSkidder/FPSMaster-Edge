@@ -88,7 +88,7 @@ public class FPSMaster {
         try {
             Class.forName("optifine.Patcher");
             hasOptifine = true;
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException ignored) {
         }
     }
 
@@ -117,7 +117,9 @@ public class FPSMaster {
         initializeConfigures();
         initializeCommands();
 
-        checkUpdate();
+        if (phase == "release") {
+            checkUpdate();
+        }
         checkOptifine();
     }
 
@@ -125,6 +127,7 @@ public class FPSMaster {
         configManager.saveConfig("default");
     }
 
+    public static final String phase = "alpha";
     public static final String SERVICE_API = "https://service.fpsmaster.top";
     public static final String FILE_API = "https://files.fpsmaster.top";
 
@@ -151,7 +154,7 @@ public class FPSMaster {
     public static AsyncTask async = new AsyncTask(100);
     public static boolean development = false;
     public static boolean debug = false;
-    public static boolean isLatest = false;
+    public static boolean isLatest = true;
     public static boolean updateFailed = false;
     public static String latest = "";
 
@@ -165,6 +168,6 @@ public class FPSMaster {
 
     public static String getClientTitle() {
         checkDevelopment();
-        return CLIENT_NAME + " " + CLIENT_VERSION + " " + Constants.VERSION + " (" + Constants.EDITION + ") (" + GitInfo.INSTANCE.getBranch() + " - " + GitInfo.INSTANCE.getCommitIdAbbrev() + ")" + (development? " - Developer Mode" : "");
+        return CLIENT_NAME + " " + CLIENT_VERSION + " - " + phase + " " + Constants.VERSION + " (" + GitInfo.INSTANCE.getBranch() + " - " + GitInfo.INSTANCE.getCommitIdAbbrev() + ")" + (development ? " - Developer Mode" : "");
     }
 }

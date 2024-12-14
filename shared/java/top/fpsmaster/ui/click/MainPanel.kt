@@ -66,7 +66,7 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : ScaledGuiScreen() {
         return doesGuiPauseGame
     }
 
-    override fun render(mouseX: Int, mouseY: Int) {
+    override fun render(mouseX: Int, mouseY: Int, partialTicks: Float) {
         var mouseX = mouseX;
         var mouseY = mouseY;
 
