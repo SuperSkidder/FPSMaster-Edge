@@ -189,13 +189,18 @@ public class Render2DUtils extends Utility {
         } else {
             scaleFactor = 2;
         }
-        GL11.glScaled((double) 1 / scaleFactor * 2.0, (double) 1 / scaleFactor * 2.0, 1.0);
+        GL11.glScaled(2.0 / scaleFactor, 2.0 / scaleFactor, 1.0);
         return scaleFactor;
     }
 
     public static float[] getFixedBounds() {
         ScaledResolution sr = new ScaledResolution(mc);
-        int scaleFactor = fixScale();
+        int scaleFactor;
+        if (ClientSettings.Companion.getFixedScale().getValue()) {
+            scaleFactor = sr.getScaleFactor();
+        } else {
+            scaleFactor = 2;
+        }
         float guiWidth = sr.getScaledWidth() / 2f * scaleFactor;
         float guiHeight = sr.getScaledHeight() / 2f * scaleFactor;
         return new float[]{guiWidth, guiHeight};

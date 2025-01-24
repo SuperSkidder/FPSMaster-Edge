@@ -6,6 +6,7 @@ import top.fpsmaster.features.impl.InterfaceModule
 import top.fpsmaster.features.impl.interfaces.ClientSettings
 import top.fpsmaster.ui.custom.impl.*
 import top.fpsmaster.utils.Utility
+import top.fpsmaster.utils.render.Render2DUtils
 import java.util.function.Consumer
 
 class ComponentsManager {
@@ -53,7 +54,7 @@ class ComponentsManager {
             mouseX = mouseX * scaleFactor / 2
             mouseY = mouseY * scaleFactor / 2
 
-            GL11.glScaled(2.0 / scaleFactor, 2.0 / scaleFactor, 1.0);
+            Render2DUtils.fixScale()
         }
         components.forEach(Consumer { component: Component ->
             if (component.shouldDisplay()) component.display(

@@ -82,14 +82,16 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : ScaledGuiScreen() {
         }
         val w: Float = mouseX + sizeDragX - x
         val h: Float = mouseY + sizeDragY - y
-        if (sizeDrag && (Companion.width > 400 || w > Companion.width)) {
+        if (sizeDrag) {
             Companion.width = w
-        }
-        if (sizeDrag && (Companion.height > 240 || h > Companion.height)) {
             Companion.height = h
         }
-//        Companion.width = max(min(Companion.width, scaledWidth - 10f), 400f)
-//        Companion.height = max(min(Companion.height, scaledHeight - 10f), 220f)
+        // limit bounds to range
+        Companion.width = min(max(400f, Companion.width), guiWidth)
+        Companion.height = min(max(240f, Companion.height), guiHeight)
+        x = max(0f, min(guiWidth - Companion.width, x.toFloat())).toInt()
+        y = max(0f, min(guiHeight - Companion.height, y.toFloat())).toInt()
+
         if (close) {
             if (scaleAnimation.value <= 0.5) {
                 mc.displayGuiScreen(null)
@@ -101,9 +103,6 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : ScaledGuiScreen() {
             scaleAnimation.start(0.9, 1.0, 0.2f, Type.EASE_OUT_BACK)
         }
         scaleAnimation.update()
-//        GL11.glScaled(scaleAnimation.value / sr.scaleFactor * 2.0, scaleAnimation.value / sr.scaleFactor * 2.0, 1.0)
-//        GlStateManager.translate(scaledWidth / 2.0, scaledHeight / 2.0, 0.0)
-//        GlStateManager.translate(-scaledWidth / 2.0, -scaledHeight / 2.0, 0.0)
 
         //绘制主窗体
         Render2DUtils.drawOptimizedRoundedRect(
@@ -287,7 +286,6 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : ScaledGuiScreen() {
                 }
                 modsContainer.setHeight(modHeight)
             }
-
         }
 
         GL11.glEnable(GL11.GL_BLEND)
@@ -301,21 +299,6 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : ScaledGuiScreen() {
 
     override fun updateScreen() {
         super.updateScreen()
-        val sr = ScaledResolution(mc)
-        if (x < 0) {
-            x = 0
-        }
-        if (y < 0) {
-            y = 0
-        }
-        if (guiWidth < Companion.width) {
-            x = 0
-            Companion.width = (guiWidth).toFloat()
-        }
-        if (guiHeight < Companion.height) {
-            y = 0
-            Companion.height = (guiHeight).toFloat()
-        }
     }
 
     override fun initGui() {
@@ -370,10 +353,6 @@ class MainPanel(private val doesGuiPauseGame: Boolean) : ScaledGuiScreen() {
 
     @Throws(IOException::class)
     override fun onClick(mouseX: Int, mouseY: Int, mouseButton: Int) {
-        val sr = ScaledResolution(mc)
-        val factor = sr.scaleFactor
-        val scaledWidth = sr.scaledWidth
-        val scaledHeight = sr.scaledHeight
         if (!Render2DUtils.isHoveredWithoutScale(
                 x.toFloat(),
                 y.toFloat(),
