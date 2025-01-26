@@ -23,15 +23,21 @@ object FileUtils {
     var hasBackground = false
 
     init {
-        cache = file(ProviderManager.mcProvider.getGameDir(), ".cache")
-        dir = file(ProviderManager.mcProvider.getGameDir(), "FPSMaster " + Constants.VERSION)
+        if (net.minecraft.client.Minecraft.getMinecraft() == null) {
+            error("FileUtils", "Minecraft provider is not initialized")
+            cache = file(File("D:\\Code\\Lua\\FPSMaster"), ".cache")
+            dir = file(File("D:\\Code\\Lua\\FPSMaster"), "FPSMaster " + Constants.VERSION)
+        } else {
+            cache = file(ProviderManager.mcProvider.getGameDir(), ".cache")
+            dir = file(ProviderManager.mcProvider.getGameDir(), "FPSMaster " + Constants.VERSION)
+        }
         plugins = file(dir, "plugins")
         fpsmasterCache = file(cache, "FPSMasterClient")
         netease = file(cache, "netease")
         music = file(netease, "songs")
         artists = file(netease, "artists")
         omaments = file(cache, "omaments")
-        background = File(dir,"background.png")
+        background = File(dir, "background.png")
         if (background.exists())
             hasBackground = true
     }
@@ -143,7 +149,8 @@ object FileUtils {
         return readAbsoluteFile(file.absolutePath)
     }
 
-    private fun readAbsoluteFile(name: String): String {
+    @JvmStatic
+    fun readAbsoluteFile(name: String): String {
         val file = File(name)
         val result = StringBuilder()
         try {

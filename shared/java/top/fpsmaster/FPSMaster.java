@@ -8,6 +8,7 @@ import top.fpsmaster.modules.account.AccountManager;
 import top.fpsmaster.modules.client.AsyncTask;
 import top.fpsmaster.modules.config.ConfigManager;
 import top.fpsmaster.modules.logger.Logger;
+import top.fpsmaster.modules.lua.LuaManager;
 import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.modules.music.netease.NeteaseApi;
 import top.fpsmaster.ui.click.music.MusicPanel;
@@ -84,6 +85,10 @@ public class FPSMaster {
         submitter.init();
     }
 
+    private void initializePlugins() {
+        luaManager.init();
+    }
+
     private void checkOptifine() {
         try {
             Class.forName("optifine.Patcher");
@@ -116,6 +121,7 @@ public class FPSMaster {
         initializeComponents();
         initializeConfigures();
         initializeCommands();
+        initializePlugins();
 
         if (phase == "release") {
             checkUpdate();
@@ -150,6 +156,7 @@ public class FPSMaster {
     public static GlobalSubmitter submitter = new GlobalSubmitter();
     public static CommandManager commandManager = new CommandManager();
     public static ComponentsManager componentsManager = new ComponentsManager();
+    public static LuaManager luaManager = new LuaManager();
     public static Language i18n = new Language();
     public static AsyncTask async = new AsyncTask(100);
     public static boolean development = false;

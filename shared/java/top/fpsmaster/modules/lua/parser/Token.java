@@ -1,0 +1,142 @@
+package top.fpsmaster.modules.lua.parser;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
+class Token {
+    String type; //定义每个token的类型，比如：  "IDENTIFIER"（标识符）, "STRING"（字符串）, "NUMBER"(数字), "OPERATOR"(运算符)
+    String value; //定义每个token的值，比如：  "abc"（标识符）, "hello world"（字符串）, "3.14"（数字), "+"（运算符）
+
+    Token(String type, String value) {
+        this.type = type;
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return type + " " + value;
+    }
+}
+
+class Lexer {
+    private final String input;
+    private int position;  // 当前解析到的位置
+
+    // 构造函数，初始化输入字符串和解析位置
+    Lexer(String input) {
+        this.input = input;
+        this.position = 0;
+    }
+
+    // 将输入字符串解析为Token列表
+    List<Token> tokenize() {
+        List<Token> tokens = new ArrayList<>();
+        while (position < input.length()) {
+            char current = input.charAt(position);
+            if (Character.isWhitespace(current)) { // 跳过空白
+                position++;
+            } else if (current == '-' && lookaheadIs('-')) {
+                // 跳过注释
+                skipComment();
+            } else if (Character.isLetter(current)) {
+                String identifier = readWhile(Character::isLetterOrDigit);
+                if (identifier.equals("local")) {
+                    tokens.add(new Token("KEYWORD", "local"));
+                }else if (identifier.equals("function")) {
+                    tokens.add(new Token("KEYWORD", "function"));
+                }else if (identifier.equals("end")) {
+                    tokens.add(new Token("KEYWORD", "end"));
+                } else {
+                    tokens.add(new Token("IDENTIFIER", identifier));
+                }
+            } else if (Character.isDigit(current)) {
+                String number = readWhile(Character::isDigit); // 读取数字，直到遇到非数字为止
+                tokens.add(new Token("NUMBER", number));
+            } else if (current == '"') {
+                // 读取字符串
+                tokens.add(new Token("STRING", readString()));
+            } else if ("{}(),".indexOf(current) != -1) {
+                tokens.add(new Token("SYMBOL", String.valueOf(current)));
+                position++;
+            } else {
+                tokens.add(new Token("OPERATOR", String.valueOf(current)));
+                position++;
+            }
+        }
+        return tokens;
+    }
+
+    private boolean lookaheadIs(char expected) {
+        return position + 1 < input.length() && input.charAt(position + 1) == expected;
+    }
+
+    private boolean lookaheadIs(char expected, int index) {
+        return index < input.length() && input.charAt(index) == expected;
+    }
+
+    private void skipComment() {
+        position += 2; // 跳过 "--"
+        if (lookaheadIs('[') && lookaheadIs('[', position + 1)) {
+            // 多行注释
+            position += 2; // 跳过 "[["
+            while (position < input.length() && !(lookaheadIs(']') && lookaheadIs(']', position + 1))) {
+                position++;
+            }
+            if (position < input.length()) {
+                position += 2; // 跳过 "]]"
+            } else {
+                throw new IllegalArgumentException("Unterminated multi-line comment");
+            }
+        } else {
+            // 单行注释
+            while (position < input.length() && input.charAt(position) != '\n') {
+                position++;
+            }
+        }
+    }
+
+    private String readString() {
+        StringBuilder stringLiteral = new StringBuilder();
+        position++; // 跳过开头的双引号
+        while (position < input.length()) {
+            char current = input.charAt(position);
+            if (current == '\\') {
+                // 处理转义字符
+                position++;
+                if (position >= input.length()) {
+                    throw new IllegalArgumentException("Unterminated escape sequence in string");
+                }
+                char escaped = input.charAt(position);
+                switch (escaped) {
+                    case 'n': stringLiteral.append('\n'); break;
+                    case 't': stringLiteral.append('\t'); break;
+                    case '"': stringLiteral.append('"'); break;
+                    case '\\': stringLiteral.append('\\'); break;
+                    default:
+                        throw new IllegalArgumentException("Unknown escape sequence: \\" + escaped);
+                }
+            } else if (current == '"') {
+                // 结束字符串
+                position++;
+                break;
+            } else {
+                // 普通字符
+                stringLiteral.append(current);
+            }
+            position++;
+        }
+        return stringLiteral.toString();
+    }
+
+
+    // 根据条件读取字符，直到条件不满足为止，这里用了Predicate接口
+    private String readWhile(Predicate<Character> condition) {
+        StringBuilder result = new StringBuilder();
+        while (position < input.length() && condition.test(input.charAt(position))) {
+            result.append(input.charAt(position++));
+        }
+        return result.toString();
+    }
+}
+

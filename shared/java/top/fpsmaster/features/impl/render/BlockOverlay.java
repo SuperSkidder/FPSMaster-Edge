@@ -50,7 +50,7 @@ public class BlockOverlay extends Module {
     public void onRender3D(EventRender3D e) {
         if (Minecraft.getMinecraft().objectMouseOver != null) {
             if (ProviderManager.mcProvider.isHoveringOverBlock()) {
-                WrapperBlockPos pos = new WrapperBlockPos(Companion.getMc().objectMouseOver.getBlockPos());
+                WrapperBlockPos pos = new WrapperBlockPos(Minecraft.getMinecraft().objectMouseOver.getBlockPos());
                 IBlockState state = ProviderManager.worldClientProvider.getBlockState(pos);
                 Block block = ProviderManager.worldClientProvider.getBlock(pos);
                 double x = pos.getX() - Minecraft.getMinecraft().getRenderManager().viewerPosX;

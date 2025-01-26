@@ -85,6 +85,9 @@ dependencies {
     shadowImpl("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         isTransitive = false
     }
+    shadowImpl("party.iroiro.luajava:luajava:4.0.2")
+    shadowImpl("party.iroiro.luajava:lua53-platform:4.0.2:natives-desktop")
+    shadowImpl("party.iroiro.luajava:lua53:4.0.2")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")
     shadowImpl("javazoom:jlayer:1.0.1"){
         isTransitive = false

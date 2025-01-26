@@ -1,6 +1,7 @@
 package top.fpsmaster.features.manager
 
 import net.minecraft.client.Minecraft
+import net.minecraft.client.main.GameConfiguration
 import top.fpsmaster.FPSMaster
 import top.fpsmaster.event.EventDispatcher.registerListener
 import top.fpsmaster.event.EventDispatcher.unregisterListener
@@ -75,7 +76,7 @@ open class Module {
         try {
             if (state) {
                 onEnable()
-                if (ProviderManager.mcProvider.getPlayer() != null)
+                if (Minecraft.getMinecraft() != null && ProviderManager.mcProvider.getPlayer() != null)
                     NotificationManager.addNotification(
                         FPSMaster.i18n["notification.module.enable"],
                         String.format(
@@ -86,7 +87,7 @@ open class Module {
                     )
             } else {
                 onDisable()
-                if (ProviderManager.mcProvider.getPlayer() != null)
+                if (Minecraft.getMinecraft() != null && ProviderManager.mcProvider.getPlayer() != null)
                     NotificationManager.addNotification(
                         FPSMaster.i18n["notification.module.disable"],
                         String.format(
@@ -109,7 +110,4 @@ open class Module {
         unregisterListener(this)
     }
 
-    companion object {
-        var mc: Minecraft = Minecraft.getMinecraft()
-    }
 }
