@@ -2,6 +2,7 @@ package top.fpsmaster.utils
 
 import net.minecraft.client.Minecraft
 import top.fpsmaster.interfaces.ProviderManager
+import top.fpsmaster.modules.dev.DevMode
 
 open class Utility {
     companion object {
@@ -20,6 +21,14 @@ open class Utility {
             if (ProviderManager.mcProvider.getWorld() != null) {
                 ProviderManager.mcProvider.printChatMessage(ProviderManager.utilityProvider.makeChatComponent("§9[FPSMaster]§r $msg"))
             }
+        }
+
+        @JvmStatic
+        fun sendClientDebug(msg: String?) {
+            if (DevMode.INSTACE.dev)
+                if (ProviderManager.mcProvider.getWorld() != null) {
+                    ProviderManager.mcProvider.printChatMessage(ProviderManager.utilityProvider.makeChatComponent("§9[FPSMaster]§r $msg"))
+                }
         }
     }
 }

@@ -60,8 +60,7 @@ public class LuaManager {
             // 返回 Java 对象给 Lua
             FPSMaster.moduleManager.addModule(module);
 
-            if (DevMode.INSTACE.dev)
-                Utility.sendClientNotify("Lua module registered: " + name + " " + category);
+            Utility.sendClientDebug("Lua module registered: " + name + " " + category);
             L.pushJavaObject(module);
             return 1; // 返回值数量
         });
@@ -87,10 +86,8 @@ public class LuaManager {
         try {
             luaScript.ast = LuaParser.parse(rawLua.code);
         } catch (Exception e) {
-            if (DevMode.INSTACE.dev) {
-                e.printStackTrace();
-                Utility.sendClientNotify("Lua parse error: " + e.getMessage());
-            }
+            e.printStackTrace();
+            Utility.sendClientDebug("Lua parse error: " + e.getMessage());
         }
         scripts.add(luaScript);
         return luaScript;
@@ -157,9 +154,7 @@ public class LuaManager {
 
         remove.forEach(it -> {
             unloadLua(it);
-            if (DevMode.INSTACE.dev) {
-                Utility.sendClientNotify("Hotswap: unloaded lua script §d" + it.rawLua.filename);
-            }
+            Utility.sendClientDebug("Hotswap: unloaded lua script §d" + it.rawLua.filename);
         });
 
         newRawLuaList.stream()
@@ -168,13 +163,9 @@ public class LuaManager {
                     try {
                         loadLua(element);
                     } catch (Exception e) {
-                        if (DevMode.INSTACE.dev) {
-                            Utility.sendClientNotify("Hotswap: failed to load lua script §d" + element.filename + " §c " + e.getMessage());
-                        }
+                        Utility.sendClientDebug("Hotswap: failed to load lua script §d" + element.filename + " §c " + e.getMessage());
                     }
-                    if (DevMode.INSTACE.dev && DevMode.INSTACE.hotswap) {
-                        Utility.sendClientNotify("Hotswap: loaded new lua script §d" + element.filename);
-                    }
+                    Utility.sendClientDebug("Hotswap: loaded new lua script §d" + element.filename);
                 });
     }
 }

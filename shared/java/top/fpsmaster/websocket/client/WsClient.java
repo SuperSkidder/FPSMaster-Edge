@@ -24,8 +24,7 @@ public class WsClient extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        if (DevMode.INSTACE.dev)
-            Utility.sendClientMessage("成功连接到irc服务器");
+        Utility.sendClientDebug("成功连接到irc服务器");
         if (ProviderManager.mcProvider.getPlayer() != null) {
             Utility.sendClientMessage(FPSMaster.i18n.get("irc.enable"));
         }
@@ -72,15 +71,13 @@ public class WsClient extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        if (DevMode.INSTACE.dev)
-            Utility.sendClientMessage("连接关闭:" + reason);
+        Utility.sendClientDebug("连接关闭:" + reason);
         FPSMaster.INSTANCE.wsClient = null;
     }
 
     @Override
     public void onError(Exception ex) {
-        if (DevMode.INSTACE.dev)
-            Utility.sendClientMessage("聊天服务错误: " + ex.getMessage());
+        Utility.sendClientDebug("聊天服务错误: " + ex.getMessage());
     }
 
     public static WsClient start(String addr) throws URISyntaxException {
