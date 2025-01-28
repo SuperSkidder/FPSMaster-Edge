@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.fpsmaster.event.EventDispatcher;
+import top.fpsmaster.event.events.EventAnimation;
 import top.fpsmaster.features.impl.optimizes.OldAnimations;
 import top.fpsmaster.features.impl.render.FireModifier;
 
@@ -130,7 +132,7 @@ public abstract class MixinItemRenderer {
         float f3 = abstractclientplayer.prevRotationYaw + (abstractclientplayer.rotationYaw - abstractclientplayer.prevRotationYaw) * partialTicks;
         this.rotateArroundXAndY(f2, f3);
         this.setLightMapFromPlayer(abstractclientplayer);
-        this.rotateWithPlayerRotations((EntityPlayerSP)abstractclientplayer, partialTicks);
+        this.rotateWithPlayerRotations((EntityPlayerSP) abstractclientplayer, partialTicks);
         GlStateManager.enableRescaleNormal();
         GlStateManager.pushMatrix();
         if (this.itemToRender != null) {
@@ -152,31 +154,46 @@ public abstract class MixinItemRenderer {
                 EnumAction enumaction = this.itemToRender.getItemUseAction();
                 switch (enumaction) {
                     case NONE:
-                        this.transformFirstPersonItem(f, 0.0F);
+                        EventAnimation none = new EventAnimation(EventAnimation.Type.NONE, f, f1);
+                        EventDispatcher.dispatchEvent(none);
+                        if (!none.isCanceled())
+                            this.transformFirstPersonItem(f, 0.0F);
                         break;
                     case EAT:
                     case DRINK:
-                        this.performDrinking(mc.thePlayer, partialTicks);
-                        this.transformFirstPersonItem(f, f1);
+                        EventAnimation use = new EventAnimation(EventAnimation.Type.USE, f, f1);
+                        EventDispatcher.dispatchEvent(use);
+                        if (!use.isCanceled()) {
+                            this.performDrinking(mc.thePlayer, partialTicks);
+                            this.transformFirstPersonItem(f, f1);
+                        }
                         break;
 
                     case BLOCK:
-                        if (OldAnimations.blockHit.getValue()) {
-                            GL11.glTranslated(OldAnimations.x.getValue().floatValue(), OldAnimations.y.getValue().floatValue(), OldAnimations.z.getValue().floatValue());
-                            this.transformFirstPersonItem(f, f1);
-                        } else {
-                            this.transformFirstPersonItem(f, 0.0F);
+                        EventAnimation block = new EventAnimation(EventAnimation.Type.USE, f, f1);
+                        EventDispatcher.dispatchEvent(block);
+                        if (!block.isCanceled()) {
+                            if (OldAnimations.blockHit.getValue()) {
+                                GL11.glTranslated(OldAnimations.x.getValue().floatValue(), OldAnimations.y.getValue().floatValue(), OldAnimations.z.getValue().floatValue());
+                                this.transformFirstPersonItem(f, f1);
+                            } else {
+                                this.transformFirstPersonItem(f, 0.0F);
+                            }
+                            this.doBlockTransformations();
                         }
-                        this.doBlockTransformations();
                         break;
 
                     case BOW:
-                        if (OldAnimations.oldBow.getValue()) {
-                            this.transformFirstPersonItem(f, f1);
-                        } else {
-                            this.transformFirstPersonItem(f, 0.0F);
+                        EventAnimation bow = new EventAnimation(EventAnimation.Type.USE, f, f1);
+                        EventDispatcher.dispatchEvent(bow);
+                        if (!bow.isCanceled()) {
+                            if (OldAnimations.oldBow.getValue()) {
+                                this.transformFirstPersonItem(f, f1);
+                            } else {
+                                this.transformFirstPersonItem(f, 0.0F);
+                            }
+                            this.doBowTransformations(partialTicks, mc.thePlayer);
                         }
-                        this.doBowTransformations(partialTicks, mc.thePlayer);
                 }
             } else {
                 this.doItemUsedTransformations(f1);
