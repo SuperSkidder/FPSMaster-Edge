@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.*;
+import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -161,6 +162,7 @@ public abstract class MixinItemRenderer {
 
                     case BLOCK:
                         if (OldAnimations.blockHit.getValue()) {
+                            GL11.glTranslated(OldAnimations.x.getValue().floatValue(), OldAnimations.y.getValue().floatValue(), OldAnimations.z.getValue().floatValue());
                             this.transformFirstPersonItem(f, f1);
                         } else {
                             this.transformFirstPersonItem(f, 0.0F);
