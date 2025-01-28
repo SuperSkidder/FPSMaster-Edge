@@ -13,7 +13,7 @@ class PlayerDisplayComponent : Component(PlayerDisplay::class.java) {
         width = 40f
         var i = 0
         for (entity in ProviderManager.worldClientProvider.getWorld()!!.playerEntities) {
-            if (entity != null) {
+            if (entity != null && !entity.isInvisible) {
                 if (i > 10 || entity === ProviderManager.mcProvider.getPlayer()) continue
                 val s16 = FPSMaster.fontManager.s16
                 val hX = s16.getStringWidth((entity.health * 10 / 10).toInt().toString() + " hp").toFloat()

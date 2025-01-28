@@ -56,6 +56,4 @@ public class LuaModule extends top.fpsmaster.features.manager.Module {
     public void onRender2D(EventRender2D e) {
         callEvent("on_draw", e);
     }
-
-
 }
