@@ -1,9 +1,12 @@
 package top.fpsmaster.features.command.impl.dev
 
+import net.minecraft.client.Minecraft
 import top.fpsmaster.FPSMaster
 import top.fpsmaster.features.command.Command
+import top.fpsmaster.interfaces.ProviderManager
 import top.fpsmaster.modules.dev.DevMode
 import top.fpsmaster.modules.lua.LuaManager
+import top.fpsmaster.ui.devspace.DevSpace
 import top.fpsmaster.utils.Utility
 
 class Dev : Command("dev") {
@@ -23,6 +26,9 @@ class Dev : Command("dev") {
                 LuaManager.scripts.forEach {
                     Utility.sendClientNotify(it.rawLua.filename)
                 }
+            } else if (args[0] == "ide") {
+                Minecraft.getMinecraft().displayGuiScreen(null)
+                Minecraft.getMinecraft().displayGuiScreen(DevSpace())
             }
         }
     }

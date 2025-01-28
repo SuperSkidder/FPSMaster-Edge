@@ -2,6 +2,7 @@ package top.fpsmaster.features.manager
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiScreen
+import org.lwjgl.input.Keyboard
 import top.fpsmaster.FPSMaster
 import top.fpsmaster.event.EventDispatcher.registerListener
 import top.fpsmaster.event.Subscribe
@@ -14,6 +15,7 @@ import top.fpsmaster.features.impl.utility.*
 import top.fpsmaster.interfaces.ProviderManager
 import top.fpsmaster.ui.click.MainPanel
 import top.fpsmaster.ui.click.modules.ModuleRenderer
+import top.fpsmaster.ui.devspace.DevSpace
 import java.util.*
 
 class ModuleManager {
@@ -37,6 +39,10 @@ class ModuleManager {
             if (e.key == module.key) {
                 module.toggle()
             }
+        }
+
+        if (e.key == Keyboard.KEY_INSERT) {
+            Minecraft.getMinecraft().displayGuiScreen(DevSpace())
         }
     }
 
