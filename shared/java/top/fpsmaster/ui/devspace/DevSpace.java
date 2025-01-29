@@ -181,7 +181,7 @@ public class DevSpace extends ScaledGuiScreen {
                 y1 += component.getHeight();
             }
         }
-        if (Mouse.isButtonDown(0)) {
+        if (Mouse.isButtonDown(1)) {
             if (isDraggingMap) {
                 mapX = mouseX - (x+mapDragX);
                 mapY = mouseY - (y+mapDragY);
@@ -278,7 +278,7 @@ public class DevSpace extends ScaledGuiScreen {
             dragX = mouseX - x;
             dragY = mouseY - y;
         }
-        if (Render2DUtils.isHovered(x + width * 0.2f, y + 15, width - width * 0.2f, height - 20, mouseX, mouseY) && mouseButton == 0) {
+        if (Render2DUtils.isHovered(x + width * 0.2f, y + 15, width - width * 0.2f, height - 20, mouseX, mouseY) && mouseButton == 1) {
             if (!dragging && selectedLua != -1 && selectedLua < LuaManager.scripts.size() && selectedTab == 1) {
                 isDraggingMap = true;
                 mapDragX = mouseX - (x + mapX);
