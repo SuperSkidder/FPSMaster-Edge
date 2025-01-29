@@ -35,9 +35,9 @@ class TextSettingRender(mod: Module, setting: TextSetting) : SettingRender<TextS
         val text = FPSMaster.i18n[(mod.name + "." + setting.name).lowercase(Locale.getDefault())]
         s16.drawString(text, x + 18, y + 6, FPSMaster.theme.textColorDescription.rgb)
         inputBox.drawTextBox(
-            x + s16.getStringWidth(text) + 20,
+            x + s16.getStringWidth(inputBox.placeHolder).coerceAtLeast(s16.getStringWidth(text)) + 20,
             y + 2,
-            min(200f, FPSMaster.fontManager.s18.getStringWidth(inputBox.text) + 20f),
+            s16.getStringWidth(inputBox.placeHolder).coerceAtLeast(FPSMaster.fontManager.s18.getStringWidth(inputBox.text)) + 20f,
             16f
         )
         this.height = 24f
