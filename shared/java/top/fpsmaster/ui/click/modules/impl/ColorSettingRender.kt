@@ -60,7 +60,7 @@ class ColorSettingRender(mod: Module, setting: ColorSetting) : SettingRender<Col
                     y + 16,
                     80f,
                     max(aHeight, 1f),
-                    3,
+                    4,
                     Color.getHSBColor(setting.value.hue, setting.value.saturation, setting.value.brightness)
                 )
             }
