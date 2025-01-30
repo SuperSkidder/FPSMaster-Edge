@@ -1,14 +1,12 @@
 package top.fpsmaster.utils.os;
 
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.interfaces.ProviderManager;
-import top.fpsmaster.modules.logger.Logger;
+import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.wrapper.Constants;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Locale;
 
 public class FileUtils {
 
@@ -25,7 +23,7 @@ public class FileUtils {
 
     static {
         if (net.minecraft.client.Minecraft.getMinecraft() == null) {
-            Logger.error("FileUtils", "Minecraft provider is not initialized");
+            ClientLogger.error("FileUtils", "Minecraft provider is not initialized");
             cache = file(new File("D:\\Code\\Lua\\FPSMaster"), ".cache");
             dir = file(new File("D:\\Code\\Lua\\FPSMaster"), "FPSMaster " + Constants.VERSION);
         } else {
@@ -77,7 +75,7 @@ public class FileUtils {
         try {
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    Logger.error("FileUtils", "failed to create " + name);
+                    ClientLogger.error("FileUtils", "failed to create " + name);
                 }
             }
             try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8))) {
@@ -106,12 +104,12 @@ public class FileUtils {
 
     public static void release(String file) {
         File f = new File(dir, "file.lang").getAbsoluteFile();
-        Logger.info("release " + file);
+        ClientLogger.info("release " + file);
         try {
             f.createNewFile();
             try (InputStream resourceAsStream = FileUtils.class.getResourceAsStream("/assets/minecraft/client/lang/" + file + ".lang")) {
                 if (resourceAsStream == null) {
-                    Logger.error("An error occurred while loading language file: " + file + ".lang");
+                    ClientLogger.error("An error occurred while loading language file: " + file + ".lang");
                     return;
                 }
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8))) {

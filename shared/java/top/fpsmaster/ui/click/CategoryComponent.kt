@@ -26,7 +26,7 @@ class CategoryComponent(@JvmField var category: Category) {
         )
         animationName.update()
         Render2DUtils.drawImage(
-            ResourceLocation("client/gui/settings/icons/" + category.category.lowercase() + ".png"),
+            ResourceLocation("client/gui/settings/icons/" + category.name.lowercase() + ".png"),
             x + 12,
             y - 2,
             12f,
@@ -34,7 +34,7 @@ class CategoryComponent(@JvmField var category: Category) {
             animationName.color
         )
         FPSMaster.fontManager.s16.drawString(
-            FPSMaster.i18n["category." + category.category.lowercase(
+            FPSMaster.i18n["category." + category.name.lowercase(
                 Locale.getDefault()
             )], x + 30, y, animationName.color.rgb
         )

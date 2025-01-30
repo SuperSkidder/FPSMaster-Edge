@@ -7,7 +7,7 @@ import top.fpsmaster.font.FontManager;
 import top.fpsmaster.modules.account.AccountManager;
 import top.fpsmaster.modules.client.AsyncTask;
 import top.fpsmaster.modules.config.ConfigManager;
-import top.fpsmaster.modules.logger.Logger;
+import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.modules.lua.LuaManager;
 import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.modules.music.netease.NeteaseApi;
@@ -31,17 +31,17 @@ public class FPSMaster {
     public WsClient wsClient;
 
     private void initializeFonts() {
-        Logger.info("Initializing Fonts...");
+        ClientLogger.info("Initializing Fonts...");
         fontManager.load();
     }
 
     private void initializeLang() {
-        Logger.info("Initializing I18N...");
+        ClientLogger.info("Initializing I18N...");
         i18n.read("zh_cn");
     }
 
     private void initializeConfigures() {
-        Logger.info("Initializing Config...");
+        ClientLogger.info("Initializing Config...");
         configManager.loadConfig("default");
         if ("dark".equals(themeSlot)) {
             theme = new DarkTheme();
@@ -55,28 +55,28 @@ public class FPSMaster {
     }
 
     private void initializeMusic() {
-        Logger.info("Checking music cache...");
+        ClientLogger.info("Checking music cache...");
         long dirSize = FileUtils.getDirSize(FileUtils.artists);
         if (dirSize > 1024) {
             FileUtils.artists.delete();
-            Logger.info("Cleared img cache");
+            ClientLogger.info("Cleared img cache");
         }
-        Logger.info("Found image: " + dirSize + "mb");
+        ClientLogger.info("Found image: " + dirSize + "mb");
         long dirSize1 = FileUtils.getDirSize(FileUtils.music);
         if (dirSize1 > 2048) {
             FileUtils.music.delete();
-            Logger.warn("Cleared music cache");
+            ClientLogger.warn("Cleared music cache");
         }
-        Logger.info("Found music: " + dirSize1 + "mb");
+        ClientLogger.info("Found music: " + dirSize1 + "mb");
     }
 
     private void initializeComponents() {
-        Logger.info("Initializing component...");
+        ClientLogger.info("Initializing component...");
         componentsManager.init();
     }
 
     private void initializeCommands() {
-        Logger.info("Initializing commands");
+        ClientLogger.info("Initializing commands");
         commandManager.init();
     }
 

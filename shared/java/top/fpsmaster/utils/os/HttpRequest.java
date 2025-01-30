@@ -1,12 +1,11 @@
 package top.fpsmaster.utils.os;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.entity.StringEntity;
-import top.fpsmaster.modules.logger.Logger;
+import top.fpsmaster.modules.logger.ClientLogger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -41,7 +40,7 @@ public class HttpRequest {
             }
             return builder.toString();
         } catch (IOException e) {
-            Logger.error("Error during HTTP GET request to " + url + ": " + e.getMessage());
+            ClientLogger.error("Error during HTTP GET request to " + url + ": " + e.getMessage());
             throw e;
         }
     }
@@ -62,13 +61,13 @@ public class HttpRequest {
                     fileout.write(buffer, 0, ch);
                     progress += ch;
                     if (progress % 10 == 0) {
-                        Logger.info("Downloaded " + progress / unit + "%");
+                        ClientLogger.info("Downloaded " + progress / unit + "%");
                     }
                 }
                 fileout.flush();
             }
         } catch (Exception e) {
-            Logger.error("Failed to download file from " + url + ": " + e.getMessage());
+            ClientLogger.error("Failed to download file from " + url + ": " + e.getMessage());
             e.printStackTrace();
         }
     }

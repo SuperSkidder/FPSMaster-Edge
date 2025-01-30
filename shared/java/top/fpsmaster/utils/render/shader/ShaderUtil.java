@@ -1,6 +1,6 @@
 package top.fpsmaster.utils.render.shader;
 
-import top.fpsmaster.modules.logger.Logger;
+import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.utils.OptifineUtil;
 import top.fpsmaster.utils.Utility;
 
@@ -143,7 +143,7 @@ public class ShaderUtil extends Utility {
 
 
         if (glGetShaderi(shader, GL_COMPILE_STATUS) == 0) {
-            Logger.info(glGetShaderInfoLog(shader, 4096));
+            ClientLogger.info(glGetShaderInfoLog(shader, 4096));
             throw new IllegalStateException(String.format("Shader (%s) failed to compile!", shaderType));
         }
 

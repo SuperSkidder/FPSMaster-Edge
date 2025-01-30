@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.ThreadDownloadImageData
 import net.minecraft.util.ResourceLocation
 import top.fpsmaster.interfaces.ProviderManager
-import top.fpsmaster.modules.logger.Logger.error
-import top.fpsmaster.modules.logger.Logger.warn
+import top.fpsmaster.modules.logger.ClientLogger.error
+import top.fpsmaster.modules.logger.ClientLogger.warn
 import top.fpsmaster.modules.music.AbstractMusic
 import top.fpsmaster.modules.music.MusicPlayer
 import top.fpsmaster.modules.music.MusicPlayer.playFile
@@ -14,7 +14,6 @@ import top.fpsmaster.utils.os.FileUtils
 import top.fpsmaster.utils.os.FileUtils.fixName
 import top.fpsmaster.utils.os.FileUtils.music
 import top.fpsmaster.utils.os.HttpRequest.downloadFile
-import top.fpsmaster.wrapper.WorldClientProvider
 import java.io.File
 
 class Music(id: Long, name: String, artists: String, picUrl: String) : AbstractMusic() {

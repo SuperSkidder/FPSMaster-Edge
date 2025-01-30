@@ -1,6 +1,7 @@
 package top.fpsmaster.utils;
 
-import top.fpsmaster.modules.logger.Logger;
+import top.fpsmaster.modules.logger.ClientLogger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -14,10 +15,10 @@ public class GitInfo {
             if (inputStream != null) {
                 properties.load(inputStream);
             } else {
-                Logger.error("Failed to load git.properties file");
+                ClientLogger.error("Failed to load git.properties file");
             }
         } catch (IOException e) {
-            Logger.error("Failed to load git.properties file");
+            ClientLogger.error("Failed to load git.properties file");
         }
         }
 

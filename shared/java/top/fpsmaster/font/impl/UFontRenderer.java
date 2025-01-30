@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.client.GlobalTextFilter;
 import top.fpsmaster.font.FontManager;
-import top.fpsmaster.modules.logger.Logger;
+import top.fpsmaster.modules.logger.ClientLogger;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -32,7 +32,7 @@ public class UFontRenderer extends FontRenderer {
             font = Font.createFont(0, is);
             font = font.deriveFont(Font.PLAIN, size);
         } catch (Exception ex) {
-            Logger.error("Error loading font " + name);
+            ClientLogger.error("Error loading font " + name);
             font = new Font("Arial", Font.PLAIN, size);
         }
 

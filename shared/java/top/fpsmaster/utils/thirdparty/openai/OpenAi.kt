@@ -5,7 +5,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import top.fpsmaster.FPSMaster
-import top.fpsmaster.modules.logger.Logger
+import top.fpsmaster.modules.logger.ClientLogger
 import top.fpsmaster.utils.os.HttpRequest
 
 
@@ -96,7 +96,7 @@ class OpenAi(
         val text: Array<String?> = try {
             HttpRequest.sendPostRequest("$baseUrl/chat/completions", json, hashMap)
         } catch (e: Exception) {
-            Logger.error("Translator", e.toString())
+            ClientLogger.error("Translator", e.toString())
             emptyArray()
         }
         if (text.size != 2) return "failed"

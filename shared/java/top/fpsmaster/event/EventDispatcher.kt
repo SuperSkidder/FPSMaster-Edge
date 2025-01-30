@@ -1,6 +1,6 @@
 package top.fpsmaster.event
 
-import top.fpsmaster.modules.logger.Logger
+import top.fpsmaster.modules.logger.ClientLogger
 import java.util.concurrent.CopyOnWriteArrayList
 
 object EventDispatcher {
@@ -37,7 +37,7 @@ object EventDispatcher {
                 try {
                     listener.invoke(event)
                 } catch (e: Exception) {
-                    Logger.warn("Failed to dispatch event " + event.javaClass.simpleName + " to listener " + listener.getLog())
+                    ClientLogger.warn("Failed to dispatch event " + event.javaClass.simpleName + " to listener " + listener.getLog())
                     e.printStackTrace()
                 }
             }

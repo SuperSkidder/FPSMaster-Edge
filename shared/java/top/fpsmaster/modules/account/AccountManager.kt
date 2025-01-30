@@ -3,7 +3,7 @@ package top.fpsmaster.modules.account
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import top.fpsmaster.FPSMaster
-import top.fpsmaster.modules.logger.Logger
+import top.fpsmaster.modules.logger.ClientLogger
 import top.fpsmaster.utils.os.FileUtils
 import top.fpsmaster.utils.os.HttpRequest
 
@@ -18,17 +18,17 @@ class AccountManager {
             username = FPSMaster.configManager.configure.getOrCreate("username", "offline").trim()
             if (token.isNotEmpty() && username.isNotEmpty()) {
                 if (attemptLogin(username, token)) {
-                    Logger.info("自动登录成功！  $username")
+                    ClientLogger.info("自动登录成功！  $username")
                     FPSMaster.INSTANCE.loggedIn = true
                     getItems(username, token)
                 } else {
-                    Logger.info(username)
-                    Logger.error("自动登录失败！")
+                    ClientLogger.info(username)
+                    ClientLogger.error("自动登录失败！")
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            Logger.error("尝试自动登录失败！${e.message}")
+            ClientLogger.error("尝试自动登录失败！${e.message}")
         }
     }
 

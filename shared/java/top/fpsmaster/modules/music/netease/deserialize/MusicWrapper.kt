@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import top.fpsmaster.modules.logger.Logger.error
+import top.fpsmaster.modules.logger.ClientLogger.error
 import top.fpsmaster.modules.music.Line
 import top.fpsmaster.modules.music.Lyrics
 import top.fpsmaster.modules.music.PlayList
