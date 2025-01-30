@@ -123,7 +123,7 @@ public class ShaderUtil extends Utility {
     }
 
     public static void drawQuads(float x, float y, float width, float height) {
-        if (OptifineUtil.Companion.isFastRender()) return;
+        if (OptifineUtil.isFastRender()) return;
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
         glVertex2f(x, y);

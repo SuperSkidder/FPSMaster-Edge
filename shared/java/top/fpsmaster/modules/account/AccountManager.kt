@@ -36,7 +36,7 @@ class AccountManager {
         if (username.isEmpty() || token.isEmpty())
             return false
         val s =
-            HttpRequest["${FPSMaster.SERVICE_API}/checkToken?username=$username&token=$token&timestamp=${System.currentTimeMillis()}"]
+            HttpRequest.get("${FPSMaster.SERVICE_API}/checkToken?username=$username&token=$token&timestamp=${System.currentTimeMillis()}")
         val json = parser.parse(s).getAsJsonObject()
         this.username = username
         this.token = token
@@ -45,7 +45,7 @@ class AccountManager {
 
     fun getItems(username: String?, token: String?) {
         val s =
-            HttpRequest["${FPSMaster.SERVICE_API}/getWebUser?username=$username&token=$token&timestamp=${System.currentTimeMillis()}"]
+            HttpRequest.get("${FPSMaster.SERVICE_API}/getWebUser?username=$username&token=$token&timestamp=${System.currentTimeMillis()}")
         val json = parser.parse(s).getAsJsonObject()
         if (json["code"].asInt == 200) {
             val items = json["data"].getAsJsonObject()["items"].asString
@@ -60,7 +60,7 @@ class AccountManager {
 
         fun login(username: String, password: String): JsonObject {
             val s =
-                HttpRequest["${FPSMaster.SERVICE_API}/login?username=$username&password=$password&timestamp=${System.currentTimeMillis()}"]
+                HttpRequest.get("${FPSMaster.SERVICE_API}/login?username=$username&password=$password&timestamp=${System.currentTimeMillis()}")
             return parser.parse(s).getAsJsonObject()
         }
     }

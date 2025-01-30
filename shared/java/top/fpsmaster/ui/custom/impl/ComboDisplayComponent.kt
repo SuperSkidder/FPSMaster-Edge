@@ -19,6 +19,6 @@ class ComboDisplayComponent : Component(ComboDisplay::class.java) {
         width = getStringWidth(16, text) + 4
         height = 16f
         drawRect(x - 2, y, width, height, mod.backgroundColor.color)
-        drawString(16, text, x, y + 4, ComboDisplay.textColor.rGB)
+        drawString(16, text, x, y + 4, ComboDisplay.textColor.rgb)
     }
 }

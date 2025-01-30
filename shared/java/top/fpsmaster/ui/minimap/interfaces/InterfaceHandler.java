@@ -15,12 +15,13 @@ import top.fpsmaster.minimap.Minimap;
 
 import java.util.ArrayList;
 
+import static top.fpsmaster.utils.Utility.mc;
+
 public class InterfaceHandler {
     public static int actionTimer;
     public static ArrayList<Preset> presets;
     public static ArrayList<Interface> list;
     public static final ResourceLocation invtextures;
-    public static Minecraft mc;
     public static int selectedId;
     public static int draggingId;
     public static int draggingOffX;
@@ -127,7 +128,7 @@ public class InterfaceHandler {
                 GlStateManager.blendFunc(770, 771);
 
                 Component component = FPSMaster.componentsManager.getComponent(MiniMap.class);
-                InterfaceHandler.mc.ingameGUI.drawTexturedModalRect(((int) component.getRealPosition()[0]), ((int) component.getRealPosition()[1]), 0, 0, (int) ((minimapWidth / 2f + 1) / sizeFix), (int) ((minimapWidth / 2f + 1) / sizeFix));
+                mc.ingameGUI.drawTexturedModalRect(((int) component.getRealPosition()[0]), ((int) component.getRealPosition()[1]), 0, 0, (int) ((minimapWidth / 2f + 1) / sizeFix), (int) ((minimapWidth / 2f + 1) / sizeFix));
                 super.drawInterface(width, height, partial);
             }
         });
@@ -175,7 +176,6 @@ public class InterfaceHandler {
         InterfaceHandler.presets = new ArrayList<>();
         InterfaceHandler.list = new ArrayList<>();
         invtextures = new ResourceLocation("textures/gui/container/inventory.png");
-        InterfaceHandler.mc = XaeroMinimap.mc;
         InterfaceHandler.selectedId = -1;
         InterfaceHandler.draggingId = -1;
         InterfaceHandler.draggingOffX = 0;

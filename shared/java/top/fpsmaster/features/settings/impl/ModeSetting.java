@@ -1,0 +1,42 @@
+package top.fpsmaster.features.settings.impl;
+
+import top.fpsmaster.features.settings.Setting;
+
+public class ModeSetting extends Setting<Integer> {
+
+    private String[] modes;
+
+    public ModeSetting(String name, int value, String... modes) {
+        super(name, value);
+        this.modes = modes;
+    }
+
+    public ModeSetting(String name, int value, VisibleCondition visible, String... modes) {
+        super(name, value, visible);
+        this.modes = modes;
+    }
+
+    public void cycle() {
+        value = (value + 1) % modes.length;
+    }
+
+    public String getMode(int num) {
+        return modes[num - 1];
+    }
+
+    public boolean isMode(String mode) {
+        return modes[value] == mode;
+    }
+
+    public String getModeName() {
+        return modes[value];
+    }
+
+    public int getMode() {
+        return value;
+    }
+
+    public int getModesSize() {
+        return modes.length;
+    }
+}

@@ -8,7 +8,7 @@ import top.fpsmaster.features.manager.Module
 import top.fpsmaster.features.settings.impl.BindSetting
 import top.fpsmaster.features.settings.impl.BooleanSetting
 import top.fpsmaster.features.settings.impl.NumberSetting
-import top.fpsmaster.utils.Utility.Companion.mc
+import top.fpsmaster.utils.Utility.mc
 
 class SmoothZoom : Module("SmoothZoom", Category.OPTIMIZE) {
     private var zoomBind = BindSetting("ZoomBind", Keyboard.KEY_C)

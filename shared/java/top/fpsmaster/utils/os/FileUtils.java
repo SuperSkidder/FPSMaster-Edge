@@ -1,0 +1,169 @@
+package top.fpsmaster.utils.os;
+
+import top.fpsmaster.FPSMaster;
+import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.modules.logger.Logger;
+import top.fpsmaster.wrapper.Constants;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.Locale;
+
+public class FileUtils {
+
+    public static File fpsmasterCache;
+    public static File netease;
+    public static File dir;
+    public static File plugins;
+    public static File cache;
+    public static File music;
+    public static File artists;
+    public static File omaments;
+    public static File background;
+    public static boolean hasBackground = false;
+
+    static {
+        if (net.minecraft.client.Minecraft.getMinecraft() == null) {
+            Logger.error("FileUtils", "Minecraft provider is not initialized");
+            cache = file(new File("D:\\Code\\Lua\\FPSMaster"), ".cache");
+            dir = file(new File("D:\\Code\\Lua\\FPSMaster"), "FPSMaster " + Constants.VERSION);
+        } else {
+            cache = file(ProviderManager.mcProvider.getGameDir(), ".cache");
+            dir = file(ProviderManager.mcProvider.getGameDir(), "FPSMaster " + Constants.VERSION);
+        }
+        plugins = file(dir, "plugins");
+        fpsmasterCache = file(cache, "FPSMasterClient");
+        netease = file(cache, "netease");
+        music = file(netease, "songs");
+        artists = file(netease, "artists");
+        omaments = file(cache, "omaments");
+        background = new File(dir, "background.png");
+        if (background.exists()) {
+            hasBackground = true;
+        }
+    }
+
+    public static File file(File parent, String child) {
+        File file = new File(parent, child);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return file;
+    }
+
+    public static void saveFileBytes(String s, byte[] bytes) {
+        File file = new File(dir, s);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            try (FileOutputStream fOut = new FileOutputStream(file)) {
+                fOut.write(bytes);
+                fOut.flush();
+            }
+            } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveFile(String name, String content) {
+        File file = new File(dir, name);
+        saveAbsoluteFile(file.getAbsolutePath(), content);
+    }
+
+    private static void saveAbsoluteFile(String name, String content) {
+        File file = new File(name);
+        try {
+            if (!file.exists()) {
+                if (!file.createNewFile()) {
+                    Logger.error("FileUtils", "failed to create " + name);
+                }
+            }
+            try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8))) {
+                bw.write(content);
+                bw.flush();
+            }
+            } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveTempValue(String name, String value) {
+        File dir = new File(fpsmasterCache, name + ".tmp");
+        saveAbsoluteFile(dir.getAbsolutePath(), value);
+    }
+
+    public static String readTempValue(String name) {
+        try {
+            File dir = new File(fpsmasterCache, name + ".tmp");
+            return !dir.exists() ? "" : readAbsoluteFile(dir.getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static void release(String file) {
+        File f = new File(dir, "file.lang").getAbsoluteFile();
+        Logger.info("release " + file);
+        try {
+            f.createNewFile();
+            try (InputStream resourceAsStream = FileUtils.class.getResourceAsStream("/assets/minecraft/client/lang/" + file + ".lang")) {
+                if (resourceAsStream == null) {
+                    Logger.error("An error occurred while loading language file: " + file + ".lang");
+                    return;
+                }
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8))) {
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line).append("\n");
+                    }
+                    saveFile(file + ".lang", sb.toString());
+                }
+                }
+            } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int getDirSize(File folder) {
+        long size = 0;
+        File[] fileList = folder.listFiles();
+        if (fileList == null) return 0;
+        for (File file : fileList) {
+            size += file.isDirectory() ? getDirSize(file) : file.length();
+        }
+        return (int) (size / 1024 / 1024);
+    }
+
+    public static String readFile(String name) {
+        File file = new File(dir, name);
+        return readAbsoluteFile(file.getAbsolutePath());
+    }
+
+    public static String readAbsoluteFile(String name) {
+        File file = new File(name);
+        StringBuilder result = new StringBuilder();
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            try (FileInputStream fIn = new FileInputStream(file);
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fIn, StandardCharsets.UTF_8))) {
+                    String str;
+                    while ((str = bufferedReader.readLine()) != null) {
+                        result.append(str).append(System.lineSeparator());
+                    }
+                }
+            } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result.toString();
+    }
+
+    public static String fixName(String s) {
+        return s.replaceAll("[\\\\/:*?\"<>|]", "_");
+    }
+}

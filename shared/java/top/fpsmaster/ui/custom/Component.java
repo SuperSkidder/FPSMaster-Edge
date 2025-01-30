@@ -1,0 +1,212 @@
+package top.fpsmaster.ui.custom;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import top.fpsmaster.FPSMaster;
+import top.fpsmaster.font.impl.UFontRenderer;
+import top.fpsmaster.features.impl.InterfaceModule;
+import top.fpsmaster.features.impl.interfaces.ClientSettings;
+import top.fpsmaster.ui.click.MainPanel;
+import top.fpsmaster.utils.Utility;
+import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.render.Render2DUtils;
+import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.utils.render.shader.BlurBuffer;
+
+import java.awt.Color;
+import java.util.function.Consumer;
+
+public class Component {
+    private float dragX = 0f;
+
+    private float dragY = 0f;
+
+    public InterfaceModule mod;
+
+    public float x = 0f;
+
+    public float y = 0f;
+
+    public float width = 0f;
+
+    public float height = 0f;
+
+    public float scale = 1f;
+
+    public boolean allowScale = false;
+
+    public Position position = Position.LT;
+
+    public Component(Class<?> clazz) {
+        this.mod = (InterfaceModule) FPSMaster.moduleManager.getModule(clazz);
+    }
+
+    public void draw(float x, float y) {
+    }
+
+    public float alpha = 0f;
+
+    public boolean shouldDisplay() {
+        return mod.isEnabled();
+    }
+
+    public float[] getRealPosition() {
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        float rX = 0f;
+        float rY = 0f;
+        x = Math.max(0f, Math.min(1f, x));
+        y = Math.max(0f, Math.min(1f, y));
+
+        int scaleFactor = ClientSettings.Companion.getFixedScale().getValue() ? sr.getScaleFactor() : 2;
+        float guiWidth = sr.getScaledWidth() / 2f * scaleFactor;
+        float guiHeight = sr.getScaledHeight() / 2f * scaleFactor;
+
+        switch (position) {
+            case LT:
+                rX = x * guiWidth / 2f;
+                rY = y * guiHeight / 2f;
+                break;
+            case RT:
+                rX = guiWidth - (x * guiWidth / 2f + width);
+                rY = y * guiHeight / 2f;
+                break;
+            case LB:
+                rX = x * guiWidth / 2f;
+                rY = guiHeight - (y * guiHeight / 2f + height);
+                break;
+            case RB:
+                rX = guiWidth - (x * guiWidth / 2f + width);
+                rY = guiHeight - (y * guiHeight / 2f + height);
+                break;
+            case CT:
+                break;
+        }
+        return new float[]{rX, rY};
+    }
+
+    public void display(int mouseX, int mouseY) {
+        float rX = getRealPosition()[0];
+        float rY = getRealPosition()[1];
+        draw(rX, rY);
+        if (!(Utility.mc.currentScreen instanceof GuiChat || Utility.mc.currentScreen instanceof MainPanel)) return;
+
+        float scaledWidth = width * scale;
+        float scaledHeight = height * scale;
+        boolean drag = FPSMaster.componentsManager.dragLock.equals(mod.name);
+
+        alpha = (float) ((Render2DUtils.isHovered(rX, rY, scaledWidth, scaledHeight, mouseX, mouseY) || drag) ?
+                AnimationUtils.base(alpha, 50.0, 0.1f) : AnimationUtils.base(alpha, 0.0, 0.1f));
+
+        Render2DUtils.drawOptimizedRoundedRect(rX - 2, rY - 2, scaledWidth + 4, scaledHeight + 4, new Color(0, 0, 0, (int) alpha));
+
+        if (!Mouse.isButtonDown(0)) {
+            FPSMaster.componentsManager.dragLock = "";
+        }
+        if (Render2DUtils.isHovered(rX, rY, scaledWidth, scaledHeight, mouseX, mouseY) || drag) {
+            if (allowScale) {
+                int dWheel = Mouse.getDWheel();
+                if (dWheel > 0) scaleUp();
+                else if (dWheel < 0) scaleDown();
+            }
+            FPSMaster.fontManager.s14.drawString(FPSMaster.i18n.get(mod.name.toLowerCase()) + " " + (scale * 10) / 10f + "x", rX, rY - 10, -1);
+
+            if (!Mouse.isButtonDown(0)) return;
+
+            if (!drag && FPSMaster.componentsManager.dragLock.isEmpty()) {
+                dragX = mouseX - rX;
+                dragY = mouseY - rY;
+                FPSMaster.componentsManager.dragLock = mod.name;
+            }
+
+            if (FPSMaster.componentsManager.dragLock.equals(mod.name)) {
+                move(mouseX, mouseY);
+                FPSMaster.componentsManager.dragLock = mod.name;
+            }
+        }
+    }
+
+    public void scaleUp() {
+        if (scale < 2.5f) scale += 0.1f;
+    }
+
+    public void scaleDown() {
+        if (scale > 0.5f) scale -= 0.1f;
+    }
+
+    private void move(int x, int y) {
+        ScaledResolution sr = new ScaledResolution(Utility.mc);
+        int scaleFactor = ClientSettings.Companion.getFixedScale().getValue() ? sr.getScaleFactor() : 2;
+        float guiWidth = sr.getScaledWidth() / 2f * scaleFactor;
+        float guiHeight = sr.getScaledHeight() / 2f * scaleFactor;
+
+        Position newPos = x > guiWidth / 2f ?
+                (y >= guiHeight / 2f ? Position.RB : Position.RT) :
+                (y >= guiHeight / 2f ? Position.LB : Position.LT);
+
+        switch (newPos) {
+            case LT:
+                x -= (int) dragX;
+                y -= (int) dragY;
+                break;
+            case RT:
+                x = (int) (guiWidth - x - width + dragX);
+                y -= (int) dragY;
+                break;
+            case LB:
+                x -= (int) dragX;
+                y = (int) (guiHeight - y - height + dragY);
+                break;
+            case RB:
+                x = (int) (guiWidth - x - width + dragX);
+                y = (int) (guiHeight - y - height + dragY);
+                break;
+            case CT:
+                break;
+        }
+
+        this.x = x / guiWidth * 2f;
+        this.y = y / guiHeight * 2f;
+    }
+
+    public void drawRect(float x, float y, float width, float height, Color color) {
+        float scaledWidth = width * scale;
+        float scaledHeight = height * scale;
+        BlurBuffer.blurArea(x, y, scaledWidth, scaledHeight, true);
+        if (mod.bg.getValue()) {
+            if (mod.rounded.getValue()) {
+                Render2DUtils.drawOptimizedRoundedRect(x, y, scaledWidth, scaledHeight, mod.roundRadius.getValue().intValue(), color.getRGB());
+            } else {
+                Render2DUtils.drawRect(x, y, scaledWidth, scaledHeight, color);
+            }
+        }
+    }
+
+    public void drawString(int fontSize, String text, float x, float y, int color) {
+        drawString(fontSize, false, text, x, y, color);
+    }
+
+    public void drawString(int fontSize, boolean bold, String text, float x, float y, int color) {
+        fontSize = (int) (fontSize * scale);
+        UFontRenderer font = FPSMaster.fontManager.getFont(fontSize);
+        if (mod.betterFont.getValue()) {
+            if (mod.fontShadow.getValue()) font.drawStringWithShadow(text, x, y, color);
+            else font.drawString(text, x, y, color);
+        } else {
+            GL11.glPushMatrix();
+            GL11.glTranslated(x, y, 0.0);
+            GL11.glScaled(scale, scale, 1.0);
+            if (mod.fontShadow.getValue())
+                ProviderManager.mcProvider.getFontRenderer().drawStringWithShadow(text, 0f, 0f, color);
+            else ProviderManager.mcProvider.drawString(text, 0f, 0f, color);
+            GL11.glPopMatrix();
+        }
+    }
+
+    public float getStringWidth(int fontSize, String name) {
+        UFontRenderer font = FPSMaster.fontManager.getFont(fontSize);
+        return mod.betterFont.getValue() ? font.getStringWidth(name) : ProviderManager.mcProvider.getFontRenderer().getStringWidth(name);
+    }
+}

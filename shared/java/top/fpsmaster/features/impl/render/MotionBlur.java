@@ -30,8 +30,8 @@ public class MotionBlur extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        if (OptifineUtil.Companion.isFastRender()) {
-            OptifineUtil.Companion.setFastRender(false);
+        if (OptifineUtil.isFastRender()) {
+            OptifineUtil.setFastRender(false);
         }
     }
 

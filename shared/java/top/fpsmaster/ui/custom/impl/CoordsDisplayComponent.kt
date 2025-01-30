@@ -37,6 +37,6 @@ class CoordsDisplayComponent : Component(CoordsDisplay::class.java) {
         width = getStringWidth(18, s) + 4
         height = 14f
         drawRect(x - 2, y, width, height, mod.backgroundColor.color)
-        drawString(18, s, x, y + 2, FPSDisplay.textColor.rGB)
+        drawString(18, s, x, y + 2, FPSDisplay.textColor.rgb)
     }
 }

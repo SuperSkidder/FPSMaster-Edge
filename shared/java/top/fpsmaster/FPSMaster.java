@@ -49,22 +49,22 @@ public class FPSMaster {
             theme = new LightTheme();
         }
         MusicPlayer.INSTANCE.setVolume(Float.parseFloat(configManager.configure.getOrCreate("volume", "1")));
-        NeteaseApi.cookies = FileUtils.INSTANCE.readTempValue("cookies");
-        MusicPanel.INSTANCE.setNickname(FileUtils.INSTANCE.readTempValue("nickname"));
+        NeteaseApi.cookies = FileUtils.readTempValue("cookies");
+        MusicPanel.INSTANCE.setNickname(FileUtils.readTempValue("nickname"));
         accountManager.autoLogin();
     }
 
     private void initializeMusic() {
         Logger.info("Checking music cache...");
-        long dirSize = FileUtils.INSTANCE.getDirSize(FileUtils.INSTANCE.getArtists());
+        long dirSize = FileUtils.getDirSize(FileUtils.artists);
         if (dirSize > 1024) {
-            FileUtils.INSTANCE.getArtists().delete();
+            FileUtils.artists.delete();
             Logger.info("Cleared img cache");
         }
         Logger.info("Found image: " + dirSize + "mb");
-        long dirSize1 = FileUtils.INSTANCE.getDirSize(FileUtils.INSTANCE.getMusic());
+        long dirSize1 = FileUtils.getDirSize(FileUtils.music);
         if (dirSize1 > 2048) {
-            FileUtils.INSTANCE.getMusic().delete();
+            FileUtils.music.delete();
             Logger.warn("Cleared music cache");
         }
         Logger.info("Found music: " + dirSize1 + "mb");
@@ -100,7 +100,7 @@ public class FPSMaster {
     private void checkUpdate() {
         AsyncTask asyncTask = new AsyncTask(100);
         asyncTask.runnable(() -> {
-            String s = UpdateChecker.INSTANCE.getLatestVersion();
+            String s = UpdateChecker.getLatestVersion();
             if (s == null) {
                 isLatest = false;
                 updateFailed = true;
@@ -174,6 +174,6 @@ public class FPSMaster {
 
     public static String getClientTitle() {
         checkDevelopment();
-        return CLIENT_NAME + " " + CLIENT_VERSION + " - " + phase + " " + Constants.VERSION + " (" + GitInfo.INSTANCE.getBranch() + " - " + GitInfo.INSTANCE.getCommitIdAbbrev() + ")" + (development ? " - Developer Mode" : "");
+        return CLIENT_NAME + " " + CLIENT_VERSION + " - " + phase + " " + Constants.VERSION + " (" + GitInfo.getBranch() + " - " + GitInfo.getCommitIdAbbrev() + ")" + (development ? " - Developer Mode" : "");
     }
 }

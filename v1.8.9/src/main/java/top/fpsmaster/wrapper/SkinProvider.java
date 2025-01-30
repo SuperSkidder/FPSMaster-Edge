@@ -12,6 +12,7 @@ import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.interfaces.game.ISkinProvider;
 import top.fpsmaster.utils.os.HttpRequest;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,7 +28,12 @@ public class SkinProvider implements ISkinProvider {
                 }
             }
 
-            String json = HttpRequest.get("https://api.mojang.com/users/profiles/minecraft/" + skin);
+            String json = null;
+            try {
+                json = HttpRequest.get("https://api.mojang.com/users/profiles/minecraft/" + skin);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             Gson gson = new GsonBuilder().create();
             JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
             if (jsonObject != null && jsonObject.has("id")) {

@@ -40,6 +40,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static top.fpsmaster.utils.Utility.mc;
+
 public class Minimap
 {
     public Interface screen;
@@ -48,7 +50,6 @@ public class Minimap
     public static int loadedSide;
     public static int updateRadius;
     public static boolean enlargedMap;
-    public static Minecraft mc;
     private int loadedCaving;
     private int loadingCaving;
     public static final Color radarPlayers;
@@ -347,7 +348,7 @@ public class Minimap
     public void loadBlockColor(final int par1, final int par2, final Chunk bchunk, final int chunkX, final int chunkZ) {
         final int insideX = par1 & 0xF;
         final int insideZ = par2 & 0xF;
-        final int playerY = (int)Minimap.mc.thePlayer.posY;
+        final int playerY = (int)mc.thePlayer.posY;
         final int height = bchunk.getHeightValue(insideX, insideZ);
         final int highY = (this.loadingCaving != -1) ? this.loadingCaving : (height + 3);
         int lowY = (this.loadingCaving != -1) ? (playerY - 30) : 0;
@@ -373,7 +374,7 @@ public class Minimap
         double secondaryB = 1.0;
         if (this.lastBlockY[insideX] <= 0) {
             this.lastBlockY[insideX] = this.blockY;
-            final Chunk prevChunk = Minimap.mc.theWorld.getChunkFromChunkCoords(this.loadingMapX + chunkX, this.loadingMapZ + chunkZ - 1);
+            final Chunk prevChunk = mc.theWorld.getChunkFromChunkCoords(this.loadingMapX + chunkX, this.loadingMapZ + chunkZ - 1);
             if (prevChunk != null && prevChunk.isLoaded()) {
                 this.lastBlockY[insideX] = prevChunk.getHeightValue(insideX, 15) - 1;
             }
@@ -473,7 +474,7 @@ public class Minimap
     }
     
     public static double getActualAngle() {
-        double rotation = Minimap.mc.thePlayer.rotationYaw;
+        double rotation = mc.thePlayer.rotationYaw;
         if (rotation < 0.0 || rotation > 360.0) {
             rotation %= 360.0;
         }
@@ -556,8 +557,8 @@ public class Minimap
         if (usingFBO()) {
             final int chunkAmount = Minimap.loadedSide;
             final int actualSize = getLoadSide();
-            Minimap.mapUpdateX = this.getMapCoord(actualSize, getEntityX(Minimap.mc.thePlayer, partial));
-            Minimap.mapUpdateZ = this.getMapCoord(actualSize, getEntityZ(Minimap.mc.thePlayer, partial));
+            Minimap.mapUpdateX = this.getMapCoord(actualSize, getEntityX(mc.thePlayer, partial));
+            Minimap.mapUpdateZ = this.getMapCoord(actualSize, getEntityZ(mc.thePlayer, partial));
             final int chunkOffsetX = Minimap.mapUpdateX - this.loadedMapX;
             final int chunkOffsetZ = Minimap.mapUpdateZ - this.loadedMapZ;
             mapW = (mapH = Math.min(bufferSize, actualSize * 16));
@@ -612,8 +613,8 @@ public class Minimap
             final double angle = Math.toRadians(getRenderAngle());
             final double ps = Math.sin(3.141592653589793 - angle);
             final double pc = Math.cos(3.141592653589793 - angle);
-            final double playerX = getEntityX(Minimap.mc.thePlayer, partial);
-            final double playerZ = getEntityZ(Minimap.mc.thePlayer, partial);
+            final double playerX = getEntityX(mc.thePlayer, partial);
+            final double playerZ = getEntityZ(mc.thePlayer, partial);
             for (int currentX = 0; currentX <= mapW + 1; ++currentX) {
                 final double currentXZoomed = currentX / Minimap.zoom;
                 final double offx = currentXZoomed - halfWZoomed;
@@ -633,14 +634,14 @@ public class Minimap
     }
     
     private int getCaving() {
-        final int x = myFloor(Minimap.mc.thePlayer.posX);
-        final int y = Math.max((int)Minimap.mc.thePlayer.posY + 1, 0);
-        final int z = myFloor(Minimap.mc.thePlayer.posZ);
+        final int x = myFloor(mc.thePlayer.posX);
+        final int y = Math.max((int)mc.thePlayer.posY + 1, 0);
+        final int z = myFloor(mc.thePlayer.posZ);
         final int chunkX = x >> 4;
         final int chunkZ = z >> 4;
         final int insideX = x & 0xF;
         final int insideZ = z & 0xF;
-        final Chunk bchunk = Minimap.mc.theWorld.getChunkFromChunkCoords(chunkX, chunkZ);
+        final Chunk bchunk = mc.theWorld.getChunkFromChunkCoords(chunkX, chunkZ);
         final int top = bchunk.getHeightValue(insideX, insideZ);
         if (y < top) {
             for (int i = y; i < top; ++i) {
@@ -680,8 +681,8 @@ public class Minimap
         Minimap.updatePause = true;
         final int chunkAmount = getLoadSide();
         final int mapW = chunkAmount * 16;
-        final double playerX = getEntityX(Minimap.mc.thePlayer, partial);
-        final double playerZ = getEntityZ(Minimap.mc.thePlayer, partial);
+        final double playerX = getEntityX(mc.thePlayer, partial);
+        final double playerZ = getEntityZ(mc.thePlayer, partial);
         final int xFloored = myFloor(playerX);
         final int zFloored = myFloor(playerZ);
         int offsetX = xFloored & 0xF;
@@ -737,11 +738,11 @@ public class Minimap
         GL11.glPushMatrix();
         GlStateManager.loadIdentity();
         
-        double xInsidePixel = getEntityX(Minimap.mc.thePlayer, partial) - xFloored;
+        double xInsidePixel = getEntityX(mc.thePlayer, partial) - xFloored;
         if (xInsidePixel < 0.0) {
             ++xInsidePixel;
         }
-        double zInsidePixel = getEntityZ(Minimap.mc.thePlayer, partial) - zFloored;
+        double zInsidePixel = getEntityZ(mc.thePlayer, partial) - zFloored;
         if (zInsidePixel < 0.0) {
             ++zInsidePixel;
         }
@@ -813,7 +814,7 @@ public class Minimap
         Minimap.loadedSide = 16;
         Minimap.updateRadius = 16;
         Minimap.enlargedMap = false;
-        Minimap.mc = Minecraft.getMinecraft();
+        mc = Minecraft.getMinecraft();
         radarPlayers = new Color(255, 255, 255);
         radarShadow = new Color(0, 0, 0);
         Minimap.loadedPlayers = new ArrayList<Entity>();
@@ -851,7 +852,7 @@ public class Minimap
                 final long before = System.currentTimeMillis();
                 boolean sleep = true;
                 try {
-                    if (Minimap.mc.thePlayer == null || Minimap.mc.theWorld == null) {
+                    if (mc.thePlayer == null || mc.theWorld == null) {
                         Thread.sleep(100L);
                     }
                     else {
@@ -863,11 +864,11 @@ public class Minimap
                                     Minimap.textureColours.clear();
                                 }
                             }
-                            Minimap.sunBrightness = Minimap.mc.theWorld.getSunBrightness(1.0f);
+                            Minimap.sunBrightness = mc.theWorld.getSunBrightness(1.0f);
                             Minimap.loadingSide = Minimap.getLoadSide();
                             Minimap.updateRadius = Minimap.getUpdateRadius();
-                            Minimap.this.loadingMapX = Minimap.this.getMapCoord(Minimap.loadingSide, Minimap.mc.thePlayer.posX);
-                            Minimap.this.loadingMapZ = Minimap.this.getMapCoord(Minimap.loadingSide, Minimap.mc.thePlayer.posZ);
+                            Minimap.this.loadingMapX = Minimap.this.getMapCoord(Minimap.loadingSide, mc.thePlayer.posX);
+                            Minimap.this.loadingMapZ = Minimap.this.getMapCoord(Minimap.loadingSide, mc.thePlayer.posZ);
                             Minimap.this.loadingCaving = Minimap.this.getCaving();
                             Minimap.this.loadingBlocks = new MinimapChunk[Minimap.loadingSide][Minimap.loadingSide];
                         }
@@ -884,7 +885,7 @@ public class Minimap
                         if (updateChunkZ == 0) {
                             updateChunkX = (updateChunkX + 1) % Minimap.loadingSide;
                             Minimap.this.lastBlockY = new int[16];
-                            final EntityPlayer p = Minimap.mc.thePlayer;
+                            final EntityPlayer p = mc.thePlayer;
                             final ArrayList<Entity> loadingPlayers = new ArrayList<Entity>();
                             final ArrayList<Entity> loadingHostile = new ArrayList<Entity>();
                             final ArrayList<Entity> loadingLiving = new ArrayList<Entity>();
@@ -981,7 +982,7 @@ public class Minimap
             if (Minimap.this.currentBlocks != null && xOld > -1 && xOld < Minimap.this.currentBlocks.length && zOld > -1 && zOld < Minimap.this.currentBlocks.length) {
                 current = Minimap.this.currentBlocks[xOld][zOld];
             }
-            final Chunk bchunk = Minimap.mc.theWorld.getChunkFromChunkCoords(chunkX, chunkZ);
+            final Chunk bchunk = mc.theWorld.getChunkFromChunkCoords(chunkX, chunkZ);
             if ((int)Minimap.zoom == Minimap.zoom && (!bchunk.isLoaded() || ((fromCenterX > Minimap.updateRadius || fromCenterZ > Minimap.updateRadius || fromCenterX < -Minimap.updateRadius || fromCenterZ < -Minimap.updateRadius) && current != null))) {
                 if (current != null) {
                     Minimap.this.loadingBlocks[x][z] = current;

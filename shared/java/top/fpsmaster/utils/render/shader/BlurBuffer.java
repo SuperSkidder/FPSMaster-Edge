@@ -30,7 +30,7 @@ public class BlurBuffer {
 	private static final MathTimer updateTimer = new MathTimer();
 
 	public static void initFboAndShader() {
-		if(OptifineUtil.Companion.isFastRender()){
+		if(OptifineUtil.isFastRender()){
 			return;
 		}
 		try {
@@ -54,7 +54,7 @@ public class BlurBuffer {
 	public static void blurArea(float x, float y, float width, float height, boolean setupOverlay) {
 		if (!blurEnabled())
 			return;
-		if(OptifineUtil.Companion.isFastRender()){
+		if(OptifineUtil.isFastRender()){
 			return;
 		}
 		ScaledResolution scale = new ScaledResolution(mc);
@@ -140,7 +140,7 @@ public class BlurBuffer {
 
 	public static void updateBlurBuffer(boolean setupOverlay) {
 		// 以60帧每秒的速度更新 FrameBuffer
-		if(OptifineUtil.Companion.isFastRender()){
+		if(OptifineUtil.isFastRender()){
 			return;
 		}
 		if (updateTimer.delay((long) (1000 / 60f)) && blurShader != null) {

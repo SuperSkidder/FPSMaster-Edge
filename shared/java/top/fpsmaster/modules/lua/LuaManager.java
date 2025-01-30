@@ -170,7 +170,7 @@ public class LuaManager {
             }
         });
         remove.forEach(FPSMaster.moduleManager::removeModule);
-        File[] luas = FileUtils.INSTANCE.getPlugins().listFiles();
+        File[] luas = FileUtils.plugins.listFiles();
 
         for (LuaScript script : new ArrayList<>(scripts)) {
             unloadLua(script);
@@ -184,7 +184,7 @@ public class LuaManager {
 
     public static void hotswap() {
         ArrayList<RawLua> newRawLuaList = new ArrayList<>();
-        File[] luas = FileUtils.INSTANCE.getPlugins().listFiles();
+        File[] luas = FileUtils.plugins.listFiles();
         for (File luaFile : luas) {
             String luaName = luaFile.getName();
             if (luaName.endsWith(".lua")) {
