@@ -102,7 +102,7 @@ public class DragonWings extends Module {
                 return;
             if (!player.isInvisible() && mc.gameSettings.thirdPersonView != 0) // Should render wings onto this player?
             {
-                renderWings(player, event.getPartialTicks());
+                renderWings(player, event.partialTicks);
             }
         }
 

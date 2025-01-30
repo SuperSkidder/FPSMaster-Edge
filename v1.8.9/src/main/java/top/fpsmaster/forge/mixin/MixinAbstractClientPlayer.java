@@ -73,7 +73,7 @@ public abstract class MixinAbstractClientPlayer extends MixinEntityPlayer {
     public ResourceLocation getLocationCape() {
         EventCapeLoading event = new EventCapeLoading(playerInfo.getGameProfile().getName(), (AbstractClientPlayer) (Object) this);
         EventDispatcher.dispatchEvent(event);
-        fpsmasterCape = event.getCape();
+        fpsmasterCape = event.cape;
 
         if (fpsmasterCape != null) {
             return fpsmasterCape;

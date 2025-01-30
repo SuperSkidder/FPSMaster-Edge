@@ -8,13 +8,7 @@ import java.io.IOException;
 
 public class UpdateChecker {
     public static String getLatestVersion() {
-        String json =
-                null;
-        try {
-            json = HttpRequest.get("https://api.github.com/repos/FPSMasterTeam/FPSMaster/releases/latest");
-        } catch (IOException e) {
-            return "unknown";
-        }
+        String json = HttpRequest.get("https://api.github.com/repos/FPSMasterTeam/FPSMaster/releases/latest");
         JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
         return jsonObject.get("tag_name").getAsString();
     }
