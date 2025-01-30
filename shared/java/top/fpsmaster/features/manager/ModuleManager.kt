@@ -20,7 +20,7 @@ import java.util.*
 
 class ModuleManager {
     var modules = ArrayList<Module>()
-    private val mainPanel: MainPanel = MainPanel(true)
+    val mainPanel: MainPanel = MainPanel(false)
     fun getModule(mod: Class<*>): Module {
         for (module in modules) {
             if (module.javaClass == mod) {

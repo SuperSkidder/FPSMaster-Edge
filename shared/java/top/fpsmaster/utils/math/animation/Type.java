@@ -1,6 +1,6 @@
-package top.fpsmaster.utils.math.animation
+package top.fpsmaster.utils.math.animation;
 
-enum class Type {
+public enum Type {
     LINEAR,
     EASE_IN_QUAD,
     EASE_OUT_QUAD,

@@ -44,7 +44,7 @@ public class Notification {
             startTime = System.currentTimeMillis();
         }
 
-        if (animation.getValue() == 0.0) {
+        if (animation.value == 0.0) {
             if (System.currentTimeMillis() - startTime > displayTime * 1000) {
                 animation.start(0.0, 100.0, 0.3f, top.fpsmaster.utils.math.animation.Type.EASE_IN_OUT_QUAD);
             }
@@ -55,7 +55,7 @@ public class Notification {
 
         // Draw the notification background with animation effect
         Render2DUtils.drawOptimizedRoundedRect(
-                (float) (x - (width * animation.getValue() / 100f)),
+                (float) (x - (width * animation.value / 100f)),
                 positionY,
                 width,
                 height,
@@ -64,7 +64,7 @@ public class Notification {
 
         // Draw the foreground (white bar) to indicate the notification duration
         Render2DUtils.drawOptimizedRoundedRect(
-                (float) (x - (width * animation.getValue() / 100f)),
+                (float) (x - (width * animation.value / 100f)),
                 positionY,
                 width * Math.min(1f, (float) (System.currentTimeMillis() - startTime) / (1000f * displayTime)),
                 height,
@@ -74,7 +74,7 @@ public class Notification {
         // Draw the icon for the notification type
         Render2DUtils.drawImage(
                 new ResourceLocation("client/textures/noti/" + type.name().toLowerCase() + ".png"),
-                (float) (x - (width * animation.getValue() / 100f) + 4),
+                (float) (x - (width * animation.value / 100f) + 4),
                 positionY + 8,
                 14f,
                 14f,
@@ -84,14 +84,14 @@ public class Notification {
         // Draw the title and description text
         FPSMaster.fontManager.s18.drawStringWithShadow(
                 title,
-                (float) (x - (width * animation.getValue() / 100f) + 20),
+                (float) (x - (width * animation.value / 100f) + 20),
                 positionY + 4,
                 -1
         );
 
         FPSMaster.fontManager.s16.drawString(
                 description,
-                (float) (x - (width * animation.getValue() / 100f) + 20),
+                (float) (x - (width * animation.value / 100f) + 20),
                 positionY + 15,
                 new Color(200, 200, 200).getRGB()
         );

@@ -31,7 +31,7 @@ public class NotificationManager {
             notification.draw(0f, yPosition);
 
             // Remove notifications that are fully animated (i.e., animation value is 100)
-            if (notification.animation.getEnd() == 100.0 && notification.animation.getValue() == 100.0) {
+            if (notification.animation.end == 100.0 && notification.animation.value == 100.0) {
                 notifications.remove(notification);
             }
 
