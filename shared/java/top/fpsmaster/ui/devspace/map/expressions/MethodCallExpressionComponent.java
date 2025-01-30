@@ -4,6 +4,7 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.modules.lua.parser.Expression;
 import top.fpsmaster.ui.devspace.DevSpace;
 
+import java.awt.*;
 import java.util.List;
 
 public class MethodCallExpressionComponent extends ExpressionComponent {
@@ -24,7 +25,7 @@ public class MethodCallExpressionComponent extends ExpressionComponent {
     public void draw(int x, int y, int mouseX, int mouseY) {
         super.draw(x, y, mouseX, mouseY);
         object.draw(x, y, mouseX, mouseY);
-        FPSMaster.fontManager.s16.drawString(method, x, y + object.height, -1);
-        height = object.height + 20;
+        FPSMaster.fontManager.s16.drawString(":" + method + "()", x + 1 + object.width, y, new Color(206, 206, 114).getRGB());
+        height = object.height;
     }
 }

@@ -16,5 +16,6 @@ public class VariableExpressionComponent extends ExpressionComponent {
         super.draw(x, y, mouseX, mouseY);
         FPSMaster.fontManager.s16.drawString(name, x, y, -1);
         height = 10;
+        width = FPSMaster.fontManager.s16.getStringWidth(name);
     }
 }
