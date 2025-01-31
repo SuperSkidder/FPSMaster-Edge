@@ -156,11 +156,13 @@ public class LuaManager {
             }
         });
 
-        LuaValue unload = script.lua.get("unload");
-        if (unload.type().equals(Lua.LuaType.FUNCTION)) {
-            unload.call();
+        if (script.lua != null) {
+            LuaValue unload = script.lua.get("unload");
+            if (unload.type().equals(Lua.LuaType.FUNCTION)) {
+                unload.call();
+            }
+            script.lua.close();
         }
-        script.lua.close();
         scripts.remove(script);
         remove.forEach(FPSMaster.moduleManager::removeModule);
     }

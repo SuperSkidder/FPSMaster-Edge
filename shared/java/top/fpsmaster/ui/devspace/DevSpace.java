@@ -116,7 +116,7 @@ public class DevSpace extends ScaledGuiScreen {
             if (!"".equals(script.failedReason)) {
                 rgb = new Color(255, 100, 100).getRGB();
             }
-            if (getCurrentScript() == null || codes.get(selectedLua).equals(script.rawLua.code)) {
+            if (getCurrentScript() == null || getCode(selectedLua).equals(script.rawLua.code)) {
                 FPSMaster.fontManager.s14.drawString(script.rawLua.filename, x + 10, yPos + 5, rgb);
             } else {
                 FPSMaster.fontManager.s14.drawString(script.rawLua.filename + "*", x + 10, yPos + 5, rgb);
@@ -288,7 +288,7 @@ public class DevSpace extends ScaledGuiScreen {
         if (getCurrentScript() == null)
             return;
 
-        String code = codes.get(selectedLua);
+        String code = getCode(selectedLua);
         if (cursor > 0 && cursor < code.length()) {
             if (keyCode == Keyboard.KEY_BACK) {
                 if (selectBegin == selectEnd) {
@@ -334,7 +334,7 @@ public class DevSpace extends ScaledGuiScreen {
     }
 
     private void saveCurrentScript() {
-        FileUtils.saveFile("plugins/" + getCurrentScript().rawLua.filename, codes.get(selectedLua));
+        FileUtils.saveFile("plugins/" + getCurrentScript().rawLua.filename, getCode(selectedLua));
         LuaManager.hotswap();
         needReload = true;
     }
@@ -408,6 +408,15 @@ public class DevSpace extends ScaledGuiScreen {
         }
     }
 
+    public String getCode(int index) {
+        ensureCodesInitialized();
+        if (index >= codes.size())
+            return "";
+        if (index < 0)
+            return "";
+        return codes.get(index);
+    }
+
     private void ensureCodesInitialized() {
         if (codes.size() != LuaManager.scripts.size()) {
             codes.clear();
@@ -423,9 +432,14 @@ public class DevSpace extends ScaledGuiScreen {
     private void drawCodeEditor(int mouseX, int mouseY) {
         int left = Math.max((int) (width * 0.2), 100);
         ensureCodesInitialized();
+        if (selectedLua == -1 || LuaManager.scripts.size() > 0)
+            selectedLua = 0;
         if (getCurrentScript() != null) {
             // handle keyboard
-            String s = codes.get(selectedLua);
+            if (getCurrentScript().failedReason.contains("generating")) {
+                codes.set(selectedLua, getCurrentScript().rawLua.code);
+            }
+            String s = getCode(selectedLua);
             String highlightedCode = HighlightLexer.highlight(s);
             char[] originalCodeCharArray = s.toCharArray();
             char[] highlightedCodeCharArray = highlightedCode.toCharArray();

@@ -1,5 +1,6 @@
 package top.fpsmaster.utils.thirdparty.openai;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
@@ -52,6 +53,7 @@ public class OpenAIClient {
                     while ((line = reader.readLine()) != null) {
 //                        responseBuilder.append(line);
                         if (processResponseLine(line, responseBuilder)) {
+                            callback.onFinish(responseBuilder.toString());  // 非阻塞调用，处理数据
                             break;  // 如果检测到回复已完成，则退出
                         }
                         callback.onResponse(responseBuilder.toString());  // 非阻塞调用，处理数据
@@ -84,7 +86,7 @@ public class OpenAIClient {
         StringBuilder messagesJson = new StringBuilder();
 
         for (Message message : messages) {
-            messagesJson.append("{\"role\": \"").append(message.role).append("\", \"content\": \"").append(message.content).append("\"},");
+            messagesJson.append("{\"role\": \"").append(message.role).append("\", \"content\": \"").append(StringEscapeUtils.escapeJson(message.content)).append("\"},");
         }
 
         // 移除最后一个逗号
@@ -129,7 +131,7 @@ public class OpenAIClient {
                     }
                 }
             } catch (JsonParseException e) {
-                // 忽略非 JSON 格式的内容
+                e.printStackTrace();
             }
         }
         return false;  // 如果没有完成，继续读取
@@ -140,6 +142,8 @@ public class OpenAIClient {
         void onResponse(String response);  // 当成功获取到响应时调用
 
         void onError(Exception e);  // 当发生错误时调用
+
+        void onFinish(String string);
     }
 
     public static class Message {
