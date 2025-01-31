@@ -9,6 +9,7 @@ public class LuaScript {
     public Lua lua;
     public RawLua rawLua;
     public List<Statement> ast;
+    public String failedReason;
 
     public LuaScript(Lua lua, RawLua rawLua) {
         this.lua = lua;

@@ -36,100 +36,105 @@ public class LuaManager {
     public static LuaScript loadLua(RawLua rawLua) {
         Lua lua = new Lua53();
         LuaScript luaScript = new LuaScript(lua, rawLua);
-        lua.run("System = java.import('java.lang.System')");
-        // 注册全局函数
-        // 提示信息
-        lua.push(L -> {
-            String msg = L.toString(1);
-            Utility.sendClientNotify(msg);
-            return 0; // 返回值数量
-        });
-        lua.setGlobal("notify");
+        try {
+            lua.run("System = java.import('java.lang.System')");
+            // 注册全局函数
+            // 提示信息
+            lua.push(L -> {
+                String msg = L.toString(1);
+                Utility.sendClientNotify(msg);
+                return 0; // 返回值数量
+            });
+            lua.setGlobal("notify");
 
-        // 设置语言
-        lua.push(L -> {
-            String name = L.toString(1);
-            String content = L.toString(2);
-            FPSMaster.i18n.put(name, content);
-            return 0; // 返回值数量
-        });
-        lua.setGlobal("putI18n");
+            // 设置语言
+            lua.push(L -> {
+                String name = L.toString(1);
+                String content = L.toString(2);
+                FPSMaster.i18n.put(name, content);
+                return 0; // 返回值数量
+            });
+            lua.setGlobal("putI18n");
 
-        // 绘制文字
-        lua.push(L -> {
-            int size = (int) L.toInteger(1);
-            String content = L.toString(2);
-            int x = (int) L.toInteger(3);
-            int y = (int) L.toInteger(4);
-            int color = (int) L.toInteger(5);
-            boolean shadow = L.toBoolean(6);
-            FPSMaster.fontManager.getFont(size).drawString(content, x, y, color, shadow);
-            return 0; // 返回值数量
-        });
-        lua.setGlobal("drawString");
+            // 绘制文字
+            lua.push(L -> {
+                int size = (int) L.toInteger(1);
+                String content = L.toString(2);
+                int x = (int) L.toInteger(3);
+                int y = (int) L.toInteger(4);
+                int color = (int) L.toInteger(5);
+                boolean shadow = L.toBoolean(6);
+                FPSMaster.fontManager.getFont(size).drawString(content, x, y, color, shadow);
+                return 0; // 返回值数量
+            });
+            lua.setGlobal("drawString");
 
-        // 绘制矩形
-        lua.push(L -> {
-            int x = (int) L.toInteger(1);
-            int y = (int) L.toInteger(2);
-            int w = (int) L.toInteger(3);
-            int h = (int) L.toInteger(4);
-            int round = (int) L.toInteger(5);
-            int color = (int) L.toInteger(6);
-            if (round > 0) {
-                Render2DUtils.drawOptimizedRoundedRect(x, y, w, h, round, color);
-            } else {
-                Render2DUtils.drawRect(x, y, w, h, color);
+            // 绘制矩形
+            lua.push(L -> {
+                int x = (int) L.toInteger(1);
+                int y = (int) L.toInteger(2);
+                int w = (int) L.toInteger(3);
+                int h = (int) L.toInteger(4);
+                int round = (int) L.toInteger(5);
+                int color = (int) L.toInteger(6);
+                if (round > 0) {
+                    Render2DUtils.drawOptimizedRoundedRect(x, y, w, h, round, color);
+                } else {
+                    Render2DUtils.drawRect(x, y, w, h, color);
+                }
+                return 0; // 返回值数量
+            });
+            lua.setGlobal("drawRect");
+
+            // 获取颜色
+            lua.push(L -> {
+                int r = (int) L.toInteger(1);
+                int g = (int) L.toInteger(2);
+                int b = (int) L.toInteger(3);
+                int a = (int) L.toInteger(4);
+
+                lua.push(new Color(r, g, b, a).getRGB());
+
+                return 1; // 返回值数量
+            });
+            lua.setGlobal("rgb");
+
+            lua.push(L -> {
+                String name = L.toString(1);
+                String category = L.toString(2);
+                Map<String, LuaValue> luaTable = (Map<String, LuaValue>) lua.toMap(3);
+                LuaModule module = new LuaModule(luaScript, name, category, luaTable);
+                // 返回 Java 对象给 Lua
+                FPSMaster.moduleManager.addModule(module);
+
+                Utility.sendClientDebug("Lua module registered: " + name + " " + category);
+                L.pushJavaObject(module);
+                return 1; // 返回值数量
+            });
+            lua.setGlobal("registerModule");
+
+
+            // Client object
+            lua.pushJavaObject(FPSMaster.INSTANCE);
+            lua.setGlobal("client");
+
+            // Module object
+            lua.pushJavaObject(FPSMaster.moduleManager);
+            lua.setGlobal("moduleManager");
+            lua.pushJavaClass(LuaModule.class);
+            lua.setGlobal("module");
+
+            lua.run(rawLua.code);
+            // call load
+            LuaValue unload = lua.get("load");
+            if (unload.type().equals(Lua.LuaType.FUNCTION)) {
+                unload.call();
             }
-            return 0; // 返回值数量
-        });
-        lua.setGlobal("drawRect");
-
-        // 获取颜色
-        lua.push(L -> {
-            int r = (int) L.toInteger(1);
-            int g = (int) L.toInteger(2);
-            int b = (int) L.toInteger(3);
-            int a = (int) L.toInteger(4);
-
-            lua.push(new Color(r, g, b, a).getRGB());
-
-            return 1; // 返回值数量
-        });
-        lua.setGlobal("rgb");
-
-        lua.push(L -> {
-            String name = L.toString(1);
-            String category = L.toString(2);
-            Map<String, LuaValue> luaTable = (Map<String, LuaValue>) lua.toMap(3);
-            LuaModule module = new LuaModule(luaScript, name, category, luaTable);
-            // 返回 Java 对象给 Lua
-            FPSMaster.moduleManager.addModule(module);
-
-            Utility.sendClientDebug("Lua module registered: " + name + " " + category);
-            L.pushJavaObject(module);
-            return 1; // 返回值数量
-        });
-        lua.setGlobal("registerModule");
-
-
-        // Client object
-        lua.pushJavaObject(FPSMaster.INSTANCE);
-        lua.setGlobal("client");
-
-        // Module object
-        lua.pushJavaObject(FPSMaster.moduleManager);
-        lua.setGlobal("moduleManager");
-        lua.pushJavaClass(LuaModule.class);
-        lua.setGlobal("module");
-
-        lua.run(rawLua.code);
-        // call load
-        LuaValue unload = lua.get("load");
-        if (unload.type().equals(Lua.LuaType.FUNCTION)) {
-            unload.call();
+            luaScript.failedReason = "";
+        }catch (Exception e){
+            luaScript.failedReason = e.getMessage();
+            Utility.sendClientDebug("Lua load error: " + e.getMessage());
         }
-
         // lua ast
         try {
             luaScript.ast = LuaParser.parse(rawLua.code);

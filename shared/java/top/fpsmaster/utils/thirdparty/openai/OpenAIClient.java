@@ -9,6 +9,7 @@ import com.google.gson.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -46,7 +47,7 @@ public class OpenAIClient {
                 HttpPost postRequest = createPostRequest(jsonBody);
                 StringBuilder responseBuilder = new StringBuilder();
 
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(client.execute(postRequest).getEntity().getContent()))) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(client.execute(postRequest).getEntity().getContent(), StandardCharsets.UTF_8))) {
                     String line;
                     while ((line = reader.readLine()) != null) {
 //                        responseBuilder.append(line);
@@ -66,10 +67,10 @@ public class OpenAIClient {
     private static HttpPost createPostRequest(String jsonBody) {
         HttpPost postRequest = new HttpPost(API_URL);
         postRequest.setHeader("Authorization", "Bearer " + API_KEY);
-        postRequest.setHeader("Content-Type", "application/json");
+        postRequest.setHeader("Content-Type", "application/json; charset=UTF-8\"");
 
         try {
-            StringEntity entity = new StringEntity(jsonBody);
+            StringEntity entity = new StringEntity(jsonBody, "UTF-8");
             postRequest.setEntity(entity);
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,7 +146,7 @@ public class OpenAIClient {
         String content;
         String role;
 
-        public Message(String role,String content) {
+        public Message(String role, String content) {
             this.content = content;
             this.role = role;
         }

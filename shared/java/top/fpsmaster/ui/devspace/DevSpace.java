@@ -21,10 +21,10 @@ import top.fpsmaster.utils.render.Render2DUtils;
 import top.fpsmaster.utils.render.ScaledGuiScreen;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class DevSpace extends ScaledGuiScreen {
@@ -78,12 +78,6 @@ public class DevSpace extends ScaledGuiScreen {
         drawMainPanel(mouseX, mouseY);
         drawTabBar();
 
-        if (selectedTab == 0) {
-            drawCodeEditorArea(mouseX, mouseY);
-        } else if (selectedTab == 1) {
-            drawMapEditorArea(mouseX, mouseY);
-        }
-
         handleDragging(mouseX, mouseY);
     }
 
@@ -98,7 +92,7 @@ public class DevSpace extends ScaledGuiScreen {
 
         int leftPanelWidth = Math.max((int) (width * 0.2), 100);
         drawLeftPanel(leftPanelWidth, mouseX, mouseY);
-        drawRightPanel(leftPanelWidth);
+        drawRightPanel(leftPanelWidth, mouseX, mouseY);
     }
 
     private void drawLeftPanel(int panelWidth, int mouseX, int mouseY) {
@@ -118,18 +112,26 @@ public class DevSpace extends ScaledGuiScreen {
             if (selectedLua == counter) {
                 Render2DUtils.drawOptimizedRoundedRect(x + 6, yPos, 94, 15, 6, new Color(35, 35, 35).getRGB());
             }
-            if (selectedLua >= 0 && selectedLua < LuaManager.scripts.size() && !codes.get(selectedLua).equals(script.rawLua.code)) {
-                FPSMaster.fontManager.s14.drawString(script.rawLua.filename + "*", x + 10, yPos + 5, Color.WHITE.getRGB());
+            int rgb = Color.WHITE.getRGB();
+            if (!"".equals(script.failedReason)) {
+                rgb = new Color(255, 100, 100).getRGB();
+            }
+            if (getCurrentScript() == null || codes.get(selectedLua).equals(script.rawLua.code)) {
+                FPSMaster.fontManager.s14.drawString(script.rawLua.filename, x + 10, yPos + 5, rgb);
             } else {
-                FPSMaster.fontManager.s14.drawString(script.rawLua.filename, x + 10, yPos + 5, Color.WHITE.getRGB());
+                FPSMaster.fontManager.s14.drawString(script.rawLua.filename + "*", x + 10, yPos + 5, rgb);
             }
             counter++;
         }
         luaList.setHeight(20 + (counter * 15));
     }
 
-    private void drawRightPanel(int leftPanelWidth) {
-        Render2DUtils.drawOptimizedRoundedRect(x + leftPanelWidth + 6, y + 15, width - leftPanelWidth - 9, height - 18, 6, new Color(25, 25, 25).getRGB());
+    private void drawRightPanel(int leftPanelWidth, int mouseX, int mouseY) {
+        if (selectedTab == 0) {
+            drawCodeEditorArea(leftPanelWidth, mouseX, mouseY);
+        } else if (selectedTab == 1) {
+            drawMapEditorArea(leftPanelWidth, mouseX, mouseY);
+        }
     }
 
     private void drawTabBar() {
@@ -151,9 +153,18 @@ public class DevSpace extends ScaledGuiScreen {
         FPSMaster.fontManager.s16.drawCenteredString(tab, tabX + tabWidth / 2f, y + 20, Color.LIGHT_GRAY.getRGB());
     }
 
-    private void drawCodeEditorArea(int mouseX, int mouseY) {
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        Render2DUtils.doGlScissor(x + Math.max((int) (width * 0.2), 100) + 12, y + 36, width - 15, height - 42, scaleFactor);
+    private void drawCodeEditorArea(int leftPanelWidth, int mouseX, int mouseY) {
+        if (getCurrentScript() != null && !"".equals(getCurrentScript().failedReason)) {
+            Render2DUtils.drawOptimizedRoundedRect(x + leftPanelWidth + 6, y + 15, width - leftPanelWidth - 9, height - 30, 6, new Color(25, 25, 25).getRGB());
+            Render2DUtils.drawOptimizedRoundedRect(x + leftPanelWidth + 6, y + height - 12, width - leftPanelWidth - 9, 12, 6, new Color(25, 25, 25).getRGB());
+            FPSMaster.fontManager.s14.drawString(getCurrentScript().failedReason, x + leftPanelWidth + 6, y + height - 10, new Color(255, 100, 100).getRGB());
+            GL11.glEnable(GL11.GL_SCISSOR_TEST);
+            Render2DUtils.doGlScissor(x + Math.max((int) (width * 0.2), 100) + 12, y + 36, width - 15, height - 52, scaleFactor);
+        } else {
+            Render2DUtils.drawOptimizedRoundedRect(x + leftPanelWidth + 6, y + 15, width - leftPanelWidth - 9, height - 18, 6, new Color(25, 25, 25).getRGB());
+            GL11.glEnable(GL11.GL_SCISSOR_TEST);
+            Render2DUtils.doGlScissor(x + Math.max((int) (width * 0.2), 100) + 12, y + 36, width - 15, height - 42, scaleFactor);
+        }
         codeEditor.draw(x + Math.max((int) (width * 0.2), 100) + 12, y + 36, width - 15, height - 42, mouseX, mouseY, () -> {
             drawCodeEditor(mouseX, mouseY);
         });
@@ -170,37 +181,45 @@ public class DevSpace extends ScaledGuiScreen {
 
     List<StatementComponent> components = new ArrayList<>();
 
-    private void drawMapEditorArea(int mouseX, int mouseY) {
+    private void drawMapEditorArea(int leftPanelWidth, int mouseX, int mouseY) {
+        Render2DUtils.drawOptimizedRoundedRect(x + leftPanelWidth + 6, y + 15, width - leftPanelWidth - 9, height - 18, 6, new Color(25, 25, 25).getRGB());
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         int xPos = x + Math.max((int) (width * 0.2), 100);
         int yPos = y + 36;
-        Render2DUtils.doGlScissor(xPos + 12, yPos, width - 15, height - 42, scaleFactor);
+        Render2DUtils.doGlScissor(xPos + 12, yPos, width * 0.8f - 15, height - 42, scaleFactor);
         xPos += mapX;
         yPos += mapY;
-        if (selectedLua >= 0 && selectedLua < LuaManager.scripts.size()) {
-            List<Statement> ast = LuaManager.scripts.get(selectedLua).ast;
+        if (getCurrentScript() != null) {
             if (components.isEmpty() || needReload) {
-                components.clear();
-                for (Statement statement : ast) {
-                    components.add(parseStatement(statement));
-                }
-                needReload = false;
+                reloadAST();
             }
             int y1 = yPos;
             for (StatementComponent component : components) {
                 component.draw(xPos, y1, mouseX, mouseY);
                 y1 += component.getHeight();
             }
-        }
-        if (Mouse.isButtonDown(1)) {
-            if (isDraggingMap) {
-                mapX = mouseX - (x + mapDragX);
-                mapY = mouseY - (y + mapDragY);
+            if (Mouse.isButtonDown(1)) {
+                if (isDraggingMap) {
+                    mapX = mouseX - (x + mapDragX);
+                    mapY = mouseY - (y + mapDragY);
+                }
+            } else {
+                isDraggingMap = false;
             }
-        } else {
-            isDraggingMap = false;
         }
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
+    }
+
+    private void reloadAST() {
+        needReload = false;
+        List<Statement> ast = LuaManager.scripts.get(selectedLua).ast;
+        if (ast == null) {
+            return;
+        }
+        components.clear();
+        for (Statement statement : ast) {
+            components.add(parseStatement(statement));
+        }
     }
 
     public static StatementComponent parseStatement(Statement statement) {
@@ -261,13 +280,18 @@ public class DevSpace extends ScaledGuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
-        handleArrowKeys(keyCode);
-        handleCodeInput(typedChar, keyCode);
+        if (selectedTab == 0) {
+            handleArrowKeys(keyCode);
+            handleCodeInput(typedChar, keyCode);
+        }
     }
 
     private void handleCodeInput(char typedChar, int keyCode) {
-        if (selectedLua != -1 && selectedLua < LuaManager.scripts.size() && selectedTab == 0 && cursor > 0) {
-            String code = codes.get(selectedLua);
+        if (getCurrentScript() == null)
+            return;
+
+        String code = codes.get(selectedLua);
+        if (cursor > 0 && cursor < code.length()) {
             if (keyCode == Keyboard.KEY_BACK) {
                 if (selectBegin == selectEnd) {
                     selectBegin = cursor;
@@ -294,9 +318,7 @@ public class DevSpace extends ScaledGuiScreen {
                 selectBegin = cursor;
                 selectEnd = cursor;
             } else if (keyCode == Keyboard.KEY_S && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-                FileUtils.saveFile("plugins/" + LuaManager.scripts.get(selectedLua).rawLua.filename, codes.get(selectedLua));
-                LuaManager.hotswap();
-                needReload = true;
+                saveCurrentScript();
             } else if (keyCode == Keyboard.KEY_RETURN) {
                 codes.set(selectedLua, code.substring(0, cursor) + "\n" + code.substring(cursor));
                 cursor++;
@@ -311,6 +333,18 @@ public class DevSpace extends ScaledGuiScreen {
                 }
             }
         }
+    }
+
+    private void saveCurrentScript() {
+        FileUtils.saveFile("plugins/" + getCurrentScript().rawLua.filename, codes.get(selectedLua));
+        LuaManager.hotswap();
+        needReload = true;
+    }
+
+    public LuaScript getCurrentScript() {
+        if (selectedLua == -1 || selectedLua >= LuaManager.scripts.size())
+            return null;
+        return LuaManager.scripts.get(selectedLua);
     }
 
     @Override
@@ -359,15 +393,30 @@ public class DevSpace extends ScaledGuiScreen {
     }
 
     private void handleScriptSelection(int mouseX, int mouseY, int mouseButton) {
+        if (LuaManager.scripts == null || LuaManager.scripts.isEmpty()) return;
+
         int counter = 0;
         int leftPanelWidth = Math.max((int) (width * 0.2), 100);
 
         for (LuaScript script : LuaManager.scripts) {
+            if (script == null) continue;
+
             int yPos = y + 36 + (counter * 15);
             if (Render2DUtils.isHovered(x + 6, yPos, leftPanelWidth - 6, 15, mouseX, mouseY) && mouseButton == 0) {
                 selectedLua = counter;
+                ensureCodesInitialized();
             }
             counter++;
+        }
+    }
+
+    private void ensureCodesInitialized() {
+        if (codes.size() != LuaManager.scripts.size()) {
+            codes.clear();
+            codes.addAll(LuaManager.scripts.stream()
+                    .filter(Objects::nonNull)
+                    .map(s -> s.rawLua != null ? s.rawLua.code : "")
+                    .collect(Collectors.toList()));
         }
     }
 
@@ -375,10 +424,8 @@ public class DevSpace extends ScaledGuiScreen {
 
     private void drawCodeEditor(int mouseX, int mouseY) {
         int left = Math.max((int) (width * 0.2), 100);
-        if (codes.isEmpty()) {
-            codes.addAll(LuaManager.scripts.stream().map(s -> s.rawLua.code).collect(Collectors.toList()));
-        }
-        if (selectedLua != -1 && selectedLua < LuaManager.scripts.size()) {
+        ensureCodesInitialized();
+        if (getCurrentScript() != null) {
             // handle keyboard
             String s = codes.get(selectedLua);
             String highlightedCode = HighlightLexer.highlight(s);

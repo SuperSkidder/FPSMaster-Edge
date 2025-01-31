@@ -1,8 +1,6 @@
 package top.fpsmaster.modules.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.InterfaceModule;
 import top.fpsmaster.features.impl.optimizes.OldAnimations;
@@ -113,34 +111,37 @@ public class ConfigManager {
                     module.set(moduleJson.get("enabled").getAsBoolean());
                     module.key = moduleJson.get("key").getAsInt();
                     for (Setting<?> setting : module.settings) {
-                        JsonObject settingValue = moduleJson.getAsJsonObject(setting.name);
-                        if (settingValue != null) {
-                            if (setting instanceof BooleanSetting) {
-                                BooleanSetting booleanSetting = (BooleanSetting) setting;
-                                booleanSetting.value = settingValue.getAsBoolean();
-                            } else if (setting instanceof NumberSetting) {
-                                NumberSetting numberSetting = (NumberSetting) setting;
-                                numberSetting.value = settingValue.getAsDouble();
-                            } else if (setting instanceof ModeSetting) {
-                                ModeSetting modeSetting = (ModeSetting) setting;
-                                modeSetting.value = settingValue.getAsInt();
-                            } else if (setting instanceof TextSetting) {
-                                TextSetting textSetting = (TextSetting) setting;
-                                textSetting.value = settingValue.getAsString();
-                            } else if (setting instanceof ColorSetting) {
-                                ColorSetting colorSetting = (ColorSetting) setting;
-                                String[] colorParts = settingValue.getAsString().split("\\|");
-                                colorSetting.value.setColor(
-                                        Float.parseFloat(colorParts[0]),
-                                        Float.parseFloat(colorParts[1]),
-                                        Float.parseFloat(colorParts[2]),
-                                        Float.parseFloat(colorParts[3])
-                                );
-                            } else if (setting instanceof BindSetting) {
-                                BindSetting bindSetting = (BindSetting) setting;
-                                bindSetting.value = settingValue.getAsInt();
+                        try {
+                            JsonElement settingValue = moduleJson.get(setting.name);
+                            if (settingValue != null) {
+                                if (setting instanceof BooleanSetting) {
+                                    BooleanSetting booleanSetting = (BooleanSetting) setting;
+                                    booleanSetting.value = settingValue.getAsBoolean();
+                                } else if (setting instanceof NumberSetting) {
+                                    NumberSetting numberSetting = (NumberSetting) setting;
+                                    numberSetting.value = settingValue.getAsDouble();
+                                } else if (setting instanceof ModeSetting) {
+                                    ModeSetting modeSetting = (ModeSetting) setting;
+                                    modeSetting.value = settingValue.getAsInt();
+                                } else if (setting instanceof TextSetting) {
+                                    TextSetting textSetting = (TextSetting) setting;
+                                    textSetting.value = settingValue.getAsString();
+                                } else if (setting instanceof ColorSetting) {
+                                    ColorSetting colorSetting = (ColorSetting) setting;
+                                    String[] colorParts = settingValue.getAsString().split("\\|");
+                                    colorSetting.value.setColor(
+                                            Float.parseFloat(colorParts[0]),
+                                            Float.parseFloat(colorParts[1]),
+                                            Float.parseFloat(colorParts[2]),
+                                            Float.parseFloat(colorParts[3])
+                                    );
+                                } else if (setting instanceof BindSetting) {
+                                    BindSetting bindSetting = (BindSetting) setting;
+                                    bindSetting.value = settingValue.getAsInt();
+                                }
                             }
-
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
