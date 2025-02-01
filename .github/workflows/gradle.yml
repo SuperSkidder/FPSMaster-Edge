@@ -89,6 +89,7 @@ jobs:
         
         ENCODED_URL=$DOWNLOAD_URL
         ENCODED_URL=$(echo "$ENCODED_URL" | sed 's/&/%26/g' | sed 's/?/%3F/g')
+        echo $VERSION
         curl --location --request GET "https://service.fpsmaster.top/pushVersion?key=$ENCODED_KEY&commit="${{ github.sha }}"&branch="${{ github.ref }}"&version=$VERSION&date=$(date -u +%Y-%m-%dT%H:%M:%SZ)&link=$ENCODED_URL&release=false"
 #    - name: Build with Gradle Wrapper
 #      run: |
