@@ -51,10 +51,10 @@ jobs:
     - name: Upload artifact
       run: |
         cd v1.8.9
-        function getProp {
+        function gradleprop {
             grep "^${1}=" gradle.properties | cut -d'=' -f2
         }
-        VERSION=$(getProp 'version')
+        export VERSION=$(gradleprop 'version')
         
         mkdir -p build/libs
         cp v1.8.9-v4.jar build/libs/fpsmaster.jar
