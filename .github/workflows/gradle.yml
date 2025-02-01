@@ -56,11 +56,11 @@ jobs:
         }
         version=$(grep -oP '^version\s*=\s*\K.*' "gradle.properties")
         
-        mkdir build/libs
+        mkdir -p build/libs
         
         cd build/libs
         export JAR=$(find . -regex '.*.jar')
-        mkdir zip
+        mkdir -p zip
         cp $JAR zip/fpsmaster.jar
         cd zip
         zip -r fpsmaster.zip *
