@@ -56,7 +56,7 @@ jobs:
         }
         export VERSION=$(getProp 'version')
         export MC_VERSION=$(getProp 'mcVersion')
-        
+        mkdir -p build/libs
         cp v1.8.9-v4.jar build/libs/fpsmaster.jar
         
         cd build/libs
