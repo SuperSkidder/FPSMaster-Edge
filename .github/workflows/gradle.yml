@@ -58,7 +58,7 @@ jobs:
         export MC_VERSION=$(getProp 'mcVersion')
         cd build/libs
         export JAR=$(find . -regex '.*.jar')
-        mkdir zip
+        mkdir -p zip
         cp $JAR zip/fpsmaster.jar
         cd zip
         zip -r fpsmaster.zip *
@@ -71,24 +71,31 @@ jobs:
         --form 'name="action-${{ github.event.head_commit.id }}"')
         
         DIR_ID=$(echo "$RESPONSE" | jq -r '.data.id')
-        echo "DirectoryId: $FILE_ID"
+        echo "DirectoryId: $DIR_ID"
         UPLOAD_RESPONSE=$(curl https://upload.kstore.space/upload/$DIR_ID?access_token=${{ secrets.OSS }} -F "file=@fpsmaster.zip")
         
         DOWNLOAD_URL=$(echo "$UPLOAD_RESPONSE" | jq -r '.data.downloadUrl')
         FILE_ID=$(echo "$UPLOAD_RESPONSE" | jq -r '.data.id')
         
+        # 开启直链
         ENABLE_DIRECT_LINK_RESPONSE=$(curl --location --request POST 'https://api.kstore.cc/api/v2/file/direct' \
-        --form 'fileId="$FILE_ID"' \
-        --form 'direct="1"'
+        --form "fileId=$FILE_ID" \
+        --form "direct=1")
         
         echo "Download URL: $DOWNLOAD_URL"
         
+        # URL 编码
         ENCODED_URL=$(echo "$DOWNLOAD_URL" | jq -sRr @uri)
         
-        curl --location --request GET 'https://service.fpsmaster.top/pushVersion?key=\
-        ${{ secrets.API_KEY }}&commit=${{ github.sha }}\
-        &branch=${{ github.ref }}&version=$VERSION\
-        &date=$(date -u +%Y-%m-%dT%H:%M:%SZ)&link=$ENCODED_URL&release=false'
+        # 发送版本信息
+        curl --location --request GET "https://service.fpsmaster.top/pushVersion" \
+        --data-urlencode "key=${{ secrets.API_KEY }}" \
+        --data-urlencode "commit=${{ github.sha }}" \
+        --data-urlencode "branch=${{ github.ref }}" \
+        --data-urlencode "version=$VERSION" \
+        --data-urlencode "date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+        --data-urlencode "link=$ENCODED_URL" \
+        --data-urlencode "release=false"
 
 #    - name: Build with Gradle Wrapper
 #      run: |
