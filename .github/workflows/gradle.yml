@@ -21,77 +21,74 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-    # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
-    # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-      with:
-        gradle-version: '8.6'
-        
-    - name: Build with Gradle Wrapper
-      run: |
-        chmod +x v1.8.9/gradlew
-        cd v1.8.9
-        ./gradlew build
+      # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
+      # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+        with:
+          gradle-version: '8.6'
 
-    - name: Upload v1.8.9 artifacts
-      uses: actions/upload-artifact@v4.3.3
-      with:
-        name: v1.8.9
-        path: v1.8.9/build/libs/
+      - name: Build with Gradle Wrapper
+        run: |
+          chmod +x v1.8.9/gradlew
+          cd v1.8.9
+          ./gradlew build
 
-    # reference：https://github.com/CCBlueX/LiquidBounce/blob/nextgen/.github/workflows/build.yml
-    - name: Upload artifact
-      run: |
-        cd v1.8.9
-        function gradleprop {
-            grep "^${1}=" gradle.properties | cut -d'=' -f2
-        }
-        version=$(grep -oP '^version\s*=\s*\K.*' "gradle.properties")
-        
-        mkdir -p build/libs
-        
-        cd build/libs
-        export JAR=$(find . -regex '.*.jar')
-        mkdir -p zip
-        cp $JAR zip/fpsmaster.jar
-        cd zip
-        zip -r fpsmaster.zip *
-        
-        RESPONSE=$(curl --location --request POST 'https://api.kstore.space/api/v1/file/create' \
-        --header 'X-GitHub-Event: workflow_run' \
-        --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
-        --form 'access_token="${{ secrets.OSS }}"' \
-        --form 'fileId="0"' \
-        --form 'name="action-${{ github.event.head_commit.id }}"')
-        
-        DIR_ID=$(echo "$RESPONSE" | jq -r '.data.id')
-        echo "DirectoryId: $DIR_ID"
-        UPLOAD_RESPONSE=$(curl https://upload.kstore.space/upload/$DIR_ID?access_token=${{ secrets.OSS }} -F "file=@fpsmaster.zip")
-        
-        DOWNLOAD_URL=$(echo "$UPLOAD_RESPONSE" | jq -r '.data.downloadUrl')
-        FILE_ID=$(echo "$UPLOAD_RESPONSE" | jq -r '.data.id')
-        
-        echo "FileId: $FILE_ID"
-        ENABLE_DIRECT_LINK_RESPONSE=$(curl --location --request POST 'https://api.kstore.cc/api/v2/file/direct' \
-        --form 'access_token="${{ secrets.OSS }}"' \
-        --form "fileId=$FILE_ID" \
-        --form "direct=1")
-        echo "enabled direct link"
-        
-        ENCODED_KEY="${{ secrets.API_KEY }}"
-        ENCODED_KEY=$(echo "$ENCODED_KEY" | sed 's/&/%26/g' | sed 's/?/%3F/g')
-        
-        ENCODED_URL=$DOWNLOAD_URL
-        ENCODED_URL=$(echo "$ENCODED_URL" | sed 's/&/%26/g' | sed 's/?/%3F/g')
-        curl --location --request GET "https://service.fpsmaster.top/pushVersion?key=$ENCODED_KEY&commit="${{ github.sha }}"&branch="${{ github.ref }}"&version=$version&date=$(date -u +%Y-%m-%dT%H:%M:%SZ)&link=$ENCODED_URL&release=false"
+      - name: Upload v1.8.9 artifacts
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: v1.8.9
+          path: v1.8.9/build/libs/
+
+      # reference：https://github.com/CCBlueX/LiquidBounce/blob/nextgen/.github/workflows/build.yml
+      - name: Upload artifact
+        run: |
+          cd v1.8.9
+          function gradleprop {
+              grep "^${1}=" gradle.properties | cut -d'=' -f2
+          }
+          version=$(grep -oP '^version\s*=\s*\K.*' "gradle.properties")
+          
+          mkdir -p build/libs
+          
+          cd build/libs
+          export JAR=$(find . -regex '.*.jar')
+          mkdir -p zip
+          cp $JAR zip/fpsmaster.jar
+          cd zip
+          zip -r fpsmaster.zip *
+          
+          RESPONSE=$(curl --location --request POST 'https://api.kstore.space/api/v1/file/create' \
+          --header 'X-GitHub-Event: workflow_run' \
+          --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
+          --form 'access_token="${{ secrets.OSS }}"' \
+          --form 'fileId="0"' \
+          --form 'name="action-${{ github.event.head_commit.id }}"')
+          
+          DIR_ID=$(echo "$RESPONSE" | jq -r '.data.id')
+          echo "DirectoryId: $DIR_ID"
+          UPLOAD_RESPONSE=$(curl https://upload.kstore.space/upload/$DIR_ID?access_token=${{ secrets.OSS }} -F "file=@fpsmaster.zip")
+          
+          DOWNLOAD_URL=$(echo "$UPLOAD_RESPONSE" | jq -r '.data.downloadUrl')
+          FILE_ID=$(echo "$UPLOAD_RESPONSE" | jq -r '.data.id')
+          
+          echo "FileId: $FILE_ID"
+          curl --location --request POST "https://api.kstore.cc/api/v2/file/direct?fileId=$FILE_ID&direct=1&access_token=${{ secrets.API_KEY }}"
+          echo "enabled direct link"
+          
+          ENCODED_KEY="${{ secrets.API_KEY }}"
+          ENCODED_KEY=$(echo "$ENCODED_KEY" | sed 's/&/%26/g' | sed 's/?/%3F/g')
+          
+          ENCODED_URL=$DOWNLOAD_URL
+          ENCODED_URL=$(echo "$ENCODED_URL" | sed 's/&/%26/g' | sed 's/?/%3F/g')
+          curl --location --request GET "https://service.fpsmaster.top/pushVersion?key=$ENCODED_KEY&commit="${{ github.sha }}"&branch="${{ github.ref }}"&version=$version&date=$(date -u +%Y-%m-%dT%H:%M:%SZ)&link=$ENCODED_URL&release=false"
 #    - name: Build with Gradle Wrapper
 #      run: |
 #        chmod +x v1.12.2/gradlew
