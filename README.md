@@ -36,6 +36,8 @@ FPSMaster 是一个免费、强大的 Minecraft PvP 客户端。
 - [ ] 重写IRC模块
 - [ ] 优化配置文件模块
 - [ ] FPSMaster Intelligence
+- [ ] HitMarker
+- [ ] Waypoint
 
 
 ## 开源许可证
