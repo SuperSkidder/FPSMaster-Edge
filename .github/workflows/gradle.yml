@@ -80,7 +80,7 @@ jobs:
           FILE_ID=$(echo "$UPLOAD_RESPONSE" | jq -r '.data.id')
           
           echo "FileId: $FILE_ID"
-          curl --location --request POST "https://api.kstore.cc/api/v2/file/direct?fileId=$FILE_ID&direct=1&access_token=${{ secrets.API_KEY }}"
+          curl --location --request POST "https://api.kstore.cc/api/v2/file/direct?fileId=$FILE_ID&direct=1&access_token=$API_KEY"
           echo "enabled direct link"
           
           ENCODED_KEY="${{ secrets.API_KEY }}"
