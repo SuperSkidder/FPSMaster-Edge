@@ -13,6 +13,7 @@ import top.fpsmaster.utils.thirdparty.openai.OpenAI;
 import top.fpsmaster.utils.thirdparty.openai.OpenAIClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class AI extends Command {
     private String luaPrompt = "请遵守以下规则：\n" +
@@ -76,7 +77,9 @@ public class AI extends Command {
                 LuaScript luaScript = new LuaScript(null, new RawLua(fileName + ".lua", ""));
                 LuaManager.scripts.add(luaScript);
 
-                OpenAIClient.Message[] messages = {new OpenAIClient.Message("system", luaPrompt), new OpenAIClient.Message("user", sb.toString())};
+                ArrayList<OpenAIClient.Message> messages = new ArrayList<>();
+                messages.add(new OpenAIClient.Message("system", luaPrompt));
+                messages.add(new OpenAIClient.Message("user", sb.toString()));
                 Utility.sendClientNotify("[Intelligence Code] Started coding...");
                 OpenAIClient.getChatResponseAsync(messages, new OpenAIClient.ResponseCallback() {
                     @Override
@@ -88,7 +91,7 @@ public class AI extends Command {
 
                     @Override
                     public void onError(Exception e) {
-                        Utility.sendClientNotify("Fetching AI response...");
+                        Utility.sendClientNotify("Fetching AI error");
                     }
 
                     @Override
@@ -103,7 +106,9 @@ public class AI extends Command {
                     sb.append(arg);
                 }
                 FPSMaster.async.execute(() -> {
-                    OpenAIClient.Message[] messages = {new OpenAIClient.Message("system", "your name is Ares"), new OpenAIClient.Message("user", sb.toString())};
+                    ArrayList<OpenAIClient.Message> messages = new ArrayList<>();
+                    messages.add(new OpenAIClient.Message("system", "your name is Ares"));
+                    messages.add(new OpenAIClient.Message("user", sb.toString()));
                     Utility.sendClientNotify("Fetching AI response...");
                     try {
                         String response = OpenAIClient.getChatResponse(messages);

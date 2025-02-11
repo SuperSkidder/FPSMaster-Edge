@@ -65,18 +65,20 @@ public class ScrollContainer {
             wheel_anim = 0f;
         }
 
-        if (this.height > height) {
-            // mods list scroll
-            int mouseDWheel = Mouse.getDWheel();
-            if (mouseDWheel > 0) {
-                wheel_anim += 20f;
-            } else if (mouseDWheel < 0) {
-                wheel_anim -= 20f;
+        if (Render2DUtils.isHovered(x,y,width,height, mouseX, mouseY)) {
+            if (this.height > height) {
+                // mods list scroll
+                int mouseDWheel = Mouse.getDWheel();
+                if (mouseDWheel > 0) {
+                    wheel_anim += 20f;
+                } else if (mouseDWheel < 0) {
+                    wheel_anim -= 20f;
+                }
+                float maxUp = this.height - height;
+                wheel_anim = Math.min(Math.max(wheel_anim, -maxUp), 0f);
             }
-            float maxUp = this.height - height;
-            wheel_anim = Math.min(Math.max(wheel_anim, -maxUp), 0f);
+            wheel = (float) AnimationUtils.base((double) wheel, (double) wheel_anim, 0.2);
         }
-        wheel = (float) AnimationUtils.base((double) wheel, (double) wheel_anim, 0.2);
     }
 
     public void setHeight(float height) {

@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,7 +23,7 @@ public class OpenAIClient {
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     // 阻塞式调用：等待全部数据返回后才返回
-    public static String getChatResponse(Message[] userMessages) throws IOException {
+    public static String getChatResponse(ArrayList<Message> userMessages) throws IOException {
         StringBuilder responseBuilder = new StringBuilder();
         String jsonBody = buildRequestJson(userMessages);
 
@@ -41,7 +42,7 @@ public class OpenAIClient {
     }
 
     // 非阻塞式调用：响应流将通过回调处理
-    public static void getChatResponseAsync(Message[] userMessages, ResponseCallback callback) {
+    public static void getChatResponseAsync(ArrayList<Message> userMessages, ResponseCallback callback) {
         executor.submit(() -> {
             try {
                 String jsonBody = buildRequestJson(userMessages);
@@ -82,7 +83,7 @@ public class OpenAIClient {
     }
 
     // 构建请求体JSON
-    private static String buildRequestJson(Message[] messages) {
+    private static String buildRequestJson(ArrayList<Message> messages) {
         StringBuilder messagesJson = new StringBuilder();
 
         for (Message message : messages) {
@@ -152,6 +153,22 @@ public class OpenAIClient {
 
         public Message(String role, String content) {
             this.content = content;
+            this.role = role;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public String getRole() {
+            return role;
+        }
+
+        public void setRole(String role) {
             this.role = role;
         }
     }

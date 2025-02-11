@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
+import top.fpsmaster.ui.ai.AIChatPanel;
 import top.fpsmaster.ui.click.component.ScrollContainer;
 import top.fpsmaster.ui.click.music.MusicPanel;
 import top.fpsmaster.ui.click.modules.ModuleRenderer;
@@ -63,12 +64,16 @@ public class MainPanel extends ScaledGuiScreen {
     public static Module curModule = null;
     public static String dragLock = "null";
 
+    public AIChatPanel aiChatPanel = new AIChatPanel();
+
     public MainPanel() {
         super();
     }
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
+        aiChatPanel.render(mouseX, mouseY, scaleFactor);
+
         if (!Mouse.isButtonDown(0)) {
             dragLock = "null";
             drag = false;
@@ -320,6 +325,7 @@ public class MainPanel extends ScaledGuiScreen {
     @Override
     public void initGui() {
         super.initGui();
+        aiChatPanel.init();
         ScaledResolution sr = new ScaledResolution(mc);
         int scaledWidth = sr.getScaledWidth();
         int scaledHeight = sr.getScaledHeight();
@@ -352,6 +358,8 @@ public class MainPanel extends ScaledGuiScreen {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
+        aiChatPanel.keyTyped(typedChar, keyCode);
+
         if (keyCode == 1) {
             if (scaleAnimation.end != 0.1) {
                 close = true;
@@ -372,6 +380,7 @@ public class MainPanel extends ScaledGuiScreen {
 
     @Override
     public void onClick(int mouseX, int mouseY, int mouseButton) {
+        aiChatPanel.click(mouseX, mouseY, mouseButton);
         if (!Render2DUtils.isHoveredWithoutScale(x, y, width, height, mouseX, mouseY)) return;
 
         if (mouseButton == 0 && Render2DUtils.isHoveredWithoutScale(
