@@ -80,15 +80,18 @@ jobs:
           FILE_ID=$(echo "$UPLOAD_RESPONSE" | jq -r '.data.id')
 
           echo "FileId: $FILE_ID"
-          API_KEY="${{ secrets.API_KEY }}"
-          export API_KEY
-          RESPONSE=$(curl --location --request POST 'https://api.kstore.cc/api/v2/file/direct' \
-          --form 'access_token="${{ secrets.API_KEY }}"' \
+          echo "URL: DOWNLOAD_URL"
+          
+          RESPONSE=$(curl --location --request POST 'https://api.kstore.cc/api/v1/file/direct?access_token="${{ secrets.OSS }}"' \
           --form 'fileId="$FILE_ID"' \
-          --form 'direct=1')
-
-          ENCODED_KEY=$(echo "$API_KEY" | sed 's/&/%26/g' | sed 's/?/%3F/g')
-
-          ENCODED_URL=$DOWNLOAD_URL
-          ENCODED_URL=$(echo "$ENCODED_URL" | sed 's/&/%26/g' | sed 's/?/%3F/g')
-          curl --location --request GET "https://service.fpsmaster.top/pushVersion?key=$ENCODED_KEY&commit="${{ github.sha }}"&branch="${{ github.ref }}"&version=$version&date=$(date -u +%Y-%m-%dT%H:%M:%SZ)&link=$ENCODED_URL&release=false"
+          --form 'isDirect=1')
+          
+          curl --get \
+          --data-urlencode "key=${{ secrets.API_KEY }}" \
+          --data-urlencode "commit=${{ github.sha }}" \
+          --data-urlencode "branch=${{ github.ref }}" \
+          --data-urlencode "version=$version" \
+          --data-urlencode "date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+          --data-urlencode "link=$DOWNLOAD_URL" \
+          --data-urlencode "release=false" \
+          https://service.fpsmaster.top/pushVersion
