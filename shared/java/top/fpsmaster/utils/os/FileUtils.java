@@ -20,6 +20,7 @@ public class FileUtils {
     public static File omaments;
     public static File background;
     public static boolean hasBackground = false;
+    public static File fonts;
 
     static {
         if (net.minecraft.client.Minecraft.getMinecraft() == null) {
@@ -31,6 +32,8 @@ public class FileUtils {
             dir = file(ProviderManager.mcProvider.getGameDir(), "FPSMaster " + Constants.VERSION);
         }
         plugins = file(dir, "plugins");
+        fonts = file(dir, "fonts");
+
         fpsmasterCache = file(cache, "FPSMasterClient");
         netease = file(cache, "netease");
         music = file(netease, "songs");

@@ -7,10 +7,14 @@ import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.client.GlobalTextFilter;
 import top.fpsmaster.font.FontManager;
 import top.fpsmaster.modules.logger.ClientLogger;
+import top.fpsmaster.utils.os.FileUtils;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 import static top.fpsmaster.utils.render.Render2DUtils.intToColor;
 
@@ -28,7 +32,7 @@ public class UFontRenderer extends FontRenderer {
         boolean antiAlias = true;
         Font font;
         try {
-            InputStream is = FontManager.class.getResourceAsStream("/assets/minecraft/client/gui/font/" + name + ".ttf");
+            InputStream is = Files.newInputStream(new File(FileUtils.fonts, name + ".ttf").toPath());
             font = Font.createFont(0, is);
             font = font.deriveFont(Font.PLAIN, size);
         } catch (Exception ex) {

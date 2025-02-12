@@ -1,5 +1,6 @@
 package top.fpsmaster;
 
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import top.fpsmaster.features.GlobalSubmitter;
 import top.fpsmaster.features.command.CommandManager;
 import top.fpsmaster.features.manager.ModuleManager;
@@ -20,9 +21,12 @@ import top.fpsmaster.ui.screens.oobe.OOBEScreen;
 import top.fpsmaster.utils.GitInfo;
 import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.modules.i18n.Language;
+import top.fpsmaster.utils.os.HttpRequest;
 import top.fpsmaster.utils.thirdparty.github.UpdateChecker;
 import top.fpsmaster.websocket.client.WsClient;
 import top.fpsmaster.wrapper.Constants;
+
+import java.io.File;
 
 public class FPSMaster {
 
@@ -30,8 +34,57 @@ public class FPSMaster {
     public boolean loggedIn;
     public WsClient wsClient;
 
+    public static final String phase = "alpha";
+    public static final String SERVICE_API = "https://service.fpsmaster.top";
+
+    public static final String EDITION = Constants.EDITION;
+    public static final String COPYRIGHT = "Copyright ©2020-2024  FPSMaster Team  All Rights Reserved.";
+
+    public static FPSMaster INSTANCE = new FPSMaster();
+
+    public static String CLIENT_NAME = "FPSMaster";
+    public static String CLIENT_VERSION = "v4";
+
+    public static Theme theme = new DarkTheme();
+    public static String themeSlot = "dark";
+
+    public static ModuleManager moduleManager = new ModuleManager();
+    public static FontManager fontManager = new FontManager();
+    public static ConfigManager configManager = new ConfigManager();
+    public static OOBEScreen oobeScreen = new OOBEScreen();
+    public static AccountManager accountManager = new AccountManager();
+    public static GlobalSubmitter submitter = new GlobalSubmitter();
+    public static CommandManager commandManager = new CommandManager();
+    public static ComponentsManager componentsManager = new ComponentsManager();
+    public static LuaManager luaManager = new LuaManager();
+    public static Language i18n = new Language();
+    public static AsyncTask async = new AsyncTask(100);
+    public static boolean development = false;
+    public static boolean isLatest = true;
+    public static boolean updateFailed = false;
+    public static String latest = "";
+
+    private static void checkDevelopment() {
+        try {
+            Class.forName("net.fabricmc.devlaunchinjector.Main");
+            development = true;
+        } catch (Throwable e) {
+        }
+    }
+
+    public static String getClientTitle() {
+        checkDevelopment();
+        return CLIENT_NAME + " " + CLIENT_VERSION + " - " + phase + " " + Constants.VERSION + " (" + GitInfo.getBranch() + " - " + GitInfo.getCommitIdAbbrev() + ")" + (development ? " - Developer Mode" : "");
+    }
+
     private void initializeFonts() {
         ClientLogger.info("Initializing Fonts...");
+        File file = new File(FileUtils.fonts, "harmony_bold.ttf");
+        if (!file.exists()) {
+            ClientLogger.info("Downloading Fonts...");
+            HttpRequest.downloadFile("https://13430.kstore.space/harmony_bold.ttf", file.getAbsolutePath());
+        }
+
         fontManager.load();
     }
 
@@ -58,9 +111,9 @@ public class FPSMaster {
         ClientLogger.info("Checking music cache...");
         long dirSize = FileUtils.getDirSize(FileUtils.artists);
         if (dirSize > 1024) {
-            if(FileUtils.artists.delete()) {
+            if (FileUtils.artists.delete()) {
                 ClientLogger.info("Cleared img cache");
-            }else {
+            } else {
                 ClientLogger.error("Clear img cache failed");
             }
         }
@@ -69,7 +122,7 @@ public class FPSMaster {
         if (dirSize1 > 2048) {
             if (FileUtils.music.delete()) {
                 ClientLogger.warn("Cleared music cache");
-            }else{
+            } else {
                 ClientLogger.error("Clear music cache failed");
             }
         }
@@ -132,54 +185,17 @@ public class FPSMaster {
         if (phase == "release") {
             checkUpdate();
         }
+        if (phase == "alpha") {
+            autoUpdate();
+        }
         checkOptifine();
+    }
+
+    public void autoUpdate() {
+        File mods = FMLCommonHandler.instance().getMinecraftServerInstance().getFile("mods");
     }
 
     public void shutdown() {
         configManager.saveConfig("default");
-    }
-
-    public static final String phase = "alpha";
-    public static final String SERVICE_API = "https://service.fpsmaster.top";
-    public static final String FILE_API = "https://files.fpsmaster.top";
-
-    public static final String EDITION = Constants.EDITION;
-    public static final String COPYRIGHT = "Copyright ©2020-2024  FPSMaster Team  All Rights Reserved.";
-
-    public static FPSMaster INSTANCE = new FPSMaster();
-
-    public static String CLIENT_NAME = "FPSMaster";
-    public static String CLIENT_VERSION = "v4";
-
-    public static Theme theme = new DarkTheme();
-    public static String themeSlot = "dark";
-
-    public static ModuleManager moduleManager = new ModuleManager();
-    public static FontManager fontManager = new FontManager();
-    public static ConfigManager configManager = new ConfigManager();
-    public static OOBEScreen oobeScreen = new OOBEScreen();
-    public static AccountManager accountManager = new AccountManager();
-    public static GlobalSubmitter submitter = new GlobalSubmitter();
-    public static CommandManager commandManager = new CommandManager();
-    public static ComponentsManager componentsManager = new ComponentsManager();
-    public static LuaManager luaManager = new LuaManager();
-    public static Language i18n = new Language();
-    public static AsyncTask async = new AsyncTask(100);
-    public static boolean development = false;
-    public static boolean isLatest = true;
-    public static boolean updateFailed = false;
-    public static String latest = "";
-
-    private static void checkDevelopment() {
-        try {
-            Class.forName("net.fabricmc.devlaunchinjector.Main");
-            development = true;
-        } catch (Throwable e) {
-        }
-    }
-
-    public static String getClientTitle() {
-        checkDevelopment();
-        return CLIENT_NAME + " " + CLIENT_VERSION + " - " + phase + " " + Constants.VERSION + " (" + GitInfo.getBranch() + " - " + GitInfo.getCommitIdAbbrev() + ")" + (development ? " - Developer Mode" : "");
     }
 }
