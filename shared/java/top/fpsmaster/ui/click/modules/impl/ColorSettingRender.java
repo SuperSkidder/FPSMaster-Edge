@@ -123,7 +123,7 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
                     x + tW + 122, y + 16, 10f, aHeight, (int) mouseX, (int) mouseY
             ) && Mouse.isButtonDown(0) || MainPanel.dragLock.equals(mod.name + setting.name + 3)) {
                 if (MainPanel.dragLock.equals("null")) {
-                    MainPanel.bindLock = mod.name + setting.name + 3;
+                    MainPanel.dragLock = mod.name + setting.name + 3;
                 }
                 if (MainPanel.dragLock.equals(mod.name + setting.name + 3)) {
                     alpha = max(min(1 - (mouseY - (y + 15)) / aHeight, 1f), 0f);

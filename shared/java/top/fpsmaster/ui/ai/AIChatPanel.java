@@ -33,17 +33,19 @@ public class AIChatPanel {
     }
 
     public void render(int mouseX, int mouseY, int scaleFactor) {
-        Render2DUtils.drawOptimizedRoundedRect(x, y, w, h, new Color(43, 43, 43, 255));
+
+        Render2DUtils.drawBlurArea(x, y, w, h, 3, new Color(43, 43, 43, 255));
+        Render2DUtils.drawOptimizedRoundedRect(x, y, w, h, 3, new Color(43, 43, 43, 80).getRGB());
 
         Render2DUtils.drawOptimizedRoundedRect(x, y, w, 16, new Color(43, 87, 145));
         FPSMaster.fontManager.s16.drawString("FPS-Chat", x + 2, y + 1, -1);
-        input.drawTextBox(x+2, y + h - 20, w-4, 18);
+        input.drawTextBox(x + 2, y + h - 20, w - 4, 18);
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         Render2DUtils.doGlScissor(x, y + 24, w, h - 46, scaleFactor);
         chat.draw(x, y + 16, w - 6, h - 40, mouseX, mouseY, () -> {
-            int height = (int) (chat.getScroll());
+            int height = (int) (chat.getScroll()) + 22;
             for (OpenAIClient.Message message : messages) {
                 FPSMaster.fontManager.s16.drawString(message.getRole() + ":", x + 2, y + height, -1);
                 StringBuilder sb = new StringBuilder();

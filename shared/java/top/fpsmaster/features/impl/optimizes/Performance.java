@@ -17,11 +17,10 @@ public class Performance extends Module {
     public static NumberSetting fpsLimit = new NumberSetting("FPSLimit", 30, 0, 360, 1);
     public static NumberSetting entityLimit = new NumberSetting("EntityLimit", 200, 0, 800, 1);
     public static NumberSetting particlesLimit = new NumberSetting("ParticlesLimit", 100, 0, 2000, 1);
-    public static BooleanSetting blur = new BooleanSetting("Blur", false);
 
     public Performance() {
         super("Performance", Category.OPTIMIZE);
-        addSettings(ignoreStands, entitiesOptimize, fastLoad, entityLimit, fpsLimit, particlesLimit, blur);
+        addSettings(ignoreStands, entitiesOptimize, fastLoad, entityLimit, fpsLimit, particlesLimit);
     }
 
     @Override

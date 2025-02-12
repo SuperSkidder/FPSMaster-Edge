@@ -7,12 +7,13 @@ import top.fpsmaster.features.settings.impl.BindSetting;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
 
 public class ClientSettings extends InterfaceModule {
+    public static BooleanSetting blur = new BooleanSetting("blur", false);
     public static BindSetting keyBind = new BindSetting("ClickGuiKey", Keyboard.KEY_RSHIFT);
     public static BooleanSetting fixedScale = new BooleanSetting("FixedScale", true);
 
     public ClientSettings() {
         super("ClientSettings", Category.Interface);
-        addSettings(keyBind, fixedScale);
+        addSettings(keyBind, fixedScale, blur);
     }
 
     @Override

@@ -3,7 +3,7 @@ package top.fpsmaster.modules.lua;
 import party.iroiro.luajava.Lua;
 import party.iroiro.luajava.value.LuaValue;
 import top.fpsmaster.event.Subscribe;
-import top.fpsmaster.event.events.EventRender2D;
+import top.fpsmaster.event.events.*;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
 
@@ -55,5 +55,50 @@ public class LuaModule extends top.fpsmaster.features.manager.Module {
     @Subscribe
     public void onRender2D(EventRender2D e) {
         callEvent("on_draw", e);
+    }
+
+    @Subscribe
+    public void onRender3D(EventRender3D e) {
+        callEvent("on_render3d", e);
+    }
+
+    @Subscribe
+    public void onAnimation(EventAnimation e) {
+        callEvent("on_animation", e);
+    }
+
+    @Subscribe
+    public void onAttack(EventAttack e) {
+        callEvent("on_attack", e);
+    }
+
+    @Subscribe
+    public void onKey(EventKey e){
+        callEvent("on_key", e);
+    }
+
+    @Subscribe
+    public void onMouseClick(EventMouseClick e) {
+        callEvent("on_mouseclick", e);
+    }
+
+    @Subscribe
+    public void onPacket(EventPacket e) {
+        callEvent("on_packet", e);
+    }
+
+    @Subscribe
+    public void onSendChatMessage(EventSendChatMessage e) {
+        callEvent("on_message_send", e);
+    }
+
+    @Subscribe
+    public void onUpdate(EventUpdate e) {
+        callEvent("on_update", e);
+    }
+
+    @Subscribe
+    public void onTick(EventTick e) {
+        callEvent("on_tick", e);
     }
 }

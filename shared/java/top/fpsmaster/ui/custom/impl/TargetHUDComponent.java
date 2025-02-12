@@ -28,7 +28,8 @@ public class TargetHUDComponent extends Component {
         super.draw(x, y);
 
         if (TargetDisplay.targetHUD.getMode() != 0) return;
-
+        if (TargetDisplay.target == null)
+            return;
         // Get the target or player if chat is open
         EntityPlayer target1 = TargetDisplay.target;
         if (Utility.mc.ingameGUI.getChatGUI().getChatOpen()) {
@@ -43,8 +44,8 @@ public class TargetHUDComponent extends Component {
 
         // Update animation based on target's health and last hit time
         animation = (TargetDisplay.target.isDead || (System.currentTimeMillis() - TargetDisplay.lastHit > 5000 && target1 != ProviderManager.mcProvider.getPlayer()))
-            ? (float) AnimationUtils.base(animation, 0.0, 0.1) 
-            : (float) AnimationUtils.base(animation, 80.0, 0.1);
+                ? (float) AnimationUtils.base(animation, 0.0, 0.1)
+                : (float) AnimationUtils.base(animation, 80.0, 0.1);
 
         // Health width
         float health = ((EntityPlayer) target1).getHealth();

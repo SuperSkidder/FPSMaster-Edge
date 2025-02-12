@@ -21,6 +21,10 @@ import top.fpsmaster.utils.math.animation.ColorAnimation;
 import top.fpsmaster.utils.math.animation.Type;
 import top.fpsmaster.utils.render.Render2DUtils;
 import top.fpsmaster.utils.render.ScaledGuiScreen;
+import top.fpsmaster.utils.render.StencilUtil;
+import top.fpsmaster.utils.render.shader.KawaseBloom;
+import top.fpsmaster.utils.render.shader.KawaseBlur;
+import top.fpsmaster.utils.render.shader.RoundedUtil;
 
 import java.awt.Color;
 import java.io.IOException;

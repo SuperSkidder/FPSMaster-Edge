@@ -74,7 +74,8 @@ public class ReachDisplay extends InterfaceModule {
                 }
             }
             double distance = new WrapperVec3(vec3d).distanceTo(vec3d3);
-            reach = (distance * 100) / 100;
+            reach = Double.parseDouble(String.format("%.2f", distance));
+
         }
     }
 }

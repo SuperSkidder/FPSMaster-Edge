@@ -69,7 +69,11 @@ public class ComponentsManager {
         int finalMouseY = mouseY;
         components.forEach(component -> {
             if (component.shouldDisplay()) {
-                component.display(finalMouseX, finalMouseY);
+                try {
+                    component.display(finalMouseX, finalMouseY);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 

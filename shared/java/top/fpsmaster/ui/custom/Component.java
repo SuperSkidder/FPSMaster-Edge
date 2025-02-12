@@ -14,10 +14,8 @@ import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 import top.fpsmaster.interfaces.ProviderManager;
-import top.fpsmaster.utils.render.shader.BlurBuffer;
 
 import java.awt.Color;
-import java.util.function.Consumer;
 
 public class Component {
     private float dragX = 0f;
@@ -194,7 +192,7 @@ public class Component {
     public void drawRect(float x, float y, float width, float height, Color color) {
         float scaledWidth = width * scale;
         float scaledHeight = height * scale;
-        BlurBuffer.blurArea(x, y, scaledWidth, scaledHeight, true);
+
         if (mod.bg.getValue()) {
             if (mod.rounded.getValue()) {
                 Render2DUtils.drawOptimizedRoundedRect(x, y, scaledWidth, scaledHeight, mod.roundRadius.getValue().intValue(), color.getRGB());

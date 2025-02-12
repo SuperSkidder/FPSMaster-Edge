@@ -26,7 +26,7 @@ public class ComboDisplay extends InterfaceModule {
     @Subscribe
     public void onTick(EventTick e) {
         if (ProviderManager.mcProvider.getPlayer() == null) return;
-        if (ProviderManager.mcProvider.getPlayer().hurtTime == 1 || (target != null && ProviderManager.utilityProvider.getDistanceToEntity(ProviderManager.mcProvider.getPlayer(), target) > 5)) {
+        if (ProviderManager.mcProvider.getPlayer().hurtTime == 1 || (target != null && ProviderManager.utilityProvider.getDistanceToEntity(ProviderManager.mcProvider.getPlayer(), target) > 7)) {
             combo = 0;
         }
         if (target != null && target.isEntityAlive() && target.hurtResistantTime == 19) {

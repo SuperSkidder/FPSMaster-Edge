@@ -459,6 +459,7 @@ clientsettings=客户端设置
 clientsettings.desc=调整客户端各类设置
 clientsettings.clickguikey=设置界面快捷键
 clientsettings.fixedscale=固定界面缩放比例
+clientsettings.blur=界面组件模糊
 
 dragonwings=龙翅膀
 dragonwings.desc=在自己身上龙翅膀

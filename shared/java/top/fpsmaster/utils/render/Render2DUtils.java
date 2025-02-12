@@ -13,6 +13,8 @@ import org.lwjgl.opengl.GL14;
 import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.awt.AWTUtils;
+import top.fpsmaster.utils.render.shader.KawaseBlur;
+import top.fpsmaster.utils.render.shader.RoundedUtil;
 import top.fpsmaster.wrapper.renderEngine.bufferbuilder.WrapperBufferBuilder;
 
 import java.awt.*;
@@ -214,5 +216,22 @@ public class Render2DUtils extends Utility {
         float guiWidth = sr.getScaledWidth() / 2f * scaleFactor;
         float guiHeight = sr.getScaledHeight() / 2f * scaleFactor;
         return new float[]{guiWidth, guiHeight};
+    }
+
+    public static void beginBlend() {
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
+    public static void endBlend() {
+        GlStateManager.disableBlend();
+    }
+
+    public static void drawBlurArea(int x, int y, int width, int height, int radius, Color color) {
+        StencilUtil.initStencilToWrite();
+        RoundedUtil.drawRound(x, y, width, height, radius, true, color);
+        StencilUtil.readStencilBuffer(1);
+        KawaseBlur.renderBlur(3, 3);
+        StencilUtil.uninitStencilBuffer();
     }
 }
