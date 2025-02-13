@@ -9,7 +9,8 @@
     "MixinNetworkManager",
     "MixinParticleManager",
     "MixinSplashScreen",
-    "ModelRendererMixin_BatchDrawing"
+    "ModelRendererMixin_BatchDrawing",
+    "TexturedQuadMixin_BatchDraw"
   ],
   "client": [
     "AbstractResourcePackMixin_DownscaleImages",
@@ -41,6 +42,7 @@
     "MixinServerSelectionList",
     "WorldClientMixin_AnimationTick",
     "accessor.FontRendererAccessor",
-    "accessor.GlStateManagerAccessor"
+    "accessor.GlStateManagerAccessor",
+    "accessor.WorldRendererAccessor"
   ]
 }
