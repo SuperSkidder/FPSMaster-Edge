@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import top.fpsmaster.features.impl.optimizes.Performance;
 import top.fpsmaster.font.FontRendererHook;
 import top.fpsmaster.modules.client.GlobalTextFilter;
 
@@ -31,48 +32,45 @@ public abstract class MixinFontRender {
     @Inject(method = "getStringWidth", at = @At("HEAD"), cancellable = true)
     public void getStringWidth(String text, CallbackInfoReturnable<Integer> cir) {
         text = GlobalTextFilter.filter(text);
-        cir.setReturnValue(this.patcher$fontRendererHook.getStringWidth(text));
+        if (Performance.fontOptimize.value) {
+            cir.setReturnValue(this.patcher$fontRendererHook.getStringWidth(text));
+        } else {
+            int i = 0;
+            boolean flag = false;
+
+            for (int j = 0; j < text.length(); ++j) {
+                char c0 = text.charAt(j);
+                int k = this.getCharWidth(c0);
+                if (k < 0 && j < text.length() - 1) {
+                    ++j;
+                    c0 = text.charAt(j);
+                    if (c0 != 'l' && c0 != 'L') {
+                        if (c0 == 'r' || c0 == 'R') {
+                            flag = false;
+                        }
+                    } else {
+                        flag = true;
+                    }
+
+                    k = 0;
+                }
+
+                i += k;
+                if (flag && k > 0) {
+                    ++i;
+                }
+            }
+
+            cir.setReturnValue(i);
+        }
     }
 
-    /**
-     * @author SuperSkidder
-     * @reason NameProtect
-     */
-//    @Overwrite
-//    public int getStringWidth(String text) {
-//        text = GlobalTextFilter.filter(text);
-//        int i = 0;
-//        boolean flag = false;
-//
-//        for(int j = 0; j < text.length(); ++j) {
-//            char c0 = text.charAt(j);
-//            int k = this.getCharWidth(c0);
-//            if (k < 0 && j < text.length() - 1) {
-//                ++j;
-//                c0 = text.charAt(j);
-//                if (c0 != 'l' && c0 != 'L') {
-//                    if (c0 == 'r' || c0 == 'R') {
-//                        flag = false;
-//                    }
-//                } else {
-//                    flag = true;
-//                }
-//
-//                k = 0;
-//            }
-//
-//            i += k;
-//            if (flag && k > 0) {
-//                ++i;
-//            }
-//        }
-//
-//        return i;
-//    }
     @Inject(method = "renderStringAtPos", at = @At("HEAD"), cancellable = true)
     private void patcher$useOptimizedRendering(String text, boolean shadow, CallbackInfo ci) {
-        if (this.patcher$fontRendererHook.renderStringAtPos(text, shadow)) {
-            ci.cancel();
+        if (Performance.fontOptimize.value) {
+            if (this.patcher$fontRendererHook.renderStringAtPos(text, shadow)) {
+                ci.cancel();
+            }
         }
     }
 

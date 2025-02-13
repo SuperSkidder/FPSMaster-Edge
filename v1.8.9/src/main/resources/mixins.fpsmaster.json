@@ -8,9 +8,12 @@
     "MixinEntityPlayer",
     "MixinNetworkManager",
     "MixinParticleManager",
-    "MixinSplashScreen"
+    "MixinSplashScreen",
+    "ModelRendererMixin_BatchDrawing"
   ],
   "client": [
+    "AbstractResourcePackMixin_DownscaleImages",
+    "ChunkRenderDispatcherMixin_LimitUpdates",
     "EntityFXMixin_StaticParticleColor",
     "MixinAbstractClientPlayer",
     "MixinChatLine",
@@ -36,6 +39,7 @@
     "MixinRenderManager",
     "MixinRenderTNTPrimed",
     "MixinServerSelectionList",
+    "WorldClientMixin_AnimationTick",
     "accessor.FontRendererAccessor",
     "accessor.GlStateManagerAccessor"
   ]

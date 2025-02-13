@@ -1,5 +1,6 @@
 package top.fpsmaster.features.impl.optimizes;
 
+import jdk.jfr.events.ActiveSettingEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -22,13 +23,18 @@ public class Performance extends Module {
     public static BooleanSetting fastLoad = new BooleanSetting("FastLoad", true);
     public static BooleanSetting fontOptimize = new BooleanSetting("FontOptimize", true);
     public static BooleanSetting staticParticleColor = new BooleanSetting("StaticParticleColor", true);
+    public static BooleanSetting limitChunks = new BooleanSetting("LimitChunks", true);
+    public static BooleanSetting batchModelRendering = new BooleanSetting("BatchModelRendering", true);
+    public static BooleanSetting lowAnimationTick = new BooleanSetting("LowAnimationTick", true);;
+
+    public static NumberSetting chunkUpdateLimit = new NumberSetting("ChunkUpdateLimit", 50, 0, 250, 1);
     public static NumberSetting fpsLimit = new NumberSetting("FPSLimit", 30, 0, 360, 1);
     public static NumberSetting entityLimit = new NumberSetting("EntityLimit", 200, 0, 800, 1);
     public static NumberSetting particlesLimit = new NumberSetting("ParticlesLimit", 100, 0, 2000, 1);
 
     public Performance() {
         super("Performance", Category.OPTIMIZE);
-        addSettings(ignoreStands, entitiesOptimize, fastLoad, entityLimit, fpsLimit, particlesLimit, fontOptimize, staticParticleColor);
+        addSettings(ignoreStands, entitiesOptimize, fastLoad, entityLimit, fpsLimit, particlesLimit, fontOptimize, staticParticleColor,limitChunks,chunkUpdateLimit);
     }
 
 

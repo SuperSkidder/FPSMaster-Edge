@@ -20,7 +20,7 @@ public class WrapperPerformance {
         double cameraX = player.posX; // 获取玩家的 X 坐标
         double cameraY = player.posY + player.getEyeHeight(); // 获取玩家的 Y 坐标，并加上眼睛的高度
         double cameraZ = player.posZ; // 获取玩家的 Z 坐标
-        if ((!entity.isLastCullingVisible() || timePassedSinceLastCheck >= 2000L)) {
+        if ((!entity.isLastCullingVisible() || timePassedSinceLastCheck >= 3000L)) {
             double distance = Math.max(Math.abs(entity.getMinX() - cameraX), Math.max(Math.abs(entity.getMinY() - cameraY), Math.abs(entity.getMinZ() - cameraZ)));
             distance = Math.max(0.0D, distance - 5.0D);
             int interval = 1500;
