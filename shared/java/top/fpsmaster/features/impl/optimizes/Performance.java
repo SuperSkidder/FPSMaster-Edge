@@ -20,13 +20,15 @@ public class Performance extends Module {
     public static BooleanSetting ignoreStands = new BooleanSetting("IgnoreStands", true);
     public static BooleanSetting entitiesOptimize = new BooleanSetting("EntitiesOptimize", true);
     public static BooleanSetting fastLoad = new BooleanSetting("FastLoad", true);
+    public static BooleanSetting fontOptimize = new BooleanSetting("FontOptimize", true);
+    public static BooleanSetting staticParticleColor = new BooleanSetting("StaticParticleColor", true);
     public static NumberSetting fpsLimit = new NumberSetting("FPSLimit", 30, 0, 360, 1);
     public static NumberSetting entityLimit = new NumberSetting("EntityLimit", 200, 0, 800, 1);
     public static NumberSetting particlesLimit = new NumberSetting("ParticlesLimit", 100, 0, 2000, 1);
 
     public Performance() {
         super("Performance", Category.OPTIMIZE);
-        addSettings(ignoreStands, entitiesOptimize, fastLoad, entityLimit, fpsLimit, particlesLimit);
+        addSettings(ignoreStands, entitiesOptimize, fastLoad, entityLimit, fpsLimit, particlesLimit, fontOptimize, staticParticleColor);
     }
 
 
