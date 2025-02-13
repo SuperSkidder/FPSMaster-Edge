@@ -19,7 +19,7 @@ public class Performance extends Module {
     public static boolean using = false;
 
     public static BooleanSetting ignoreStands = new BooleanSetting("IgnoreStands", true);
-    public static BooleanSetting entitiesOptimize = new BooleanSetting("EntitiesOptimize", true);
+    public static BooleanSetting entitiesOptimize = new BooleanSetting("EntitiesOptimize", false);
     public static BooleanSetting fastLoad = new BooleanSetting("FastLoad", true);
     public static BooleanSetting fontOptimize = new BooleanSetting("FontOptimize", true);
     public static BooleanSetting staticParticleColor = new BooleanSetting("StaticParticleColor", true);

@@ -130,7 +130,8 @@ tasks.withType(Jar::class) {
 
         // If you don't want mixins, remove these lines
         this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
-        this["MixinConfigs"] = "mixins.$modid.json"
+        this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
+        this["FMLAT"] = "patcher_at.cfg"
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
