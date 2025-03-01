@@ -39,7 +39,11 @@ public class TargetHUDComponent extends Component {
         if (target1 == null) return;
 
         // Set width and height
-        width = (30 + FPSMaster.fontManager.s16.getStringWidth(((Entity) target1).getDisplayName().getFormattedText()));
+        String name = ((Entity) target1).getDisplayName().getFormattedText();
+        if (name.length() > 12) {
+            name = name.substring(0, 10) + "..";
+        }
+        width = (30 + FPSMaster.fontManager.s16.getStringWidth(name));
         height = 30f;
 
         // Update animation based on target's health and last hit time
@@ -65,7 +69,7 @@ public class TargetHUDComponent extends Component {
         if (animation > 1) {
             Render2DUtils.drawOptimizedRoundedRect(x, y, width, height, new Color(0, 0, 0, (int) animation));
             Render2DUtils.drawOptimizedRoundedRect(x, y, healthWidth * width, height, colorAnimation.getColor());
-            FPSMaster.fontManager.s16.drawStringWithShadow(((Entity) target1).getDisplayName().getFormattedText(), x + 27, y + 5, -1);
+            FPSMaster.fontManager.s16.drawStringWithShadow(name, x + 27, y + 5, -1);
             Render2DUtils.drawPlayerHead(target1, x + 5, y + 5, 20, 20);
         }
     }
