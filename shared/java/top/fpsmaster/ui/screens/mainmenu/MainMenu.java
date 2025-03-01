@@ -2,6 +2,7 @@ package top.fpsmaster.ui.screens.mainmenu;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiOptions;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import top.fpsmaster.FPSMaster;
@@ -10,6 +11,10 @@ import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.ui.mc.GuiMultiplayer;
 import top.fpsmaster.ui.screens.account.GuiWaiting;
 import top.fpsmaster.ui.screens.oobe.GuiLogin;
+import top.fpsmaster.utils.math.MathUtils;
+import top.fpsmaster.utils.math.animation.Animation;
+import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.animation.Type;
 import top.fpsmaster.utils.render.Render2DUtils;
 import top.fpsmaster.utils.render.ScaledGuiScreen;
 import top.fpsmaster.wrapper.TextFormattingProvider;
@@ -29,6 +34,8 @@ public class MainMenu extends ScaledGuiScreen {
     private String info = "Failed to get version update";
     private String welcome = "Failed to get version update";
     private boolean needUpdate = false;
+
+    private static Animation startAnimation = new Animation();
 
 
     public MainMenu() {
@@ -57,6 +64,9 @@ public class MainMenu extends ScaledGuiScreen {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         Render2DUtils.drawBackground((int) guiWidth, (int) guiHeight, mouseX, mouseY, partialTicks, (int) zLevel);
+        startAnimation.start(0, 1.5, 2f, Type.EASE_IN_OUT_QUAD);
+        startAnimation.update();
+
 
         // Display user info and avatar
         float stringWidth = FPSMaster.fontManager.s16.getStringWidth(mc.getSession().getUsername());
@@ -70,7 +80,6 @@ public class MainMenu extends ScaledGuiScreen {
         }
         Render2DUtils.drawImage(new ResourceLocation("client/gui/screen/avatar.png"), 14f, 15f, 10f, 10f, -1);
         FPSMaster.fontManager.s16.drawString(mc.getSession().getUsername(), 28, 16, Color.WHITE.getRGB());
-        Render2DUtils.drawImage(new ResourceLocation("client/gui/logo.png"), guiWidth / 2f - 153 / 4f, guiHeight / 2f - 100, 153 / 2f, 67f, -1);
 
         // Position buttons and render them
         float x = guiWidth / 2f - 50;
@@ -105,6 +114,9 @@ public class MainMenu extends ScaledGuiScreen {
         Render2DUtils.drawRect(0f, 0f, 0f, 0f, -1);
         FPSMaster.fontManager.s16.drawString(FPSMaster.COPYRIGHT, 4, guiHeight - 14, Color.WHITE.getRGB());
         FPSMaster.fontManager.s16.drawString(FPSMaster.CLIENT_NAME + " Client " + FPSMaster.CLIENT_VERSION + " (Minecraft " + FPSMaster.EDITION + ")", 4, guiHeight - 28, Color.WHITE.getRGB());
+        Render2DUtils.drawRect(0, 0, width, height, new Color(20, 20, 20, (int) (255 - 255 * Math.max(0, (float) startAnimation.value - 0.5f))));
+        Render2DUtils.drawImage(new ResourceLocation("client/gui/logo.png"), guiWidth / 2f - 153 / 4f, guiHeight / 2f - 30 - 70 * ((float)Math.min(startAnimation.value, 1)), 153 / 2f, 67f, -1);
+
     }
 
     @Override

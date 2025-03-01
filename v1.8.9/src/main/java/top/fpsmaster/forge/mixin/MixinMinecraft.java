@@ -129,9 +129,12 @@ public abstract class MixinMinecraft implements IMinecraft {
         GlStateManager.resetColor();
 
         Gui.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(20, 20, 20).getRGB());
-        float width = 400;
-        float height = 250;
-        Render2DUtils.drawImage(new ResourceLocation("client/textures/ui/splash.png"), sr.getScaledWidth() / 2f - width / 2, sr.getScaledHeight() / 2f - height / 2, width, height, -1);
+
+        Render2DUtils.drawImage(new ResourceLocation("client/gui/logo.png"), sr.getScaledWidth() / 2f - 153 / 4f, sr.getScaledHeight() / 2f - 30, 153 / 2f, 67f, -1);
+
+//        float width = 400;
+//        float height = 250;
+//        Render2DUtils.drawImage(new ResourceLocation("client/textures/ui/splash.png"), sr.getScaledWidth() / 2f - width / 2, sr.getScaledHeight() / 2f - height / 2, width, height, -1);
         GlStateManager.disableLighting();
         GlStateManager.disableFog();
         framebuffer.unbindFramebuffer();
