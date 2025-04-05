@@ -44,40 +44,32 @@ object JLayerHelper {
     }
 
     fun updateLoudness() {
-        if (clip == null)
-            return
-        if (audIn == null) {
-            return
-        }
-        val totalTime = clip!!.microsecondLength
-        val currentTime = (totalTime * progress).toLong()
+        if (clip == null || audIn == null) return
 
-        val format = audIn?.format
-        if (format!!.getEncoding() != AudioFormat.Encoding.PCM_SIGNED ||
-            format.getSampleSizeInBits() != 16
-        ) {
-            println("Unsupported audio format: $format");
+        val format = audIn!!.format
+        if (format.encoding != AudioFormat.Encoding.PCM_SIGNED || format.sampleSizeInBits != 16) {
+            println("Unsupported format: $format")
             return
         }
 
-        val targetTime: Float = (currentTime / 1000 / 1000f)
+        val currentTimeSec = clip!!.microsecondPosition / 1_000_000.0
+        val fftSize = 1024
+        val fftWindowDuration = fftSize / format.sampleRate
 
-        val segment = getAudioSegment(
+        val audioSegment = getAudioSegment(
             audioBytes,
             format.sampleRate,
             format.frameSize,
-            targetTime,
-            1f
+            (currentTimeSec - fftWindowDuration / 2).toFloat(),
+            fftWindowDuration.toFloat()
         )
 
-        // 进行 FFT 分析
-        val fftData = performFFT(segment)
-
-        // 计算振幅（响度）
+        val fftData = performFFT(audioSegment)
         val amplitudes = computeAmplitude(fftData)
 
         loudnessCurve = amplitudes
     }
+
 
     @Throws(IOException::class)
     fun readAudioData(audioInputStream: AudioInputStream): ByteArray {
@@ -94,56 +86,61 @@ object JLayerHelper {
         startSecond: Float,
         durationInSeconds: Float
     ): ByteArray {
-        val startSample = startSecond * sampleRate.toInt()
-        val numSamples = durationInSeconds * sampleRate.toInt()
-        val startByte: Int = (startSample * bytesPerFrame).toInt()
-        val numBytes: Int = (numSamples * bytesPerFrame).toInt()
+        val startSample = (startSecond * sampleRate).toInt().coerceAtLeast(0)
+        val numSamples = (durationInSeconds * sampleRate).toInt()
 
-        return audioData.copyOfRange(startByte, startByte + numBytes)
+        val startByte = startSample * bytesPerFrame
+        val numBytes = numSamples * bytesPerFrame
+
+        val endByte = (startByte + numBytes).coerceAtMost(audioData.size)
+
+        return audioData.copyOfRange(startByte, endByte)
     }
 
 
-    fun performFFT(buffer: ByteArray): DoubleArray {
-        val audioData = DoubleArray(buffer.size / 2)
-        for (i in audioData.indices) {
-            audioData[i] = buffer[i] / 128.0
+
+    private fun performFFT(buffer: ByteArray): DoubleArray {
+        val numSamples = buffer.size / 2
+        val audioData = DoubleArray(numSamples)
+
+        // Convert byte pairs (little-endian) to signed 16-bit samples
+        for (i in 0 until numSamples) {
+            val low = buffer[i * 2].toInt() and 0xff
+            val high = buffer[i * 2 + 1].toInt()
+            val sample = (high shl 8) or low
+            audioData[i] = sample / 32768.0 // Normalize to [-1, 1]
         }
 
-        // 执行傅里叶变换
-        val fft = DoubleFFT_1D(1024)
-        fft.realForward(audioData)
+        // Zero-padding to nearest power of 2 (optional, or cut to fixed size like 1024)
+        val fftSize = 1024
+        val paddedData = DoubleArray(fftSize)
+        for (i in 0 until min(fftSize, audioData.size)) {
+            paddedData[i] = audioData[i]
+        }
 
-        return audioData
+        val fft = DoubleFFT_1D(fftSize)
+        fft.realForward(paddedData)
+
+        return paddedData
     }
+
 
 
     fun computeAmplitude(fftData: DoubleArray): DoubleArray {
-        val numFrequencies = fftData.size / 2
-        val numBlocks = 300
-        val amplitudes = DoubleArray(numFrequencies)
+        val n = fftData.size
+        val amplitudes = DoubleArray(n / 2)
 
-
-        // 归一化处理
-        val min = amplitudes.minOrNull() ?: 0.0
-        val max = amplitudes.maxOrNull() ?: 1.0
-        val normalizedAmplitudes = amplitudes.map { amplitude ->
-            (amplitude - min) / (max - min)
-        }.toDoubleArray()
-
-        // 每个块的大小
-        val blockSize = amplitudes.size / numBlocks
-        val blockAverages = DoubleArray(numBlocks)
-
-        // 分块并计算均值
-        for (block in 0 until numBlocks) {
-            val startIdx = block * blockSize
-            val endIdx = if (block == numBlocks - 1) normalizedAmplitudes.size else startIdx + blockSize
-            val blockSum = normalizedAmplitudes.slice(startIdx until endIdx).sum()
-            blockAverages[block] = blockSum / (endIdx - startIdx)
+        for (i in amplitudes.indices) {
+            val real = fftData[2 * i]
+            val imag = if (2 * i + 1 < fftData.size) fftData[2 * i + 1] else 0.0
+            amplitudes[i] = sqrt(real * real + imag * imag)
         }
 
-        return blockAverages
+        // 简单归一化
+        val maxAmp = amplitudes.maxOrNull() ?: 1.0
+        return amplitudes.map { it / maxAmp }.toDoubleArray()
     }
+
 
     fun setVolume(vol: Float) {
         var vol = vol

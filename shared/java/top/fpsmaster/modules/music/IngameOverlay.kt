@@ -27,20 +27,30 @@ object IngameOverlay {
                 for (i in 0 until MusicPlayer.getCurve()!!.size) {
                     smoothCurve?.set(i, base(smoothCurve!![i], MusicPlayer.getCurve()?.get(i) ?: return, 0.15).toFloat().toDouble())
                 }
-                for (musicMagnitude in MusicPlayer.getCurve()!!) {
-                    var musicMagnitude: Double = musicMagnitude
-                    if (musicMagnitude > 0.1f) {
-                        Render2DUtils.drawRect(
-                            x,
-                            sr.scaledHeight - musicMagnitude.toFloat()*100,
-                            width,
-                            musicMagnitude.toFloat(),
-                            MusicOverlay.color.rGB
-                        )
-                    }
-                    x += width
-                    if (x > (sr.scaledWidth / 2f)) break
+                val curve = MusicPlayer.getCurve() ?: return
+                val fftSize = 1024
+                val sampleRate = 44100.0
+                val frequencies = DoubleArray(fftSize / 2) { i -> i * sampleRate / fftSize }
+
+                val screenWidth = sr.scaledWidth.toFloat()
+                val screenHeight = sr.scaledHeight.toFloat()
+
+                for (i in curve.indices) {
+                    val freq = frequencies[i]
+                    val magnitude = curve[i].coerceIn(0.0, 1.0)
+
+                    val x = (freq / 22050.0 * screenWidth).toFloat()
+                    val height = (magnitude * 100f * MusicOverlay.amplitude.value.toFloat()).toFloat()
+
+                    Render2DUtils.drawRect(
+                        x,
+                        screenHeight - height,
+                        2f,
+                        height,
+                        MusicOverlay.color.rGB
+                    )
                 }
+
             }
         }
     }
