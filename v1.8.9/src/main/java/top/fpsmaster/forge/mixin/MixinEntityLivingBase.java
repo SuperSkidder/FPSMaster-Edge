@@ -46,7 +46,9 @@ public abstract class MixinEntityLivingBase extends MixinEntity {
 
     @Inject(method = "render", at = @At("HEAD"))
     public void render(float partialTicks, CallbackInfo ci) {
-        GlStateManager.enableLighting();
-        GlStateManager.setLighting(0.8f, 0.8f, 0.8f); // 设置光照强度
+        // 启用光照
+        GlStateManager.glEnable(GL11.GL_LIGHTING);
+        // 设置光照强度
+        GlStateManager.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, 1);
     }
 }
