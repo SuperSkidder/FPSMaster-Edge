@@ -1,16 +1,14 @@
-[
-  {
-    "modid": "fpsmaster",
-    "name": "FPSMaster Mod V4",
-    "description": "FPSMaster PVP Client.",
-    "version": "v4",
-    "mcversion": "1.8.9",
-    "url": "https://fpsmaster.top",
-    "updateUrl": "",
-    "authorList": ["SuperSkidder"],
-    "credits": "",
-    "logoFile": "fpsmaster:textures/icon.png"
-    "screenshots": [],
-    "dependencies": []
-  }
-]
+{
+  "modid": "fpsmaster",
+  "name": "FPSMaster Mod V4",
+  "description": "FPSMaster PVP Client.",
+  "version": "v4",
+  "mcversion": "1.8.9",
+  "url": "https://fpsmaster.top",
+  "updateUrl": "",
+  "authorList": ["SuperSkidder"],
+  "credits": "",
+  "logoFile": "assets/fpsmaster/textures/icon.png",  
+  "screenshots": [],
+  "dependencies": []
+}
