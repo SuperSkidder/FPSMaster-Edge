@@ -9,6 +9,10 @@
 	"updateUrl": "https://fpsmaster.top/download",
 	"authorList": [
 	  "SuperSkidder"
+	  "shazi_awa"
+	  "cnbrand"
+	  "Kizurer"
+	  "vlouboos"
 	],
 	"credits": "",
 	"logoFile": "assets/fpsmaster/textures/icon.png",
@@ -16,3 +20,4 @@
 	"dependencies": []
   }
 ]
+#客户端作者采用github记录的贡献名单
