@@ -38,6 +38,8 @@ public class InventoryDisplayComponent extends Component {
                 int x1 = (int) (x + count * 18);
                 int y1 = (int) (y + linecount * 20);
 
+                GlStateManager.disableCull();
+                GlStateManager.disableBlend();
                 RenderHelper.enableGUIStandardItemLighting();
                 mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, x1, y1);
                 mc.getRenderItem().renderItemOverlays(ProviderManager.mcProvider.getFontRenderer(), itemStack, x1, y1);
