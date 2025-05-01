@@ -175,6 +175,11 @@ performance.screenshot=截图方式
 performance.screenshot.fast=快速
 performance.screenshot.vanilla=原版
 performance.blur=界面高斯模糊
+performance.fontoptimize=字体优化
+performance.staticparticlecolor=静态粒子颜色
+performance.limitchunks=限制区块加载
+performance..chunkupdatelimit=区块更新限制
+
 
 fullbright=保持亮度
 fullbright.desc=保持亮度
@@ -226,6 +231,7 @@ oldanimations.noshield=不显示盾牌
 oldanimations.oldrod=旧鱼竿
 oldanimations.oldbow=旧弓
 oldanimations.oldswing=旧挥动
+oldanimations.blockswing=格挡挥动
 oldanimations.oldblock=旧格挡
 oldanimations.olddamage=旧伤害动画
 oldanimations.oldusing=旧使用动画
