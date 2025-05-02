@@ -2,11 +2,9 @@ package top.fpsmaster.utils.thirdparty.microsoft;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import net.minecraft.util.Session;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -56,7 +54,7 @@ public class MicrosoftLogin {
                 map.put("grant_type", "authorization_code");
                 map.put("redirect_uri", "http://127.0.0.1:17342");
 
-                String oauthResponse = postMap("https://login.live.com/oauth20_token.srf", map);
+                String oauthResponse = postMap(map);
                 String accessToken = gsonBuilder.create().fromJson(oauthResponse, JsonObject.class).get("access_token").getAsString();
 
                 Map<String, Object> map2 = new HashMap<>();
@@ -74,7 +72,7 @@ public class MicrosoftLogin {
                 String xblToken = xblJson.get("Token").getAsString();
                 String xstsResponse = authorizeWithXsts(gsonBuilder, xblToken);
 
-                String xstsToken = new JsonObject().getAsJsonObject("Token").getAsString();
+                String xstsToken = gsonBuilder.create().fromJson(xstsResponse, JsonObject.class).get("Token").getAsString();
                 String xstsUserHash = getXstsUserHash(xstsResponse);
 
                 JsonObject properties = new JsonObject();
@@ -86,13 +84,13 @@ public class MicrosoftLogin {
                 // Get profile
                 Map<String, String> profileMap = new HashMap<>();
                 profileMap.put("Authorization", "Bearer " + accessToken);
-                String profile = get("https://api.minecraftservices.com/minecraft/profile", profileMap);
+                String profile = getProfile(profileMap);
                 JsonObject profileJson = gsonBuilder.create().fromJson(profile, JsonObject.class);
                 String uuid = profileJson.get("id").getAsString();
                 String name = profileJson.get("name").getAsString();
 
                 ProviderManager.mcProvider.setSession(new Session(name, uuid, accessToken, "mojang"));
-                GuiWaiting.logged = true;
+                GuiWaiting.loggedIn = true;
             });
 
             httpServer.setExecutor(null);
@@ -111,7 +109,7 @@ public class MicrosoftLogin {
             map.put("redirect_uri", "http://127.0.0.1:17342");
             map.put("scope", "XboxLive.signin%20XboxLive.offline_access");
 
-            String url = buildUrl("https://login.live.com/oauth20_authorize.srf", map);
+            String url = buildOAuthUrl(map);
             start();
             Desktop.getDesktop().browse(URI.create(url));
         } catch (IOException e) {
@@ -120,9 +118,9 @@ public class MicrosoftLogin {
         return flag.get();
     }
 
-    private static String postMap(String url, Map<String, String> param) {
+    private static String postMap(Map<String, String> param) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpPost httpPost = new HttpPost(url);
+            HttpPost httpPost = new HttpPost("https://login.live.com/oauth20_token.srf");
             if (param != null) {
                 List<NameValuePair> paramList = new ArrayList<>();
                 for (Map.Entry<String, String> entry : param.entrySet()) {
@@ -140,9 +138,9 @@ public class MicrosoftLogin {
             return "";
         }
 
-    private static String get(String url, Map<String, String> headers) {
+    private static String getProfile(Map<String, String> headers) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet(url);
+            HttpGet httpGet = new HttpGet("https://api.minecraftservices.com/minecraft/profile");
             RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectTimeout(35000)
                 .setConnectionRequestTimeout(35000)
@@ -182,8 +180,8 @@ public class MicrosoftLogin {
             return "";
         }
 
-    private static String buildUrl(String url, Map<String, String> map) {
-        StringBuilder sb = new StringBuilder(url);
+    private static String buildOAuthUrl(Map<String, String> map) {
+        StringBuilder sb = new StringBuilder("https://login.live.com/oauth20_authorize.srf");
         if (!map.isEmpty()) {
             sb.append("?");
             for (Map.Entry<String, String> entry : map.entrySet()) {

@@ -12,8 +12,7 @@ import java.awt.*;
 import java.io.IOException;
 
 public class GuiWaiting extends GuiScreen {
-
-    private boolean isLogged = false;
+    public static boolean loggedIn = false;
 
     @Override
     public void initGui() {
@@ -49,9 +48,9 @@ public class GuiWaiting extends GuiScreen {
             FPSMaster.theme.getPrimary().getRGB()
         );
 
-        // Check if logged in and switch to main menu
-        if (isLogged) {
-            isLogged = false;
+        // Check if logged in and switch to the main menu
+        if (loggedIn) {
+            loggedIn = false;
             Minecraft.getMinecraft().displayGuiScreen(new GuiMainMenu());
         }
     }
@@ -63,6 +62,4 @@ public class GuiWaiting extends GuiScreen {
             Minecraft.getMinecraft().displayGuiScreen(new GuiMainMenu());
         }
     }
-
-    public static boolean logged = false;
 }
