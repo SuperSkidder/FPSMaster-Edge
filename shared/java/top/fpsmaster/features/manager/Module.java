@@ -62,9 +62,9 @@ public class Module {
     }
 
     public void set(boolean state) {
-        isEnabled = state;
         try {
-            if (state) {
+            if (state && !isEnabled) {
+                isEnabled = true;
                 onEnable();
                 if (Minecraft.getMinecraft() != null && ProviderManager.mcProvider.getPlayer() != null) {
                     NotificationManager.addNotification(
@@ -76,7 +76,8 @@ public class Module {
                             2f
                     );
                 }
-            } else {
+            } else if (!state && isEnabled){
+                isEnabled = false;
                 onDisable();
                 if (Minecraft.getMinecraft() != null && ProviderManager.mcProvider.getPlayer() != null) {
                     NotificationManager.addNotification(

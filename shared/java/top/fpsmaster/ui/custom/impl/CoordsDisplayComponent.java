@@ -18,7 +18,7 @@ public class CoordsDisplayComponent extends Component {
     @Override
     public void draw(float x, float y) {
         super.draw(x, y);
-        String s = String.format("X:%d Y:%d Z:%d", 
+        String s = String.format("X:%d Y:%d Z:%d",
                 (int) ProviderManager.mcProvider.getPlayer().posX,
                 (int) ProviderManager.mcProvider.getPlayer().posY,
                 (int) ProviderManager.mcProvider.getPlayer().posZ);
@@ -41,8 +41,8 @@ public class CoordsDisplayComponent extends Component {
     }
 
     private @NotNull String getString() {
-        int restHeight = (int) ((CoordsDisplay) mod).limitDisplayY.value - (int) ProviderManager.mcProvider.getPlayer().posY;
-        String yStr = "";
+        int restHeight = ((CoordsDisplay) mod).limitDisplayY.value.intValue() - (int) ProviderManager.mcProvider.getPlayer().posY;
+        String yStr;
 
         // color
         if (restHeight < 5) {

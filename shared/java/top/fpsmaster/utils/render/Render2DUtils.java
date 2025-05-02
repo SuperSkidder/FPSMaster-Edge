@@ -122,10 +122,8 @@ public class Render2DUtils extends Utility {
     }
 
     public static void drawRect(float x, float y, float width, float height, int color) {
-        GlStateManager.disableBlend();
-
-        glEnable(GL_BLEND);
-        glDisable(GL_TEXTURE_2D);
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_LINE_SMOOTH);
         glColor(color);
@@ -135,11 +133,9 @@ public class Render2DUtils extends Utility {
         GL11.glVertex2d(x + width, y + height);
         GL11.glVertex2d(x + width, y);
         GL11.glEnd();
-        glEnable(GL_TEXTURE_2D);
-        glDisable(GL_BLEND);
         glDisable(GL_LINE_SMOOTH);
-        GlStateManager.enableBlend();
-
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
     }
 
     public static Color intToColor(Integer c) {
