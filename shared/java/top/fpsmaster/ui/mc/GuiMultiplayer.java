@@ -261,7 +261,8 @@ public class GuiMultiplayer extends ScaledGuiScreen {
             serverListDisplay.addAll(serverListRecommended);
         }
 
-        int y = 80;
+        float y = 70 + scrollContainer.getScroll();
+
         for (ServerListEntry server : serverListDisplay) {
             if (server.getServerData() == null) {
                 return;
@@ -278,7 +279,7 @@ public class GuiMultiplayer extends ScaledGuiScreen {
                     }
                 }
             }
-            y += 54;
+            y += 58;
         }
 
 
