@@ -172,11 +172,11 @@ public class MainPanel extends ScaledGuiScreen {
             );
         }
 
-        FPSMaster.fontManager.s24.drawStringWithShadow(FPSMaster.i18n.get("category." + curType.name().toLowerCase(Locale.getDefault())), x + leftWidth + 10, y + 10, -1);
+        FPSMaster.fontManager.s24.drawStringWithShadow(FPSMaster.i18n.get("category." + curType.name().toLowerCase(Locale.getDefault())), x + leftWidth + 10, y + 9, -1);
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         Render2DUtils.doGlScissor(
-                x, y + 25, width,
+                x, y + 22, width,
                 (height - 30),
                 scaleFactor
         );
@@ -232,7 +232,7 @@ public class MainPanel extends ScaledGuiScreen {
 
         Render2DUtils.drawBlurArea(x, (int) (y + height / 2 - 70), (int) categoryAnimation, 140, 10, backgroundColor.getColor());
         Render2DUtils.drawOptimizedRoundedRect(
-                x,
+                x + categoryAnimation / 50f,
                 y + height / 2 - 70,
                 categoryAnimation,
                 140,
@@ -242,7 +242,7 @@ public class MainPanel extends ScaledGuiScreen {
 
         float my = y + 60;
         Render2DUtils.drawOptimizedRoundedRect(
-                x + 5,
+                x + 5 + categoryAnimation / 50f,
                 selection - 6,
                 categoryAnimation - 8,
                 22f,
@@ -272,7 +272,7 @@ public class MainPanel extends ScaledGuiScreen {
             }
 
             m.render(
-                    x,
+                    x + categoryAnimation / 50f,
                     my,
                     leftWidth - 10,
                     20f,
