@@ -380,6 +380,7 @@ targetdisplay.targethud.simple=简单
 targetdisplay.espcolor=ESP颜色
 targetdisplay.roundradius=圆角半径
 targetdisplay.background=背景
+targetdisplay.omitname=省略过长的名字
 
 minimizedbobbing=最小摇晃
 minimizedbobbing.desc=停止全局的摇晃

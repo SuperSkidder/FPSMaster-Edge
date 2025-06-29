@@ -40,7 +40,8 @@ public class TargetHUDComponent extends Component {
 
         // Set width and height
         String name = ((Entity) target1).getDisplayName().getFormattedText();
-        if (name.length() > 12) {
+
+        if (name.length() > 12 && TargetDisplay.omit.getValue()) {
             name = name.substring(0, 10) + "..";
         }
         width = (30 + FPSMaster.fontManager.s16.getStringWidth(name));

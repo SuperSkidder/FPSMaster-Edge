@@ -9,6 +9,7 @@ import top.fpsmaster.event.events.EventAttack;
 import top.fpsmaster.event.events.EventRender3D;
 import top.fpsmaster.features.impl.InterfaceModule;
 import top.fpsmaster.features.manager.Category;
+import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.features.settings.impl.ColorSetting;
 import top.fpsmaster.features.settings.impl.ModeSetting;
 import top.fpsmaster.interfaces.ProviderManager;
@@ -19,14 +20,14 @@ import java.util.List;
 public class TargetDisplay extends InterfaceModule {
     private ModeSetting targetESP = new ModeSetting("TargetESP", 0, "glow", "none");
     private ColorSetting espColor = new ColorSetting("EspColor", new Color(255, 255, 255, 255), () -> !targetESP.isMode("none"));
-
     public static ModeSetting targetHUD = new ModeSetting("TargetHUD", 0, "simple", "none");
+    public static BooleanSetting omit = new BooleanSetting("OmitName", true);
     public static EntityPlayer target;
     public static long lastHit;
 
     public TargetDisplay() {
         super("TargetDisplay", Category.Interface);
-        addSettings(targetESP, targetHUD, espColor);
+        addSettings(targetESP, targetHUD, espColor, omit);
     }
 
     @Subscribe
