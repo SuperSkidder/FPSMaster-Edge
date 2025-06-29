@@ -112,7 +112,6 @@ public class ModuleManager {
         modules.add(new PingDisplay());
         modules.add(new CoordsDisplay());
         modules.add(new ModsList());
-        modules.add(new ClientCommand());
         modules.add(new MiniMap());
         modules.add(new DirectionDisplay());
         modules.add(new DamageIndicator());

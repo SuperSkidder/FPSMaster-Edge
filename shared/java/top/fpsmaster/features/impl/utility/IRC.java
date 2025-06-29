@@ -3,6 +3,7 @@ package top.fpsmaster.features.impl.utility;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventTick;
+import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
@@ -42,6 +43,7 @@ public class IRC extends Module {
             FPSMaster.INSTANCE.wsClient = WsClient.start("wss://service.fpsmaster.top/");
             Utility.sendClientDebug("尝试连接");
         } else if (FPSMaster.INSTANCE.wsClient != null && FPSMaster.INSTANCE.wsClient.isClosed() && !FPSMaster.INSTANCE.wsClient.isOpen()) {
+            FPSMaster.INSTANCE.wsClient.close();
             FPSMaster.INSTANCE.wsClient.connect();
             Utility.sendClientDebug("尝试连接");
         }

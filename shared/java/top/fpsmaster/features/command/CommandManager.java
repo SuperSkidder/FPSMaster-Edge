@@ -7,7 +7,7 @@ import top.fpsmaster.event.events.EventSendChatMessage;
 import top.fpsmaster.features.command.impl.AI;
 import top.fpsmaster.features.command.impl.Dev;
 import top.fpsmaster.features.command.impl.IRCChat;
-import top.fpsmaster.features.impl.utility.ClientCommand;
+import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.utils.Utility;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class CommandManager {
 
     @Subscribe
     public void onChat(EventSendChatMessage e) {
-        if (ClientCommand.using && e.msg.startsWith(ClientCommand.prefix.getValue())) {
+        if (e.msg.startsWith(ClientSettings.prefix.getValue())) {
             e.cancel();
             try {
                 runCommand(e.msg.substring(1));

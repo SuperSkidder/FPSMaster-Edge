@@ -259,7 +259,7 @@ oldanimations.animationmode.push=Push
 
 irc=客户端聊天
 irc.desc=与相同客户端的用户聊天
-irc.enable=IRC功能已启用，输入#irc <消息>发送消息
+irc.enable=IRC功能已启用，输入%sirc <消息>发送消息
 irc.showmates=显示同客户端用户
 
 hitcolor=击中颜色
@@ -468,7 +468,7 @@ betterscreen.noflickering=防止闪烁
 
 clientcommand=客户端命令
 clientcommand.desc=使用命令执行客户端功能
-clientcommand.prefix=命令前缀
+
 
 cheatersdetector=作弊者检测
 cheatersdetector.desc=检测作弊者并特殊标记
@@ -481,6 +481,7 @@ clientsettings.desc=调整客户端各类设置
 clientsettings.clickguikey=设置界面快捷键
 clientsettings.fixedscale=固定界面缩放比例
 clientsettings.blur=界面组件模糊
+clientsettings.prefix=命令前缀
 
 dragonwings=龙翅膀
 dragonwings.desc=在自己身上龙翅膀

@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import top.fpsmaster.FPSMaster;
+import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.dev.DevMode;
 import top.fpsmaster.utils.Utility;
@@ -26,7 +27,7 @@ public class WsClient extends WebSocketClient {
     public void onOpen(ServerHandshake handshakedata) {
         Utility.sendClientDebug("成功连接到irc服务器");
         if (ProviderManager.mcProvider.getPlayer() != null) {
-            Utility.sendClientMessage(FPSMaster.i18n.get("irc.enable"));
+            Utility.sendClientMessage(FPSMaster.i18n.get("irc.enable").replace("%s",ClientSettings.prefix.getValue()));
         }
         assert FPSMaster.accountManager != null;
         send(new LoginPacket(FPSMaster.accountManager.getUsername(), FPSMaster.accountManager.getToken()).toJson());

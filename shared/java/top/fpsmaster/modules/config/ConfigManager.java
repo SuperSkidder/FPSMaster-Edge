@@ -2,11 +2,9 @@ package top.fpsmaster.modules.config;
 
 import com.google.gson.*;
 import top.fpsmaster.FPSMaster;
-import top.fpsmaster.features.impl.InterfaceModule;
 import top.fpsmaster.features.impl.optimizes.OldAnimations;
 import top.fpsmaster.features.impl.optimizes.Performance;
 import top.fpsmaster.features.impl.render.ItemPhysics;
-import top.fpsmaster.features.impl.utility.ClientCommand;
 import top.fpsmaster.features.impl.utility.IRC;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.Setting;
@@ -157,7 +155,6 @@ public class ConfigManager {
         FPSMaster.moduleManager.getModule(Performance.class).set(true);
         FPSMaster.moduleManager.getModule(OldAnimations.class).set(true);
         FPSMaster.moduleManager.getModule(ItemPhysics.class).set(true);
-        FPSMaster.moduleManager.getModule(ClientCommand.class).set(true);
         FPSMaster.moduleManager.getModule(IRC.class).set(true);
     }
 }
