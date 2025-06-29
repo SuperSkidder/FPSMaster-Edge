@@ -171,6 +171,10 @@ public class ServerListEntry {
 //            this.owner.setHoveringText(s);
 //        }
 
+        if (Render2DUtils.isHovered(x + listWidth - text.getStringWidth(s1), y + 4,10,10,mouseX,mouseY)) {
+            text.drawString(s1, x + listWidth - text.getStringWidth(s1) + 12, y + 4, -1);
+        }
+
         if (this.mc.gameSettings.touchscreen || isSelected) {
             this.mc.getTextureManager().bindTexture(SERVER_SELECTION_BUTTONS);
             Gui.drawRect(x, y, x + 32, y + 32, -1601138544);
