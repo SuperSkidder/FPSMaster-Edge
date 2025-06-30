@@ -32,7 +32,6 @@ public class MainPanel extends ScaledGuiScreen {
     float dragY = 0f;
     Category curType = Category.OPTIMIZE;
     LinkedList<CategoryComponent> categories = new LinkedList<>();
-    final float leftWidth = 50f;
     float modsWheel = 0f;
     float wheelTemp = 0f;
     boolean sizeDrag = false;
@@ -60,8 +59,9 @@ public class MainPanel extends ScaledGuiScreen {
 
     static int x = -1;
     static int y = -1;
-    static float width = 400f;
-    static float height = 240f;
+    static float width = 430f;
+    static float height = 245.5f;
+    final float leftWidth = 50f;
     public static String bindLock = "";
     public static Module curModule = null;
     public static String dragLock = "null";
@@ -118,13 +118,12 @@ public class MainPanel extends ScaledGuiScreen {
 
 
         backgroundColor.base(new Color(0, 0, 0, 150));
-        Render2DUtils.drawBlurArea((int) (x + leftWidth), y, (int) (width - leftWidth), (int) height, 3, backgroundColor.getColor());
-        Render2DUtils.drawOptimizedRoundedRect(
+        Render2DUtils.drawImage(new ResourceLocation("client/gui/settings/window/panel.png"),
                 x + leftWidth,
                 y,
                 width - leftWidth,
                 height,
-                backgroundColor.getColor()
+                -1
         );
 
 //        logoColor.base(new Color(255, 255, 255));
@@ -230,7 +229,6 @@ public class MainPanel extends ScaledGuiScreen {
             categoryAnimation = (float) AnimationUtils.base(categoryAnimation, 30f, 0.15f);
         }
 
-        Render2DUtils.drawBlurArea(x, (int) (y + height / 2 - 70), (int) categoryAnimation, 140, 10, backgroundColor.getColor());
         Render2DUtils.drawOptimizedRoundedRect(
                 x + categoryAnimation / 50f,
                 y + height / 2 - 70,
