@@ -7,12 +7,14 @@ import top.fpsmaster.utils.GitInfo;
 
 @Mixin(ClientBrandRetriever.class)
 public class MixinClientBrandRetriever {
+
+    //Some servers abandon any client they don't know, so we need to remove it temporarily until we can detect these servers and switch to vanilla brand automatically.
     /**
      * @author vlouboos
      * @reason Overwrite Tag
      */
-    @Overwrite
-    public static String getClientModName() {
-        return "fpsmaster:" + GitInfo.getBranch() + ":" + GitInfo.getCommitIdAbbrev();
-    }
+//    @Overwrite
+//    public static String getClientModName() {
+//        return "fpsmaster:" + GitInfo.getBranch() + ":" + GitInfo.getCommitIdAbbrev();
+//    }
 }
