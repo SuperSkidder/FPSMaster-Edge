@@ -193,7 +193,7 @@ public class MusicPanel {
         }
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        Render2DUtils.doGlScissor(x, y + 30, width, height - 60, scaleFactor);
+        Render2DUtils.doGlScissor(x, y, width, height - 30, scaleFactor);
         if (searchThread == null || !searchThread.isAlive()) {
             AtomicReference<Float> dY = new AtomicReference<>(y + 50 + container.getScroll());
             AtomicReference<Float> musicHeight = new AtomicReference<>(0f);

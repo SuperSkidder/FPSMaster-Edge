@@ -12,6 +12,7 @@ import top.fpsmaster.ui.ai.AIChatPanel;
 import top.fpsmaster.ui.click.component.ScrollContainer;
 import top.fpsmaster.ui.click.music.MusicPanel;
 import top.fpsmaster.ui.click.modules.ModuleRenderer;
+import top.fpsmaster.ui.click.music.NewMusicPanel;
 import top.fpsmaster.ui.click.themes.DarkTheme;
 import top.fpsmaster.ui.click.themes.LightTheme;
 import top.fpsmaster.utils.math.animation.Animation;
@@ -34,18 +35,11 @@ public class MainPanel extends ScaledGuiScreen {
     LinkedList<CategoryComponent> categories = new LinkedList<>();
     float modsWheel = 0f;
     float wheelTemp = 0f;
-    boolean sizeDrag = false;
-    float sizeDragX = 0f;
-    float sizeDragY = 0f;
 
     Animation scaleAnimation = new Animation();
 
     float selection = 0f;
 
-    ColorAnimation sizeDragBorder = new ColorAnimation(255, 255, 255, 0);
-    ColorAnimation backgroundColor = new ColorAnimation(39, 39, 39, 120);
-    ColorAnimation modeColor = new ColorAnimation(70, 70, 70, 200);
-    ColorAnimation logoColor = new ColorAnimation(255, 255, 255, 255);
 
     float categoryAnimation = 30;
 
@@ -79,7 +73,6 @@ public class MainPanel extends ScaledGuiScreen {
         if (!Mouse.isButtonDown(0)) {
             dragLock = "null";
             drag = false;
-            sizeDrag = false;
         }
 
         if (drag) {
@@ -88,22 +81,11 @@ public class MainPanel extends ScaledGuiScreen {
             y = mouseY;
         }
 
-
-//        if (sizeDrag) {
-//            float w = mouseX + sizeDragX - x;
-//            float h = mouseY + sizeDragY - y;
-//            width = w;
-//            height = h;
-//        }
-
-//        width = Math.min(Math.max(400f, width), guiWidth);
-//        height = Math.min(Math.max(240f, height), guiHeight);
-
         x = (int) Math.max(0, Math.min(guiWidth - (int) width, x));
         y = (int) Math.max(0, Math.min(guiHeight - (int) height, y));
 
         if (close) {
-            if (scaleAnimation.value >= 1.1) {
+            if (scaleAnimation.value <= 0.7) {
                 mc.displayGuiScreen(null);
                 if (mc.currentScreen == null) {
                     mc.setIngameFocus();
@@ -117,65 +99,18 @@ public class MainPanel extends ScaledGuiScreen {
         GlStateManager.translate(-guiWidth / 2.0, -height / 2.0, 0.0);
 
 
-        backgroundColor.base(new Color(0, 0, 0, 150));
         Render2DUtils.drawImage(new ResourceLocation("client/gui/settings/window/panel.png"),
-                x + leftWidth,
-                y,
-                width - leftWidth,
-                height,
+                x + leftWidth - 8,
+                y - 2,
+                width - leftWidth + 16,
+                height + 12,
                 -1
         );
 
-//        logoColor.base(new Color(255, 255, 255));
-//        Render2DUtils.drawImage(
-//                new ResourceLocation("client/gui/settings/logo.png"),
-//                x + leftWidth / 2 - 40 - 5,
-//                y + 15f,
-//                81.5f,
-//                64 / 2f,
-//                logoColor.getColor()
-//        );
-
-//        if (drag || sizeDrag) {
-//            sizeDragBorder.start(sizeDragBorder.getColor(), new Color(255, 255, 255), 0.15f, Type.EASE_IN_OUT_QUAD);
-//        } else {
-//            sizeDragBorder.start(sizeDragBorder.getColor(), new Color(255, 255, 255, 0), 0.2f, Type.EASE_IN_OUT_QUAD);
-//        }
-
-//        sizeDragBorder.update();
-
-//        if (Render2DUtils.isHoveredWithoutScale(
-//                x + width - 10,
-//                y + height - 10,
-//                10f,
-//                10f,
-//                mouseX,
-//                mouseY
-//        )) {
-//            Render2DUtils.drawImage(
-//                    new ResourceLocation("client/gui/settings/drag.png"),
-//                    x + width - 5,
-//                    y + height - 5,
-//                    5f,
-//                    5f,
-//                    new Color(255, 255, 255)
-//            );
-//        } else {
-//            Render2DUtils.drawImage(
-//                    new ResourceLocation("client/gui/settings/drag.png"),
-//                    x + width - 5,
-//                    y + height - 5,
-//                    5f,
-//                    5f,
-//                    new Color(200, 200, 200)
-//            );
-//        }
-
-
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         Render2DUtils.doGlScissor(
-                x, y + 22, width,
-                (height - 30),
+                x, y+10, width,
+                (height - 18),
                 scaleFactor
         );
 
@@ -184,8 +119,6 @@ public class MainPanel extends ScaledGuiScreen {
         if (curType == Category.Music) {
             MusicPanel.draw(x + leftWidth, y, width - leftWidth, height, mouseX, mouseY, scaleFactor);
         } else {
-            FPSMaster.fontManager.s24.drawStringWithShadow(FPSMaster.i18n.get("category." + curType.name().toLowerCase(Locale.getDefault())), x + leftWidth + 10, y + 5, -1);
-
             modHeight = 20f;
             float containerWidth = width - leftWidth - 10;
             int finalMouseY = mouseY;
@@ -231,11 +164,11 @@ public class MainPanel extends ScaledGuiScreen {
 
         Render2DUtils.drawOptimizedRoundedRect(
                 x + categoryAnimation / 50f,
-                y + height / 2 - 70,
+                y + height / 2 - 74,
                 categoryAnimation,
                 140,
-                10,
-                backgroundColor.getColor().getRGB()
+                14,
+                new Color(0,0,0,200).getRGB()
         );
 
         float my = y + 60;
@@ -244,7 +177,7 @@ public class MainPanel extends ScaledGuiScreen {
                 selection - 6,
                 categoryAnimation - 8,
                 22f,
-                11,
+                10,
                 new Color(255, 255, 255).getRGB()
         );
 
@@ -264,7 +197,7 @@ public class MainPanel extends ScaledGuiScreen {
             }
 
             if (m.category == curType) {
-                selection = (sizeDrag || drag)
+                selection = drag
                         ? my
                         : (float) AnimationUtils.base(selection, my, 0.2);
             }
@@ -295,7 +228,7 @@ public class MainPanel extends ScaledGuiScreen {
         ScaledResolution sr = new ScaledResolution(mc);
         int scaledWidth = sr.getScaledWidth();
         int scaledHeight = sr.getScaledHeight();
-        scaleAnimation.fstart(0.8, 1.0, 0.2f, Type.EASE_OUT_BACK);
+        scaleAnimation.fstart(0.8, 1.0, 0.2f, Type.EASE_IN_OUT_QUAD);
         close = false;
 
 //        if (width == 0f || height == 0f) {
@@ -329,7 +262,7 @@ public class MainPanel extends ScaledGuiScreen {
         if (keyCode == 1) {
             if (scaleAnimation.end != 0.1) {
                 close = true;
-                scaleAnimation.fstart(scaleAnimation.value, 1.1, 0.2f, Type.EASE_IN_BACK);
+                scaleAnimation.fstart(scaleAnimation.value, 0.7, 0.1f, Type.EASE_IN_OUT_QUAD);
             }
             return;
         }

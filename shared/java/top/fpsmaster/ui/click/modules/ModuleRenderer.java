@@ -1,5 +1,6 @@
 package top.fpsmaster.ui.click.modules;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Category;
@@ -20,6 +21,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.function.Consumer;
 
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glEnable;
+
 public class ModuleRenderer extends ValueRender {
     ArrayList<SettingRender<?>> settingsRenderers = new ArrayList<>();
     private float settingHeight = 0f;
@@ -27,6 +32,8 @@ public class ModuleRenderer extends ValueRender {
     private boolean expand = false;
     public ColorAnimation content;
     ColorAnimation background = new ColorAnimation();
+    ColorAnimation option = new ColorAnimation();
+    float optionX = 0;
 
     public ModuleRenderer(Module mod) {
         this.mod = mod;
@@ -58,37 +65,60 @@ public class ModuleRenderer extends ValueRender {
         border = Render2DUtils.isHovered(x + 5, y, width - 10, height, (int) mouseX, (int) mouseY)
                 ? (float) AnimationUtils.base(border, 200.0, 0.3)
                 : (float) AnimationUtils.base(border, 30.0, 0.3);
+        option.update();
 
         if (mod.isEnabled()) {
             content.start(content.getColor(), FPSMaster.theme.getModuleTextEnabled(), 0.2f, Type.EASE_IN_OUT_QUAD);
-            background.start(background.getColor(), new Color(150,150,150,60), 0.2f, Type.EASE_IN_OUT_QUAD);
+            option.start(option.getColor(), new Color(89, 101, 241), 0.2f, Type.EASE_IN_OUT_QUAD);
+            optionX = (float) AnimationUtils.base(optionX, 10, 0.2f);
         } else {
             content.start(content.getColor(), FPSMaster.theme.getModuleTextDisabled(), 0.2f, Type.EASE_IN_OUT_QUAD);
-            background.start(background.getColor(), new Color(100,100,100,60), 0.2f, Type.EASE_IN_OUT_QUAD);
+            option.start(option.getColor(), new Color(255, 255, 255), 0.2f, Type.EASE_IN_OUT_QUAD);
+            optionX = (float) AnimationUtils.base(optionX, 0, 0.2f);
         }
 
-        Render2DUtils.drawOptimizedRoundedRect(
+        Render2DUtils.drawImage(
+                new ResourceLocation("client/gui/settings/window/module.png"),
                 x + 5,
                 y,
                 width - 10,
-                settingHeight + 37f,
-                10,
-                new Color(100,100,100,60).getRGB()
+                40,
+                -1
         );
+        GlStateManager.disableBlend();
 
         Render2DUtils.drawOptimizedRoundedRect(
                 x + 5,
-                y,
+                y + 40,
                 width - 10,
-                37f,
+                settingHeight,
                 10,
-                background.getColor().getRGB()
+                new Color(100, 100, 100, 60).getRGB()
         );
 
 //        Render2DUtils.drawOptimizedRoundedBorderRect(
 //                x + 5, y, width - 10, 37f, 0.5f, background.getColor(), Render2DUtils.reAlpha(
 //                        FPSMaster.theme.getModuleBorder(), (int) border)
 //        );
+
+        Render2DUtils.drawImage(
+                new ResourceLocation("client/gui/settings/window/option.png"),
+                x + width - 40,
+                y + 16,
+                21,
+                10,
+                option.getColor()
+        );
+
+        Render2DUtils.drawImage(
+                new ResourceLocation("client/gui/settings/window/option_circle.png"),
+                x + width - 38 + optionX,
+                y + 17.5f,
+                7,
+                7,
+                -1
+        );
+
 
         if (mod.category == Category.Interface) {
             Render2DUtils.drawImage(

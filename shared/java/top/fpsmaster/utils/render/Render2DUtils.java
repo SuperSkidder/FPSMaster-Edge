@@ -72,7 +72,6 @@ public class Render2DUtils extends Utility {
         drawImage(resourceLocations[1], x + width - radius, y, radius, radius, color, rawImage);
         drawImage(resourceLocations[2], x, y + height - radius, radius, radius, color, rawImage);
         drawImage(resourceLocations[3], x + width - radius, y + height - radius, radius, radius, color, rawImage);
-
     }
 
     public static void drawImage(ResourceLocation res, float x, float y, float width, float height, Color color) {
