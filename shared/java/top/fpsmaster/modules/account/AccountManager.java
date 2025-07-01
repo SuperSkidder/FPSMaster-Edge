@@ -13,23 +13,25 @@ public class AccountManager {
     private String[] itemsHeld = new String[0];
 
     public void autoLogin() {
-        try {
-            token = FileUtils.readTempValue("token").trim();
-            username = FPSMaster.configManager.configure.getOrCreate("username", "").trim(); // Since we do the empty check, we should make it empty.
-            if (!token.isEmpty() && !username.isEmpty()) {
-                if (attemptLogin(username, token)) {
-                    ClientLogger.info("自动登录成功！  " + username);
-                    FPSMaster.INSTANCE.loggedIn = true;
-                    getItems(username, token);
-                } else {
-                    ClientLogger.info(username);
-                    ClientLogger.error("自动登录失败！");
+        FPSMaster.async.runnable(()->{
+            try {
+                token = FileUtils.readTempValue("token").trim();
+                username = FPSMaster.configManager.configure.getOrCreate("username", "").trim(); // Since we do the empty check, we should make it empty.
+                if (!token.isEmpty() && !username.isEmpty()) {
+                    if (attemptLogin(username, token)) {
+                        ClientLogger.info("自动登录成功！  " + username);
+                        FPSMaster.INSTANCE.loggedIn = true;
+                        getItems(username, token);
+                    } else {
+                        ClientLogger.info(username);
+                        ClientLogger.error("自动登录失败！");
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                ClientLogger.error("尝试自动登录失败！" + e.getMessage());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            ClientLogger.error("尝试自动登录失败！" + e.getMessage());
-        }
+        });
     }
 
     private boolean attemptLogin(String username, String token) {
