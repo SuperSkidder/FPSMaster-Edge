@@ -3,6 +3,10 @@ package top.fpsmaster.features.impl.optimizes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S0BPacketAnimation;
+import net.minecraft.potion.Potion;
+import net.minecraft.world.WorldServer;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventTick;
 import top.fpsmaster.features.manager.Category;
@@ -11,6 +15,8 @@ import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.features.settings.impl.ModeSetting;
 import top.fpsmaster.features.settings.impl.NumberSetting;
 import top.fpsmaster.interfaces.ProviderManager;
+
+import static top.fpsmaster.utils.Utility.mc;
 
 public class OldAnimations extends Module {
 
@@ -71,7 +77,7 @@ public class OldAnimations extends Module {
             eyeHeight = START_HEIGHT - delta;
         }
         if (Minecraft.getMinecraft().gameSettings.keyBindAttack.isKeyDown() && thePlayer.isUsingItem() && blockSwing.value) {
-            ((EntityLivingBase) thePlayer).swingItem();
+            swingItem();
         }
     }
 
@@ -90,5 +96,22 @@ public class OldAnimations extends Module {
 
     public static void setUsing(boolean using) {
         OldAnimations.using = using;
+    }
+
+    public void swingItem() {
+        ItemStack stack = mc.thePlayer.getHeldItem();
+        if (stack == null || stack.getItem() == null || !stack.getItem().onEntitySwing(mc.thePlayer, stack)) {
+            if (!mc.thePlayer.isSwingInProgress || mc.thePlayer.swingProgressInt >= getArmSwingAnimationEnd() / 2 || mc.thePlayer.swingProgressInt < 0) {
+                mc.thePlayer.swingProgressInt = -1;
+                mc.thePlayer.isSwingInProgress = true;
+                if (mc.thePlayer.worldObj instanceof WorldServer) {
+                    ((WorldServer)mc.thePlayer.worldObj).getEntityTracker().sendToAllTrackingEntity(mc.thePlayer, new S0BPacketAnimation(mc.thePlayer, 0));
+                }
+            }
+        }
+    }
+
+    private int getArmSwingAnimationEnd() {
+        return mc.thePlayer.isPotionActive(Potion.digSpeed) ? 6 - (1 + mc.thePlayer.getActivePotionEffect(Potion.digSpeed).getAmplifier()) : (mc.thePlayer.isPotionActive(Potion.digSlowdown) ? 6 + (1 + mc.thePlayer.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2 : 6);
     }
 }

@@ -106,7 +106,7 @@ public class GuiMultiplayer extends ScaledGuiScreen {
         if (serverListRecommended.size() == 0) {
             AsyncTask asyncTask = new AsyncTask(100);
             asyncTask.runnable(() -> {
-                String s = HttpRequest.get("https://service.fpsmaster.top/getServers");
+                String s = HttpRequest.get("https://service.fpsmaster.top/api/client/servers");
                 System.out.println(s);
                 JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
                 jsonObject.get("data").getAsJsonArray().forEach(e -> {

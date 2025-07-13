@@ -15,6 +15,8 @@ import top.fpsmaster.wrapper.MinecraftProvider;
 import static top.fpsmaster.utils.Utility.mc;
 
 public class Sprint extends InterfaceModule {
+    public static boolean using = true;
+    public static boolean sprint = true;
 
     BooleanSetting toggleSprint = new BooleanSetting("ToggleSprint", true);
 
@@ -23,29 +25,26 @@ public class Sprint extends InterfaceModule {
         addSettings(toggleSprint, betterFont);
     }
 
-    public static boolean sprint = true;
+
+    @Override
+    public void onEnable() {
+        super.onEnable();
+        using = true;
+    }
 
     @Subscribe
     public void onUpdate(EventUpdate e) {
-        if (sprint || !toggleSprint.getValue()) {
-            if (mc.thePlayer.moveForward <= 0)
-                return;
-            if (mc.thePlayer.isCollidedHorizontally)
-                return;
-            if (mc.thePlayer.isPotionActive(Potion.blindness))
-                return;
-            if (mc.thePlayer.getFoodStats().getFoodLevel() < 6f)
-                return;
-            if (mc.thePlayer.isUsingItem())
-                return;
-            mc.thePlayer.setSprinting(true);
+        if (!toggleSprint.getValue()) {
+            sprint = true;
         }
     }
 
     @Subscribe
-    public void onKey(EventKey e){
-        if (e.key == mc.gameSettings.keyBindSprint.getKeyCode()) {
+    public void onKey(EventKey e) {
+        if (toggleSprint.getValue() && e.key == mc.gameSettings.keyBindSprint.getKeyCode()) {
             sprint = !sprint;
+            if (!sprint)
+                mc.thePlayer.setSprinting(false);
         }
     }
 
@@ -53,5 +52,7 @@ public class Sprint extends InterfaceModule {
     public void onDisable() {
         super.onDisable();
         ProviderManager.gameSettings.setKeyPress(mc.gameSettings.keyBindSprint, false);
+        mc.thePlayer.setSprinting(false);
+        using = false;
     }
 }

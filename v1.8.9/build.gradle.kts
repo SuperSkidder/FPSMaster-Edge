@@ -71,6 +71,7 @@ repositories {
     maven("https://repo.spongepowered.org/maven/")
     // If you don't want to log in with your real minecraft account, remove this line
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
+
 }
 
 val shadowImpl: Configuration by configurations.creating {
@@ -112,7 +113,7 @@ dependencies {
         isTransitive = false
     }
     // If you don't want to log in with your real minecraft account, remove this line
-//    runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.1.2")
+    runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.1.2")
     implementation("javazoom:jlayer:1.0.1")
 // https://mvnrepository.com/artifact/net.sourceforge.jtransforms/jtransforms
     implementation("net.sourceforge.jtransforms:jtransforms:2.4.0")
