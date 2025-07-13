@@ -89,16 +89,17 @@ public class ExceptionHandler {
         if (cause != null) {
             ClientLogger.error(category + " Exception", "Caused by: " + cause.getClass().getName() + ": " + cause.getMessage());
         }
+        e.printStackTrace();
 
-        // Log stack trace in a structured way
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-
-        // Split the stack trace into lines and log each line
-        String[] stackTraceLines = sw.toString().split("\\r?\\n");
-        for (String line : stackTraceLines) {
-            ClientLogger.debug(line);
-        }
+//         Log stack trace in a structured way
+//        StringWriter sw = new StringWriter();
+//        PrintWriter pw = new PrintWriter(sw);
+//        e.printStackTrace(pw);
+//
+//        // Split the stack trace into lines and log each line
+//        String[] stackTraceLines = sw.toString().split("\\r?\\n");
+//        for (String line : stackTraceLines) {
+//            ClientLogger.debug(line);
+//        }
     }
 }

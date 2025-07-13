@@ -43,25 +43,20 @@ public class Login extends Scene {
         btn = new GuiButton(FPSMaster.i18n.get("oobe.login.login"), () -> {
             try {
                 JsonObject login = AccountManager.login(username.getText(), password.getText());
-                if (login.get("code").getAsInt() == 200) {
-                    if (FPSMaster.accountManager != null) {
-                        FPSMaster.accountManager.setUsername(username.getText());
-                        FPSMaster.accountManager.setToken(login.get("msg").getAsString());
-                    }
-                    try {
-                        FileUtils.saveTempValue("token", FPSMaster.accountManager.getToken());
-                    } catch (FileException e) {
-                        ExceptionHandler.handleFileException(e, "无法保存登录令牌");
-                    }
-                    FPSMaster.INSTANCE.loggedIn = true;
-                    if (isOOBE) {
-                        FPSMaster.oobeScreen.nextScene();
-                    } else {
-                        Minecraft.getMinecraft().displayGuiScreen(new MainMenu());
-                    }
+                if (FPSMaster.accountManager != null) {
+                    FPSMaster.accountManager.setUsername(username.getText());
+                    FPSMaster.accountManager.setToken(login.get("data").getAsJsonObject().get("token").getAsString());
+                }
+                try {
+                    FileUtils.saveTempValue("token", FPSMaster.accountManager.getToken());
+                } catch (FileException e) {
+                    ExceptionHandler.handleFileException(e, "无法保存登录令牌");
+                }
+                FPSMaster.INSTANCE.loggedIn = true;
+                if (isOOBE) {
+                    FPSMaster.oobeScreen.nextScene();
                 } else {
-                    msg = login.get("msg").getAsString();
-                    msgbox = true;
+                    Minecraft.getMinecraft().displayGuiScreen(new MainMenu());
                 }
             } catch (NetworkException e) {
                 ExceptionHandler.handleNetworkException(e, "登录失败");

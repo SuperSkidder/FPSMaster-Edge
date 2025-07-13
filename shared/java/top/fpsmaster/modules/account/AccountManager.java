@@ -11,6 +11,8 @@ import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.os.HttpRequest;
 
+import java.util.HashMap;
+
 public class AccountManager {
     private String token = "";
     private String username = "";
@@ -34,12 +36,11 @@ public class AccountManager {
 
     private void doAutoLogin() throws FileException, AccountException, NetworkException {
         token = FileUtils.readTempValue("token").trim();
-        username = FPSMaster.configManager.configure.getOrCreate("username", "").trim(); // Since we do the empty check, we should make it empty.
+        username = FPSMaster.configManager.configure.getOrCreate("username", "").trim();
         if (!token.isEmpty() && !username.isEmpty()) {
             if (attemptLogin(username, token)) {
                 ClientLogger.info("自动登录成功！  " + username);
                 FPSMaster.INSTANCE.loggedIn = true;
-                getItems(username, token);
             } else {
                 ClientLogger.info(username);
                 ClientLogger.error("自动登录失败！");
@@ -53,32 +54,16 @@ public class AccountManager {
             return false;
         }
         try {
-            String s = HttpRequest.get(FPSMaster.SERVICE_API + "/checkToken?username=" + username + "&token=" + token + "&timestamp=" + System.currentTimeMillis());
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Authorization","Bearer " + token);
+            System.out.println("Bearer " + token);
+            String s = HttpRequest.get(FPSMaster.SERVICE_API + "/api/auth/validate-jwt", headers);
             JsonObject json = parser.parse(s).getAsJsonObject();
             this.username = username;
             this.token = token;
-            return json.get("code").getAsInt() == 200;
+            return json.get("data").getAsJsonObject().get("success").getAsBoolean();
         } catch (Exception e) {
-            throw new NetworkException("Failed to check token", e);
-        }
-    }
-
-    public void getItems(String username, String token) throws NetworkException {
-        try {
-            String s = HttpRequest.get(FPSMaster.SERVICE_API + "/getWebUser?username=" + username + "&token=" + token + "&timestamp=" + System.currentTimeMillis());
-            JsonObject json = parser.parse(s).getAsJsonObject();
-            if (json.get("code").getAsInt() == 200) {
-                String items = json.getAsJsonObject("data").getAsJsonObject("items").getAsString();
-                itemsHeld = items.split(",");
-                itemsHeld = itemsHeld.length > 0 ? itemsHeld : new String[0]; // Ensuring it's not empty
-            } else {
-                throw new NetworkException("Failed to get items: " + json.get("message").getAsString());
-            }
-        } catch (Exception e) {
-            if (e instanceof NetworkException) {
-                throw (NetworkException) e;
-            }
-            throw new NetworkException("Failed to get items", e);
+            throw new NetworkException("Failed to login via token", e);
         }
     }
 
@@ -88,9 +73,13 @@ public class AccountManager {
 
     public static JsonObject login(String username, String password) throws NetworkException {
         try {
-            String s = HttpRequest.get(FPSMaster.SERVICE_API + "/login?username=" + username + "&password=" + password + "&timestamp=" + System.currentTimeMillis());
+            JsonObject body = new JsonObject();
+            body.addProperty("username", username);
+            body.addProperty("password", password);
+            String s = HttpRequest.post(FPSMaster.SERVICE_API + "/api/auth/login", body.toString());
+
             JsonObject jsonObject = parser.parse(s).getAsJsonObject();
-            if (jsonObject.get("code").getAsInt() != 200) {
+            if (!jsonObject.get("data").getAsJsonObject().get("success").getAsBoolean()) {
                 throw new NetworkException("Login failed: " + jsonObject.get("message").getAsString());
             }
             return jsonObject;

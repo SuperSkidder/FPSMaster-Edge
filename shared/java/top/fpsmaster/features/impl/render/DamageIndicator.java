@@ -47,6 +47,8 @@ public class DamageIndicator extends Module {
 
     @Subscribe
     public void onUpdate(EventUpdate e) {
+        if (lastAttack == null)
+            return;
         if (health - lastAttack.getHealth() != 0){
             addIndicator((float) (lastAttack.posX), (float) (lastAttack.posY - 1), (float) (lastAttack.posZ), health - lastAttack.getHealth());
             health = lastAttack.getHealth();
