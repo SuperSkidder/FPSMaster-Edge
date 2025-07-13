@@ -56,7 +56,6 @@ public class AccountManager {
         try {
             HashMap<String, String> headers = new HashMap<>();
             headers.put("Authorization","Bearer " + token);
-            System.out.println("Bearer " + token);
             String s = HttpRequest.get(FPSMaster.SERVICE_API + "/api/auth/validate-jwt", headers);
             JsonObject json = parser.parse(s).getAsJsonObject();
             this.username = username;

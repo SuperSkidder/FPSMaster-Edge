@@ -36,7 +36,7 @@ public class FPSMaster {
     public boolean loggedIn;
     public WsClient wsClient;
 
-    public static final String phase = "alpha";
+    public static final String phase = "beta";
     public static final String SERVICE_API = "https://service.fpsmaster.top";
 
     public static final String EDITION = Constants.EDITION;
@@ -76,11 +76,12 @@ public class FPSMaster {
 
     public static String getClientTitle() {
         checkDevelopment();
-        return CLIENT_NAME + " " + CLIENT_VERSION + " - " + phase + " " + Constants.VERSION + " (" + GitInfo.getBranch() + " - " + GitInfo.getCommitIdAbbrev() + ")" + (development ? " - Developer Mode" : "");
+        return CLIENT_NAME + " Client (" + phase + ") "+Constants.VERSION + " (" + GitInfo.getBranch() +" - "+ GitInfo.getCommitIdAbbrev() + ")" + (development ? " - dev" : "");
     }
 
     private void initializeFonts() {
         ClientLogger.info("Initializing Fonts...");
+        // add more fonts and add fallback font
         File file = new File(FileUtils.fonts, "harmony_bold.ttf");
         if (!file.exists()) {
             ClientLogger.info("Downloading Fonts...");
@@ -162,15 +163,17 @@ public class FPSMaster {
         AsyncTask asyncTask = new AsyncTask(100);
         asyncTask.runnable(() -> {
             String s = UpdateChecker.getLatestVersion();
-            if (s == null) {
+            if (s == null || s.isEmpty()) {
                 isLatest = false;
                 updateFailed = true;
+                ClientLogger.error("获取最新版本信息失败");
                 return;
             }
-            if (!s.isEmpty()) {
-                latest = s;
-                isLatest = CLIENT_VERSION.equals(s);
-            }
+            s = s.trim();
+//            ClientLogger.info("最新版本: " + s);
+//            ClientLogger.info("当前版本: " + GitInfo.getCommitId());
+            latest = s;
+            isLatest = GitInfo.getCommitId().equals(s);
         });
     }
 
@@ -184,22 +187,13 @@ public class FPSMaster {
             initializeConfigures();
             initializeCommands();
             initializePlugins();
-
-            if (phase == "release") {
-                checkUpdate();
-            }
-            if (phase == "alpha") {
-                autoUpdate();
-            }
+            checkUpdate();
             checkOptifine();
         } catch (Exception e) {
             ExceptionHandler.handle(e);
         }
     }
 
-    public void autoUpdate() {
-        File mods = FMLCommonHandler.instance().getMinecraftServerInstance().getFile("mods");
-    }
 
     public void shutdown() {
         try {

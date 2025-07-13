@@ -7,7 +7,7 @@ mainmenu.notlogin=您未登录，点此登录
 mainmenu.welcome=欢迎您，%s
 mainmenu.latest=您使用的是最新版本！
 mainmenu.failed=获取更新失败！
-mainmenu.notlatest=检测到新版本！最新版本：%s，点此更新
+mainmenu.notlatest=您使用的不是最新版本，点此更新！
 
 music.title=音乐
 music.search=搜索

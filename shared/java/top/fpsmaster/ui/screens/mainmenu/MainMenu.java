@@ -105,7 +105,7 @@ public class MainMenu extends ScaledGuiScreen {
             if (FPSMaster.isLatest) {
                 info = TextFormattingProvider.getGreen() + FPSMaster.i18n.get("mainmenu.latest");
             } else {
-                info = TextFormattingProvider.getRed().toString() + TextFormattingProvider.getBold().toString() + String.format(FPSMaster.i18n.get("mainmenu.notlatest"), FPSMaster.latest);
+                info = TextFormattingProvider.getRed().toString() + TextFormattingProvider.getBold().toString() + FPSMaster.i18n.get("mainmenu.notlatest");
                 needUpdate = true;
             }
         }
@@ -137,7 +137,7 @@ public class MainMenu extends ScaledGuiScreen {
 
             if (Render2DUtils.isHovered(4f, guiHeight - 40, uw, 14f, mouseX, mouseY) && needUpdate) {
                 try {
-                    Desktop.getDesktop().browse(new URI("https://fpsmaster.top/download"));
+                    Desktop.getDesktop().browse(new URI("https://fpsmaster.top"));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
