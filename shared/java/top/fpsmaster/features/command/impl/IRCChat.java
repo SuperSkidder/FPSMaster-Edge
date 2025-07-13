@@ -2,7 +2,13 @@ package top.fpsmaster.features.command.impl;
 
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.command.Command;
+import top.fpsmaster.features.impl.utility.IRC;
+import top.fpsmaster.features.impl.utility.SkinChanger;
+import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.modules.account.AccountManager;
 import top.fpsmaster.utils.Utility;
+
+import static top.fpsmaster.utils.Utility.mc;
 
 public class IRCChat extends Command {
 
@@ -12,6 +18,10 @@ public class IRCChat extends Command {
 
     @Override
     public void execute(String[] args) {
+        if (!IRC.using) {
+            Utility.sendClientNotify("IRC is not using");
+            return;
+        }
         if (args.length > 0) {
             StringBuilder sb = new StringBuilder();
 
@@ -35,6 +45,10 @@ public class IRCChat extends Command {
                 }
                 String message = sb.toString();
                 FPSMaster.INSTANCE.wsClient.sendDM(args[1], message);
+            } else if ("update".equals(args[0])) {
+                FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
+            } else if ("fetch".equals(args[0])) {
+                FPSMaster.INSTANCE.wsClient.fetchPlayer(ProviderManager.mcProvider.getPlayer().getGameProfile().getId().toString(), ProviderManager.mcProvider.getPlayer().getName());
             } else {
                 for (String arg : args) {
                     if (arg.equals(args[args.length - 1])) {

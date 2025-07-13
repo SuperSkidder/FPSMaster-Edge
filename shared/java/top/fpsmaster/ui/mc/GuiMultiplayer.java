@@ -103,14 +103,13 @@ public class GuiMultiplayer extends ScaledGuiScreen {
         }
         serverListDisplay.clear();
         serverListDisplay.addAll(serverListInternet);
-        if (serverListRecommended.size() == 0) {
+        if (serverListRecommended.isEmpty()) {
             AsyncTask asyncTask = new AsyncTask(100);
             asyncTask.runnable(() -> {
                 String s = HttpRequest.get("https://service.fpsmaster.top/api/client/servers");
-                System.out.println(s);
                 JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
                 jsonObject.get("data").getAsJsonArray().forEach(e -> {
-                    this.serverListRecommended.add(new ServerListEntry(this, new ServerData(e.getAsJsonObject().get("name").getAsString() + " - " + e.getAsJsonObject().get("description").getAsString(), e.getAsJsonObject().get("address").getAsString(), false)));
+                    serverListRecommended.add(new ServerListEntry(this, new ServerData(e.getAsJsonObject().get("name").getAsString() + " - " + e.getAsJsonObject().get("description").getAsString(), e.getAsJsonObject().get("address").getAsString(), false)));
                 });
             });
         }

@@ -18,7 +18,6 @@ import java.net.URISyntaxException;
 public class IRC extends Module {
     public static boolean using = false;
     public static final BooleanSetting showMates = new BooleanSetting("showMates", true);
-    private final MathTimer timer = new MathTimer();
 
     public IRC() {
         super("IRC", Category.Utility);
@@ -31,30 +30,9 @@ public class IRC extends Module {
         using = true;
     }
 
-    @Subscribe
-    public void onTick(EventTick e) throws URISyntaxException {
-        if (!timer.delay(5000)) {
-            return;
-        }
-        if (ProviderManager.mcProvider.getWorld() == null) {
-            return;
-        }
-        if (FPSMaster.INSTANCE.wsClient == null) {
-            FPSMaster.INSTANCE.wsClient = WsClient.start("wss://service.fpsmaster.top/");
-            Utility.sendClientDebug("尝试连接");
-        } else if (FPSMaster.INSTANCE.wsClient != null && FPSMaster.INSTANCE.wsClient.isClosed() && !FPSMaster.INSTANCE.wsClient.isOpen()) {
-            FPSMaster.INSTANCE.wsClient.close();
-            FPSMaster.INSTANCE.wsClient.connect();
-            Utility.sendClientDebug("尝试连接");
-        }
-    }
-
     @Override
     public void onDisable() {
         super.onDisable();
-        if (FPSMaster.INSTANCE.wsClient != null && FPSMaster.INSTANCE.wsClient.isOpen()) {
-            FPSMaster.INSTANCE.wsClient.close();
-        }
         using = false;
     }
 }

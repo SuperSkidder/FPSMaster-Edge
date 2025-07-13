@@ -45,9 +45,12 @@ public class SkinChanger extends Module {
     @Subscribe
     public void onTick(EventTick e) {
         if (ProviderManager.mcProvider.getPlayer() != null && ProviderManager.mcProvider.getPlayer().ticksExisted % 30 == 0) {
+            if (AccountManager.skin.equals(skinName.getValue()))
+                return;
             FPSMaster.async.runnable(this::update);
+            AccountManager.skin = skinName.getValue();
+
         }
-        AccountManager.skin = skinName.getValue();
     }
 
     public void update() {

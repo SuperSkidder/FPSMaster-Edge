@@ -6,12 +6,13 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.ClientSettings;
+import top.fpsmaster.features.impl.utility.IRC;
 import top.fpsmaster.interfaces.ProviderManager;
-import top.fpsmaster.modules.dev.DevMode;
+import top.fpsmaster.modules.client.ClientUsersManager;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.websocket.data.message.Packet;
 import top.fpsmaster.websocket.data.message.client.*;
-import top.fpsmaster.websocket.data.message.server.SDataPacket;
+import top.fpsmaster.websocket.data.message.server.SFetchPlayerPacket;
 import top.fpsmaster.websocket.data.message.server.SMessagePacket;
 
 import java.net.URI;
@@ -25,9 +26,9 @@ public class WsClient extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        Utility.sendClientDebug("成功连接到irc服务器");
+        Utility.sendClientDebug("成功连接到irc服务器，开始验证登录信息");
         if (ProviderManager.mcProvider.getPlayer() != null) {
-            Utility.sendClientMessage(FPSMaster.i18n.get("irc.enable").replace("%s",ClientSettings.prefix.getValue()));
+            Utility.sendClientMessage(FPSMaster.i18n.get("irc.enable").replace("%s", ClientSettings.prefix.getValue()));
         }
         assert FPSMaster.accountManager != null;
         send(new LoginPacket(FPSMaster.accountManager.getUsername(), FPSMaster.accountManager.getToken()).toJson());
@@ -37,12 +38,8 @@ public class WsClient extends WebSocketClient {
         send(new MessagePacket(MessagePacket.MessageType.CHAT, message).toJson());
     }
 
-    public void sendInformation(String skin, String cape, String gameID, String serverAddress) {
-        if (ProviderManager.mcProvider.getPlayer() == null)
-            return;
-        send(new PlayerInfoPacket(gameID, ProviderManager.mcProvider.getPlayer().getUniqueID().toString()).toJson());
-        send(new ServerInfoPacket(serverAddress).toJson());
-        send(new CosmeticInfoPacket(skin, cape).toJson());
+    public void sendInformation(String skin, String cosmetics, String gameID, String serverAddress) {
+        send(new PlayerInfoPacket(gameID, ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), serverAddress, skin, cosmetics).toJson());
     }
 
 
@@ -60,13 +57,12 @@ public class WsClient extends WebSocketClient {
         switch (packet.type) {
             case SERVER_MESSAGE:
                 SMessagePacket parsePacket = (SMessagePacket) Packet.parsePacket(message, SMessagePacket.class);
-                Utility.sendClientMessage(parsePacket.msg);
+                if (IRC.using)
+                    Utility.sendClientMessage(parsePacket.msg);
                 break;
-            case SERVER_DATA:
-                SDataPacket packet1 = (SDataPacket) packet;
-                String data = packet1.data;
-                JsonObject asJsonObject = new JsonParser().parse(data).getAsJsonObject();
-                break;
+            case SERVER_FETCH_PLAYER:
+                SFetchPlayerPacket parsePacket1 = (SFetchPlayerPacket) Packet.parsePacket(message, SFetchPlayerPacket.class);
+                FPSMaster.clientUsersManager.addFromFetch(parsePacket1);
         }
     }
 
@@ -78,12 +74,16 @@ public class WsClient extends WebSocketClient {
 
     @Override
     public void onError(Exception ex) {
-        Utility.sendClientDebug("聊天服务错误: " + ex.getMessage());
+        Utility.sendClientDebug("聊天服务错误 " + ex.getMessage());
     }
 
     public static WsClient start(String addr) throws URISyntaxException {
         WsClient client = new WsClient(new URI(addr));
         client.connect();
         return client;
+    }
+
+    public void fetchPlayer(String uuid, String name) {
+        send(new FetchPlayerPacket(uuid, name).toJson());
     }
 }

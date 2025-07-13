@@ -9,6 +9,7 @@ import top.fpsmaster.features.manager.ModuleManager;
 import top.fpsmaster.font.FontManager;
 import top.fpsmaster.modules.account.AccountManager;
 import top.fpsmaster.modules.client.AsyncTask;
+import top.fpsmaster.modules.client.ClientUsersManager;
 import top.fpsmaster.modules.config.ConfigManager;
 import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.modules.lua.LuaManager;
@@ -55,6 +56,7 @@ public class FPSMaster {
     public static ConfigManager configManager = new ConfigManager();
     public static OOBEScreen oobeScreen = new OOBEScreen();
     public static AccountManager accountManager = new AccountManager();
+    public static ClientUsersManager clientUsersManager = new ClientUsersManager();
     public static GlobalSubmitter submitter = new GlobalSubmitter();
     public static CommandManager commandManager = new CommandManager();
     public static ComponentsManager componentsManager = new ComponentsManager();
@@ -76,7 +78,7 @@ public class FPSMaster {
 
     public static String getClientTitle() {
         checkDevelopment();
-        return CLIENT_NAME + " Client (" + phase + ") "+Constants.VERSION + " (" + GitInfo.getBranch() +" - "+ GitInfo.getCommitIdAbbrev() + ")" + (development ? " - dev" : "");
+        return CLIENT_NAME + " Client (" + phase + ") " + Constants.VERSION + " (" + GitInfo.getBranch() + " - " + GitInfo.getCommitIdAbbrev() + ")" + (development ? " - dev" : "");
     }
 
     private void initializeFonts() {
@@ -164,10 +166,13 @@ public class FPSMaster {
         asyncTask.runnable(() -> {
             String s = UpdateChecker.getLatestVersion();
             if (s == null || s.isEmpty()) {
-                isLatest = false;
-                updateFailed = true;
-                ClientLogger.error("获取最新版本信息失败");
-                return;
+                s = UpdateChecker.getLatestVersion();
+                if (s == null || s.isEmpty()) {
+                    isLatest = false;
+                    updateFailed = true;
+                    ClientLogger.error("获取最新版本信息失败");
+                    return;
+                }
             }
             s = s.trim();
 //            ClientLogger.info("最新版本: " + s);
@@ -197,6 +202,7 @@ public class FPSMaster {
 
     public void shutdown() {
         try {
+            ClientLogger.info("Saving configs");
             configManager.saveConfig("default");
         } catch (FileException e) {
             throw new RuntimeException(e);

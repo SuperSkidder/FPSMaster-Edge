@@ -16,7 +16,8 @@ import java.util.HashMap;
 public class AccountManager {
     private String token = "";
     private String username = "";
-    private String[] itemsHeld = new String[0];
+    public static JsonParser parser = new JsonParser();
+    public static String skin = "";
 
     public void autoLogin() {
         FPSMaster.async.runnable(() -> {
@@ -66,9 +67,6 @@ public class AccountManager {
         }
     }
 
-    public static JsonParser parser = new JsonParser();
-    public static String cape = "";
-    public static String skin = "";
 
     public static JsonObject login(String username, String password) throws NetworkException {
         try {
@@ -105,13 +103,5 @@ public class AccountManager {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String[] getItemsHeld() {
-        return itemsHeld;
-    }
-
-    public void setItemsHeld(String[] itemsHeld) {
-        this.itemsHeld = itemsHeld;
     }
 }
