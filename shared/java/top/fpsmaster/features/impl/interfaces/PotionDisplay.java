@@ -8,7 +8,7 @@ public class PotionDisplay extends InterfaceModule {
 
     public PotionDisplay() {
         super("PotionDisplay", Category.Interface);
-        addSettings(rounded, backgroundColor, fontShadow, betterFont, bg, rounded, roundRadius);
+        addSettings(backgroundColor, fontShadow, betterFont, bg, rounded, roundRadius);
     }
 
     @Override
