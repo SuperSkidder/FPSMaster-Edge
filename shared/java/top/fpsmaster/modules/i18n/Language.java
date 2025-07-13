@@ -1,5 +1,6 @@
 package top.fpsmaster.modules.i18n;
 
+import top.fpsmaster.exception.FileException;
 import top.fpsmaster.utils.os.FileUtils;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class Language {
         FileUtils.release("zh_cn");
     }
 
-    public void save(String language) {
+    public void save(String language) throws FileException {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : prompts.entrySet()) {
             sb.append(entry.getKey()).append("=").append(entry.getValue()).append(System.lineSeparator());
@@ -24,7 +25,7 @@ public class Language {
         FileUtils.saveFile(language + ".lang", sb.toString());
     }
 
-    public void read(String language) {
+    public void read(String language) throws FileException {
         String content = FileUtils.readFile(language + ".lang");
         String[] lines = content.split(System.lineSeparator());
         prompts.clear();

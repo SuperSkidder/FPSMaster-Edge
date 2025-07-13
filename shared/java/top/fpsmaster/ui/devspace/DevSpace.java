@@ -8,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import top.fpsmaster.FPSMaster;
+import top.fpsmaster.exception.FileException;
 import top.fpsmaster.modules.lua.LuaManager;
 import top.fpsmaster.modules.lua.LuaScript;
 import top.fpsmaster.modules.lua.parser.Expression;
@@ -280,11 +281,15 @@ public class DevSpace extends ScaledGuiScreen {
         super.keyTyped(typedChar, keyCode);
         if (selectedTab == 0) {
             handleArrowKeys(keyCode);
-            handleCodeInput(typedChar, keyCode);
+            try {
+                handleCodeInput(typedChar, keyCode);
+            } catch (FileException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    private void handleCodeInput(char typedChar, int keyCode) {
+    private void handleCodeInput(char typedChar, int keyCode) throws FileException {
         if (getCurrentScript() == null)
             return;
 
@@ -333,7 +338,7 @@ public class DevSpace extends ScaledGuiScreen {
         }
     }
 
-    private void saveCurrentScript() {
+    private void saveCurrentScript() throws FileException {
         FileUtils.saveFile("plugins/" + getCurrentScript().rawLua.filename, getCode(selectedLua));
         LuaManager.hotswap();
         needReload = true;

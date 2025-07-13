@@ -2,6 +2,7 @@ package top.fpsmaster.modules.config;
 
 import com.google.gson.*;
 import top.fpsmaster.FPSMaster;
+import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.impl.optimizes.OldAnimations;
 import top.fpsmaster.features.impl.optimizes.Performance;
 import top.fpsmaster.features.impl.render.ItemPhysics;
@@ -27,7 +28,7 @@ public class ConfigManager {
         }
     }
 
-    private void saveComponents() {
+    private void saveComponents() throws FileException {
         JsonObject json = new JsonObject();
         for (Component moduleComponent : FPSMaster.componentsManager.components) {
             JsonObject component = new JsonObject();
@@ -41,7 +42,7 @@ public class ConfigManager {
         FileUtils.saveFile("components.json", gson.toJson(json));
     }
 
-    private void readComponents() {
+    private void readComponents() throws FileException {
         String jsonStr = FileUtils.readFile("components.json");
         if (jsonStr.isEmpty()) return;
         JsonObject json = gson.fromJson(jsonStr, JsonObject.class);
@@ -63,7 +64,7 @@ public class ConfigManager {
         }
     }
 
-    public void saveConfig(String name) {
+    public void saveConfig(String name) throws FileException {
         saveComponents();
         JsonObject json = new JsonObject();
         json.addProperty("theme", FPSMaster.themeSlot);
@@ -88,67 +89,59 @@ public class ConfigManager {
         FileUtils.saveFile(name + ".json", gson.toJson(json));
     }
 
-    public void loadConfig(String name) {
-        try {
-            String jsonStr = FileUtils.readFile(name + ".json");
-            if (jsonStr.isEmpty()) {
-                openDefaultModules();
-                saveConfig("default");
-                loadConfig(name);
-                return;
-            }
+    public void loadConfig(String name) throws Exception {
+        String jsonStr = FileUtils.readFile(name + ".json");
+        if (jsonStr.isEmpty()) {
+            openDefaultModules();
+            saveConfig("default");
+            loadConfig(name);
+            return;
+        }
 
-            readComponents();
-            jsonStr = FileUtils.readFile(name + ".json");
-            JsonObject json = gson.fromJson(jsonStr, JsonObject.class);
-            FPSMaster.themeSlot = json.get("theme").getAsString();
+        readComponents();
+        jsonStr = FileUtils.readFile(name + ".json");
+        JsonObject json = gson.fromJson(jsonStr, JsonObject.class);
+        FPSMaster.themeSlot = json.get("theme").getAsString();
 
-            for (Module module : FPSMaster.moduleManager.modules) {
-                JsonObject moduleJson = json.getAsJsonObject(module.name);
-                if (moduleJson != null) {
-                    module.set(moduleJson.get("enabled").getAsBoolean());
-                    module.key = moduleJson.get("key").getAsInt();
-                    for (Setting<?> setting : module.settings) {
-                        try {
-                            JsonElement settingValue = moduleJson.get(setting.name);
-                            if (settingValue != null) {
-                                if (setting instanceof BooleanSetting) {
-                                    BooleanSetting booleanSetting = (BooleanSetting) setting;
-                                    booleanSetting.value = settingValue.getAsBoolean();
-                                } else if (setting instanceof NumberSetting) {
-                                    NumberSetting numberSetting = (NumberSetting) setting;
-                                    numberSetting.value = settingValue.getAsDouble();
-                                } else if (setting instanceof ModeSetting) {
-                                    ModeSetting modeSetting = (ModeSetting) setting;
-                                    modeSetting.value = settingValue.getAsInt();
-                                } else if (setting instanceof TextSetting) {
-                                    TextSetting textSetting = (TextSetting) setting;
-                                    textSetting.value = settingValue.getAsString();
-                                } else if (setting instanceof ColorSetting) {
-                                    ColorSetting colorSetting = (ColorSetting) setting;
-                                    String[] colorParts = settingValue.getAsString().split("\\|");
-                                    colorSetting.value.setColor(
-                                            Float.parseFloat(colorParts[0]),
-                                            Float.parseFloat(colorParts[1]),
-                                            Float.parseFloat(colorParts[2]),
-                                            Float.parseFloat(colorParts[3])
-                                    );
-                                } else if (setting instanceof BindSetting) {
-                                    BindSetting bindSetting = (BindSetting) setting;
-                                    bindSetting.value = settingValue.getAsInt();
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        for (Module module : FPSMaster.moduleManager.modules) {
+            JsonObject moduleJson = json.getAsJsonObject(module.name);
+            if (moduleJson != null) {
+                module.set(moduleJson.get("enabled").getAsBoolean());
+                module.key = moduleJson.get("key").getAsInt();
+                for (Setting<?> setting : module.settings) {
+                    JsonElement settingValue = moduleJson.get(setting.name);
+                    if (settingValue != null) {
+                        if (setting instanceof BooleanSetting) {
+                            BooleanSetting booleanSetting = (BooleanSetting) setting;
+                            booleanSetting.value = settingValue.getAsBoolean();
+                        } else if (setting instanceof NumberSetting) {
+                            NumberSetting numberSetting = (NumberSetting) setting;
+                            numberSetting.value = settingValue.getAsDouble();
+                        } else if (setting instanceof ModeSetting) {
+                            ModeSetting modeSetting = (ModeSetting) setting;
+                            modeSetting.value = settingValue.getAsInt();
+                        } else if (setting instanceof TextSetting) {
+                            TextSetting textSetting = (TextSetting) setting;
+                            textSetting.value = settingValue.getAsString();
+                        } else if (setting instanceof ColorSetting) {
+                            ColorSetting colorSetting = (ColorSetting) setting;
+                            String[] colorParts = settingValue.getAsString().split("\\|");
+                            colorSetting.value.setColor(
+                                    Float.parseFloat(colorParts[0]),
+                                    Float.parseFloat(colorParts[1]),
+                                    Float.parseFloat(colorParts[2]),
+                                    Float.parseFloat(colorParts[3])
+                            );
+                        } else if (setting instanceof BindSetting) {
+                            BindSetting bindSetting = (BindSetting) setting;
+                            bindSetting.value = settingValue.getAsInt();
                         }
                     }
                 }
             }
-
-            configure.configures = gson.fromJson(json.get("clientConfigure").getAsString(), HashMap.class);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
+        configure.configures = gson.fromJson(json.get("clientConfigure").getAsString(), HashMap.class);
     }
 
     private void openDefaultModules() {

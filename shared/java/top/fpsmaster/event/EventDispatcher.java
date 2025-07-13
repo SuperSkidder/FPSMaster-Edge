@@ -43,7 +43,7 @@ public class EventDispatcher {
                         ExceptionHandler.handleModuleException((Exception) e, "Failed to dispatch event " + event.getClass().getSimpleName());
                     } else {
                         // For non-Exception Throwables, we still need to log them
-                        top.fpsmaster.modules.logger.ClientLogger.error("Non-Exception Throwable: " + e.getMessage());
+                        ClientLogger.error("Non-Exception Throwable: " + e.getMessage());
                         e.printStackTrace();
                     }
                 }

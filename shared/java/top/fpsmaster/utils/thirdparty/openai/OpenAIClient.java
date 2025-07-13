@@ -60,6 +60,8 @@ public class OpenAIClient {
                         }
                         callback.onResponse(responseBuilder.toString());  // 非阻塞调用，处理数据
                     }
+                } catch (FileException e) {
+                    throw new RuntimeException(e);
                 }
             } catch (IOException e) {
                 callback.onError(e);
@@ -73,12 +75,8 @@ public class OpenAIClient {
         postRequest.setHeader("Authorization", "Bearer " + API_KEY);
         postRequest.setHeader("Content-Type", "application/json; charset=UTF-8\"");
 
-        try {
-            StringEntity entity = new StringEntity(jsonBody, "UTF-8");
-            postRequest.setEntity(entity);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        StringEntity entity = new StringEntity(jsonBody, "UTF-8");
+        postRequest.setEntity(entity);
 
         return postRequest;
     }

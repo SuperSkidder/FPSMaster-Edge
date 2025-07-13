@@ -29,7 +29,7 @@ public class CommandManager {
     }
 
     @Subscribe
-    public void onChat(EventSendChatMessage e) throws FileException {
+    public void onChat(EventSendChatMessage e) throws Exception {
         if (e.msg.startsWith(ClientSettings.prefix.getValue())) {
             e.cancel();
             mc.ingameGUI.getChatGUI().addToSentMessages(e.msg);
@@ -38,7 +38,7 @@ public class CommandManager {
         }
     }
 
-    private void runCommand(String command) throws FileException {
+    private void runCommand(String command) throws Exception {
         String[] args = command.split(" ");
         String cmd = args[0];
         if (args.length == 1) {

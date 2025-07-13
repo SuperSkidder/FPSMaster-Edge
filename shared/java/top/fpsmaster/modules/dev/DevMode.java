@@ -3,6 +3,7 @@ package top.fpsmaster.modules.dev;
 import top.fpsmaster.event.EventDispatcher;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventUpdate;
+import top.fpsmaster.exception.FileException;
 import top.fpsmaster.modules.lua.LuaManager;
 import top.fpsmaster.utils.math.MathTimer;
 
@@ -27,7 +28,7 @@ public class DevMode {
     MathTimer timer = new MathTimer();
 
     @Subscribe
-    public void onUpdate(EventUpdate e) {
+    public void onUpdate(EventUpdate e) throws FileException {
         if (hotswap) {
             if (timer.delay(1000)) {
                 LuaManager.hotswap();

@@ -2,6 +2,7 @@ package top.fpsmaster.features.command.impl;
 
 import net.minecraft.client.Minecraft;
 import top.fpsmaster.FPSMaster;
+import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.command.Command;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.dev.DevMode;
@@ -16,7 +17,7 @@ public class Dev extends Command {
     }
 
     @Override
-    public void execute(String[] args) {
+    public void execute(String[] args) throws Exception {
         if (args.length == 0) {
             DevMode.INSTACE.setDev(!DevMode.INSTACE.dev);
             Utility.sendClientNotify("Dev mode is now " + (DevMode.INSTACE.dev ? "enabled" : "disabled"));

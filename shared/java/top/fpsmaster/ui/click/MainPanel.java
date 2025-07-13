@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import top.fpsmaster.FPSMaster;
+import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.ui.ai.AIChatPanel;
@@ -252,7 +253,11 @@ public class MainPanel extends ScaledGuiScreen {
     @Override
     public void onGuiClosed() {
         super.onGuiClosed();
-        FPSMaster.configManager.saveConfig("default");
+        try {
+            FPSMaster.configManager.saveConfig("default");
+        } catch (FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

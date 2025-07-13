@@ -172,32 +172,32 @@ public class GuiMultiplayer extends ScaledGuiScreen {
 
         UFontRenderer title = FPSMaster.fontManager.s22;
         UFontRenderer font = FPSMaster.fontManager.s18;
-        title.drawCenteredString("多人游戏", width / 2f, 16, -1);
+        title.drawCenteredString("多人游戏", guiWidth / 2f, 16, -1);
 
-        Render2DUtils.drawOptimizedRoundedRect((width - 180) / 2f, 30, 180, 24, 3, new Color(0, 0, 0, 80).getRGB());
-        Render2DUtils.drawOptimizedRoundedRect((width - 176) / 2f + 90 * tab, 32, 86, 20, 3, -1);
-        FPSMaster.fontManager.s16.drawCenteredString("服务器列表", (width - 90) / 2f, 36, tab == 0 ? new Color(50, 50, 50).getRGB() : -1);
-        FPSMaster.fontManager.s16.drawCenteredString("推荐服务器", (width + 90) / 2f, 36, tab == 1 ? new Color(50, 50, 50).getRGB() : -1);
+        Render2DUtils.drawOptimizedRoundedRect((guiWidth - 180) / 2f, 30, 180, 24, 3, new Color(0, 0, 0, 80).getRGB());
+        Render2DUtils.drawOptimizedRoundedRect((guiWidth - 176) / 2f + 90 * tab, 32, 86, 20, 3, -1);
+        FPSMaster.fontManager.s16.drawCenteredString("服务器列表", (guiWidth - 90) / 2f, 36, tab == 0 ? new Color(50, 50, 50).getRGB() : -1);
+        FPSMaster.fontManager.s16.drawCenteredString("推荐服务器", (guiWidth + 90) / 2f, 36, tab == 1 ? new Color(50, 50, 50).getRGB() : -1);
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        Render2DUtils.doGlScissor((width - 400) / 2f, 60f, 400f, height - 120, scaleFactor);
-        scrollContainer.draw((width - 400) / 2f, 60, 396, height - 120, mouseX, mouseY, () -> {
+        Render2DUtils.doGlScissor((guiWidth - 400) / 2f, 60f, 400f, guiHeight - 120, scaleFactor);
+        scrollContainer.draw((guiWidth - 400) / 2f, 60, 396, guiHeight - 120, mouseX, mouseY, () -> {
             float y = 70 + scrollContainer.getScroll();
-            Render2DUtils.drawOptimizedRoundedRect((width - 400) / 2f, y - 10, 400, height - y, 5, new Color(0, 0, 0, 100).getRGB());
+            Render2DUtils.drawOptimizedRoundedRect((guiWidth - 400) / 2f, y - 10, 400, guiHeight - y, 5, new Color(0, 0, 0, 100).getRGB());
             for (ServerListEntry server : serverListDisplay) {
                 if (server.getServerData() == null) {
                     return;
                 }
-                Render2DUtils.drawOptimizedRoundedRect((width - 340) / 2f, y, 340, 54, new Color(0, 0, 0, 120));
-                if (Render2DUtils.isHovered((width - 340) / 2f, y, 340, 54, mouseX, mouseY)) {
-                    Render2DUtils.drawOptimizedRoundedRect((width - 340) / 2f, y, 340, 54, new Color(0, 0, 0, 50));
+                Render2DUtils.drawOptimizedRoundedRect((guiWidth - 340) / 2f, y, 340, 54, new Color(0, 0, 0, 120));
+                if (Render2DUtils.isHovered((guiWidth - 340) / 2f, y, 340, 54, mouseX, mouseY)) {
+                    Render2DUtils.drawOptimizedRoundedRect((guiWidth - 340) / 2f, y, 340, 54, new Color(0, 0, 0, 50));
                 }
 
                 if (selectedServer != null && selectedServer == server.getServerData()) {
-                    Render2DUtils.drawOptimizedRoundedRect((width - 340) / 2f, y, 340, 54, new Color(255, 255, 255, 50));
+                    Render2DUtils.drawOptimizedRoundedRect((guiWidth - 340) / 2f, y, 340, 54, new Color(255, 255, 255, 50));
                 }
-                server.drawEntry(0, (width - 340) / 2, (int) y, 340, 54, mouseX, mouseY, false);
+                server.drawEntry(0, (int) ((guiWidth - 340) / 2), (int) y, 340, 54, mouseX, mouseY, false);
                 y += 58;
             }
             scrollContainer.setHeight(y - 50 - scrollContainer.getScroll());
@@ -206,17 +206,14 @@ public class GuiMultiplayer extends ScaledGuiScreen {
         GL11.glPopMatrix();
 
 
-        join.render((width - 400) / 2f + 20, height - 56, 380f / 3 - 20, 20, mouseX, mouseY);
-        connect.render((width - 400) / 2f + 20 + 380f / 3, height - 56, 380f / 3 - 20, 20, mouseX, mouseY);
-        add.render((width - 400) / 2f + 20 + 380f / 3 * 2, height - 56, 380f / 3 - 20, 20, mouseX, mouseY);
+        join.render((guiWidth - 400) / 2f + 20, guiHeight - 56, 380f / 3 - 20, 20, mouseX, mouseY);
+        connect.render((guiWidth - 400) / 2f + 20 + 380f / 3, guiHeight - 56, 380f / 3 - 20, 20, mouseX, mouseY);
+        add.render((guiWidth - 400) / 2f + 20 + 380f / 3 * 2, guiHeight - 56, 380f / 3 - 20, 20, mouseX, mouseY);
 
-
-        edit.render((width - 400) / 2f + 20, height - 26, 380f / 4 - 20, 20, mouseX, mouseY);
-        remove.render((width - 400) / 2f + 20 + 380f / 4, height - 26, 380f / 4 - 20, 20, mouseX, mouseY);
-        refresh.render((width - 400) / 2f + 20 + 380f / 4 * 2, height - 26, 380f / 4 - 20, 20, mouseX, mouseY);
-        back.render((width - 400) / 2f + 20 + 380f / 4 * 3, height - 26, 380f / 4 - 20, 20, mouseX, mouseY);
-
-
+        edit.render((guiWidth - 400) / 2f + 20, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
+        remove.render((guiWidth - 400) / 2f + 20 + 380f / 4, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
+        refresh.render((guiWidth - 400) / 2f + 20 + 380f / 4 * 2, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
+        back.render((guiWidth - 400) / 2f + 20 + 380f / 4 * 3, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
     }
 
 
@@ -246,16 +243,16 @@ public class GuiMultiplayer extends ScaledGuiScreen {
         back.mouseClick(mouseX, mouseY, mouseButton);
 
 
-        Render2DUtils.drawOptimizedRoundedRect((width - 180) / 2f, 30, 180, 24, 3, new Color(255, 255, 255, 80).getRGB());
-        Render2DUtils.drawOptimizedRoundedRect((width - 176) / 2f, 32, 86, 20, 3, new Color(113, 127, 254).getRGB());
-        FPSMaster.fontManager.s16.drawCenteredString("服务器列表", (width - 90) / 2f, 36, -1);
-        FPSMaster.fontManager.s16.drawCenteredString("推荐服务器", (width + 90) / 2f, 36, -1);
+        Render2DUtils.drawOptimizedRoundedRect((guiWidth - 180) / 2f, 30, 180, 24, 3, new Color(255, 255, 255, 80).getRGB());
+        Render2DUtils.drawOptimizedRoundedRect((guiWidth - 176) / 2f, 32, 86, 20, 3, new Color(113, 127, 254).getRGB());
+        FPSMaster.fontManager.s16.drawCenteredString("服务器列表", (guiWidth - 90) / 2f, 36, -1);
+        FPSMaster.fontManager.s16.drawCenteredString("推荐服务器", (guiWidth + 90) / 2f, 36, -1);
 
-        if (Render2DUtils.isHovered((width - 180) / 2f, 30, 90, 24, mouseX, mouseY)) {
+        if (Render2DUtils.isHovered((guiWidth - 180) / 2f, 30, 90, 24, mouseX, mouseY)) {
             tab = 0;
             serverListDisplay.clear();
             serverListDisplay.addAll(serverListInternet);
-        } else if (Render2DUtils.isHovered((width) / 2f, 30, 90, 24, mouseX, mouseY)) {
+        } else if (Render2DUtils.isHovered((guiWidth) / 2f, 30, 90, 24, mouseX, mouseY)) {
             tab = 1;
             serverListDisplay.clear();
             serverListDisplay.addAll(serverListRecommended);
@@ -267,7 +264,7 @@ public class GuiMultiplayer extends ScaledGuiScreen {
             if (server.getServerData() == null) {
                 return;
             }
-            if (Render2DUtils.isHovered((width - 340) / 2f, y, 340, 54, mouseX, mouseY)) {
+            if (Render2DUtils.isHovered((guiWidth - 340) / 2f, y, 340, 54, mouseX, mouseY)) {
                 if (selectedServer != server.getServerData()) {
                     selectedServer = server.getServerData();
                     timer.reset();

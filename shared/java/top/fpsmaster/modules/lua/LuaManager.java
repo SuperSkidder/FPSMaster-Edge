@@ -6,6 +6,7 @@ import party.iroiro.luajava.Lua;
 import party.iroiro.luajava.lua53.Lua53;
 import party.iroiro.luajava.value.LuaValue;
 import top.fpsmaster.FPSMaster;
+import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.dev.DevMode;
@@ -29,12 +30,8 @@ import java.util.stream.Collectors;
 public class LuaManager {
     public static ArrayList<LuaScript> scripts = new ArrayList<>();
 
-    public void init() {
-        try {
-            reload();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void init() throws FileException {
+        reload();
     }
 
 
@@ -205,7 +202,7 @@ public class LuaManager {
         remove.forEach(FPSMaster.moduleManager::removeModule);
     }
 
-    public static void reload() {
+    public static void reload() throws FileException {
         ArrayList<Module> remove = new ArrayList<>();
         FPSMaster.moduleManager.modules.forEach(m -> {
             if (m instanceof LuaModule) {
@@ -227,7 +224,7 @@ public class LuaManager {
         }
     }
 
-    public static void hotswap() {
+    public static void hotswap() throws FileException {
         ArrayList<RawLua> newRawLuaList = new ArrayList<>();
         File[] luas = FileUtils.plugins.listFiles();
         for (File luaFile : luas) {

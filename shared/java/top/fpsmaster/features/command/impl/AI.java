@@ -65,7 +65,7 @@ public class AI extends Command {
     }
 
     @Override
-    public void execute(String[] args) throws FileException {
+    public void execute(String[] args) throws Exception {
         StringBuilder sb = new StringBuilder();
         if (args.length > 0) {
             if (args[0].equals("lua")) {

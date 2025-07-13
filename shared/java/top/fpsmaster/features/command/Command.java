@@ -1,6 +1,5 @@
 package top.fpsmaster.features.command;
 
-import top.fpsmaster.exception.FileException;
 
 public abstract class Command {
     String name;
@@ -8,5 +7,5 @@ public abstract class Command {
         this.name = name;
     }
 
-    public abstract void execute(String[] args) throws FileException;
+    public abstract void execute(String[] args) throws Exception;
 }

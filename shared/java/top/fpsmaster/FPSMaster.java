@@ -1,6 +1,8 @@
 package top.fpsmaster;
 
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import top.fpsmaster.exception.ExceptionHandler;
+import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.GlobalSubmitter;
 import top.fpsmaster.features.command.CommandManager;
 import top.fpsmaster.features.manager.ModuleManager;
@@ -88,12 +90,12 @@ public class FPSMaster {
         fontManager.load();
     }
 
-    private void initializeLang() {
+    private void initializeLang() throws FileException {
         ClientLogger.info("Initializing I18N...");
         i18n.read("zh_cn");
     }
 
-    private void initializeConfigures() {
+    private void initializeConfigures() throws Exception {
         ClientLogger.info("Initializing Config...");
         configManager.loadConfig("default");
         if ("dark".equals(themeSlot)) {
@@ -144,7 +146,7 @@ public class FPSMaster {
         submitter.init();
     }
 
-    private void initializePlugins() {
+    private void initializePlugins() throws FileException {
         luaManager.init();
     }
 
@@ -173,22 +175,26 @@ public class FPSMaster {
     }
 
     public void initialize() {
-        initializeFonts();
-        initializeLang();
-        initializeMusic();
-        initializeModules();
-        initializeComponents();
-        initializeConfigures();
-        initializeCommands();
-        initializePlugins();
+        try {
+            initializeFonts();
+            initializeLang();
+            initializeMusic();
+            initializeModules();
+            initializeComponents();
+            initializeConfigures();
+            initializeCommands();
+            initializePlugins();
 
-        if (phase == "release") {
-            checkUpdate();
+            if (phase == "release") {
+                checkUpdate();
+            }
+            if (phase == "alpha") {
+                autoUpdate();
+            }
+            checkOptifine();
+        } catch (Exception e) {
+            ExceptionHandler.handle(e);
         }
-        if (phase == "alpha") {
-            autoUpdate();
-        }
-        checkOptifine();
     }
 
     public void autoUpdate() {
@@ -196,6 +202,10 @@ public class FPSMaster {
     }
 
     public void shutdown() {
-        configManager.saveConfig("default");
+        try {
+            configManager.saveConfig("default");
+        } catch (FileException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
