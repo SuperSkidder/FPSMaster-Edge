@@ -18,8 +18,11 @@ FPSMaster 是一个免费、强大的 Minecraft PvP 客户端。
 3. 本分支的1.12.2版本代码暂时不会更新，因此使用1.12.2版本会报错是正常现象。
 
 
-### 开发任务
-查看我们的[任务列表](docs/tasks.md)了解当前的开发计划和进度。
+### 开发
+ - 查看我们的[代码规范](docs/code_standards.md)了解如何编写符合我们要求的代码。
+ - 查看我们的[环境配置](docs/development_environment.md)了解如何配置开发环境。
+ - 查看我们的[开发指南](docs/development_tutorial.md)了解如何使用我们的模块系统、配置系统等，并完成你的需求。
+ - 查看我们的[任务列表](docs/tasks.md)了解当前的开发计划和进度。
 
 
 ## 开源许可证
