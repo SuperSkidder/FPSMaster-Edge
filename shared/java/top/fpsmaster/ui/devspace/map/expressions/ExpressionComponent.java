@@ -1,6 +1,7 @@
 package top.fpsmaster.ui.devspace.map.expressions;
 
-import top.fpsmaster.modules.lua.parser.Expression;
+
+import top.skidder.parser.Expression;
 
 public class ExpressionComponent {
     public Expression expression;

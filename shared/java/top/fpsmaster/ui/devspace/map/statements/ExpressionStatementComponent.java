@@ -1,8 +1,8 @@
 package top.fpsmaster.ui.devspace.map.statements;
 
-import top.fpsmaster.modules.lua.parser.Statement;
 import top.fpsmaster.ui.devspace.DevSpace;
 import top.fpsmaster.ui.devspace.map.expressions.ExpressionComponent;
+import top.skidder.parser.Statement;
 
 public class ExpressionStatementComponent extends StatementComponent {
     ExpressionComponent expr;

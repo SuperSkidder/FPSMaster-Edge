@@ -2,10 +2,10 @@ package top.fpsmaster.modules.client;
 
 import java.util.concurrent.*;
 
-public class AsyncTask {
+public class ClientThreadPool {
     private final ExecutorService executorService;
 
-    public AsyncTask(int threadCount) {
+    public ClientThreadPool(int threadCount) {
         executorService = Executors.newFixedThreadPool(threadCount);
     }
 

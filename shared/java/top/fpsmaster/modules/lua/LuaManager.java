@@ -9,10 +9,10 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.interfaces.ProviderManager;
-import top.fpsmaster.modules.lua.parser.LuaParser;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
+import top.skidder.parser.LuaParser;
 
 import java.awt.*;
 import java.io.File;

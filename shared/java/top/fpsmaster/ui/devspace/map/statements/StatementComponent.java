@@ -1,6 +1,6 @@
 package top.fpsmaster.ui.devspace.map.statements;
 
-import top.fpsmaster.modules.lua.parser.Statement;
+import top.skidder.parser.Statement;
 
 public class StatementComponent {
     public Statement statement;

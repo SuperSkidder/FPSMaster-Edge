@@ -7,7 +7,7 @@ import top.fpsmaster.features.command.CommandManager;
 import top.fpsmaster.features.manager.ModuleManager;
 import top.fpsmaster.font.FontManager;
 import top.fpsmaster.modules.account.AccountManager;
-import top.fpsmaster.modules.client.AsyncTask;
+import top.fpsmaster.modules.client.ClientThreadPool;
 import top.fpsmaster.modules.client.ClientUsersManager;
 import top.fpsmaster.modules.config.ConfigManager;
 import top.fpsmaster.modules.i18n.Language;
@@ -55,7 +55,7 @@ public class FPSMaster {
     public static ComponentsManager componentsManager = new ComponentsManager();
     public static LuaManager luaManager = new LuaManager();
     public static Language i18n = new Language();
-    public static AsyncTask async = new AsyncTask(100);
+    public static ClientThreadPool async = new ClientThreadPool(100);
     public static boolean development = false;
     public static boolean isLatest = true;
     public static boolean updateFailed = false;
@@ -150,8 +150,11 @@ public class FPSMaster {
     }
 
     private void checkUpdate() {
-        AsyncTask asyncTask = new AsyncTask(100);
-        asyncTask.runnable(() -> {
+        if (development) {
+            isLatest = true;
+            return;
+        }
+        async.runnable(() -> {
             String s = UpdateChecker.getLatestVersion();
             if (s == null || s.isEmpty()) {
                 s = UpdateChecker.getLatestVersion();
@@ -163,8 +166,6 @@ public class FPSMaster {
                 }
             }
             s = s.trim();
-//            ClientLogger.info("最新版本: " + s);
-//            ClientLogger.info("当前版本: " + GitInfo.getCommitId());
             latest = s;
             isLatest = GitInfo.getCommitId().equals(s);
         });

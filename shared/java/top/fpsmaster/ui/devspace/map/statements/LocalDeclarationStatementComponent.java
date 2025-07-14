@@ -1,10 +1,10 @@
 package top.fpsmaster.ui.devspace.map.statements;
 
 import top.fpsmaster.FPSMaster;
-import top.fpsmaster.modules.lua.parser.Statement;
 import top.fpsmaster.ui.devspace.DevSpace;
 import top.fpsmaster.ui.devspace.map.expressions.ExpressionComponent;
 import top.fpsmaster.utils.render.Render2DUtils;
+import top.skidder.parser.Statement;
 
 import java.awt.*;
 

@@ -1,7 +1,7 @@
 package top.fpsmaster.ui.devspace.map.expressions;
 
 import top.fpsmaster.FPSMaster;
-import top.fpsmaster.modules.lua.parser.Expression;
+import top.skidder.parser.Expression;
 
 public class NilLiteralExpressionComponent extends ExpressionComponent{
     public NilLiteralExpressionComponent(Expression expression) {

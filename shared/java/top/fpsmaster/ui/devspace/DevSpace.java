@@ -11,8 +11,6 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.exception.FileException;
 import top.fpsmaster.modules.lua.LuaManager;
 import top.fpsmaster.modules.lua.LuaScript;
-import top.fpsmaster.modules.lua.parser.Expression;
-import top.fpsmaster.modules.lua.parser.Statement;
 import top.fpsmaster.ui.click.component.ScrollContainer;
 import top.fpsmaster.ui.devspace.map.expressions.*;
 import top.fpsmaster.ui.devspace.map.statements.*;
@@ -20,6 +18,8 @@ import top.fpsmaster.utils.math.MathTimer;
 import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 import top.fpsmaster.utils.render.ScaledGuiScreen;
+import top.skidder.parser.Expression;
+import top.skidder.parser.Statement;
 
 import java.awt.*;
 import java.io.IOException;

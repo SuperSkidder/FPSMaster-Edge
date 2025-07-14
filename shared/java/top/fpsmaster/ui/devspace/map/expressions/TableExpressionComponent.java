@@ -1,8 +1,8 @@
 package top.fpsmaster.ui.devspace.map.expressions;
 
 import top.fpsmaster.FPSMaster;
-import top.fpsmaster.modules.lua.parser.Expression;
 import top.fpsmaster.ui.devspace.DevSpace;
+import top.skidder.parser.Expression;
 
 import java.util.HashMap;
 import java.util.List;

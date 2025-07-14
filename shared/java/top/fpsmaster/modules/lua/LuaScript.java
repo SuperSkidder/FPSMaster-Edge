@@ -1,7 +1,7 @@
 package top.fpsmaster.modules.lua;
 
 import party.iroiro.luajava.Lua;
-import top.fpsmaster.modules.lua.parser.Statement;
+import top.skidder.parser.Statement;
 
 import java.util.List;
 

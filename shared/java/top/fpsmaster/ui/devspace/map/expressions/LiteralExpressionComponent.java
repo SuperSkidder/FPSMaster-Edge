@@ -1,8 +1,8 @@
 package top.fpsmaster.ui.devspace.map.expressions;
 
 import top.fpsmaster.FPSMaster;
-import top.fpsmaster.modules.lua.parser.Expression;
 import top.fpsmaster.utils.render.Render2DUtils;
+import top.skidder.parser.Expression;
 
 import java.awt.*;
 

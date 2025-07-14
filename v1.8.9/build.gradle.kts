@@ -117,7 +117,7 @@ dependencies {
     implementation("javazoom:jlayer:1.0.1")
 // https://mvnrepository.com/artifact/net.sourceforge.jtransforms/jtransforms
     implementation("net.sourceforge.jtransforms:jtransforms:2.4.0")
-
+    implementation("com.github.FPSMasterTeam:JLuaParser:master-SNAPSHOT")
 
 }
 
