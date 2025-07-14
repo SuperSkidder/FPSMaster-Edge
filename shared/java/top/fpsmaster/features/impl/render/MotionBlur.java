@@ -2,29 +2,42 @@ package top.fpsmaster.features.impl.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.client.shader.Shader;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import top.fpsmaster.FPSMaster;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventMotionBlur;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
+import top.fpsmaster.features.settings.impl.ModeSetting;
 import top.fpsmaster.features.settings.impl.NumberSetting;
+import top.fpsmaster.forge.api.IShaderGroup;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.utils.OptifineUtil;
+import top.fpsmaster.utils.Utility;
 import top.fpsmaster.wrapper.renderEngine.bufferbuilder.WrapperBufferBuilder;
+
+import java.util.List;
+
+import static top.fpsmaster.utils.Utility.mc;
 
 public class MotionBlur extends Module {
     private static Framebuffer blurBufferMain;
     private static Framebuffer blurBufferInto;
-    private NumberSetting multiplier = new NumberSetting("Multiplier", 2, 0, 10, 0.5);
+
+    private ModeSetting mode = new ModeSetting("Mode", 1, "Old", "New");
+    private NumberSetting multiplier = new NumberSetting("Strength", 2, 0, 10, 0.5);
 
     public MotionBlur() {
         super("MotionBlur", Category.RENDER);
-        addSettings(multiplier);
+        addSettings(mode, multiplier);
     }
 
     @Override
@@ -32,6 +45,7 @@ public class MotionBlur extends Module {
         super.onEnable();
         if (OptifineUtil.isFastRender()) {
             OptifineUtil.setFastRender(false);
+            Utility.sendClientNotify(FPSMaster.i18n.get("motionblur.fast_render"));
         }
     }
 
@@ -66,12 +80,46 @@ public class MotionBlur extends Module {
 
     @Subscribe
     public void renderOverlay(EventMotionBlur event) {
-        if (ProviderManager.mcProvider.getPlayer() == null || ProviderManager.mcProvider.getPlayer().ticksExisted < 20)
+        if (ProviderManager.mcProvider.getWorld() == null)
             return;
 
-        if (Minecraft.getMinecraft().currentScreen == null) {
-            blur(multiplier.getValue().floatValue());
+        if (mode.isMode("Old")) {
+            if (Minecraft.getMinecraft().currentScreen == null) {
+                if (isUsingShader())
+                    Minecraft.getMinecraft().entityRenderer.stopUseShader();
+                blur(multiplier.getValue().floatValue());
+            }
+        } else if (mode.isMode("New")) {
+            if (mc.currentScreen != null)
+                return;
+            if (!isUsingShader()) {
+                mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/motionblur.json"));
+                mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/motionblur_core.json"));
+            }
+            float strength = 0.7f + multiplier.getValue().floatValue() / 100.0f * 3.0f - 0.01f;
+            IShaderGroup shaderGroup = (IShaderGroup) mc.entityRenderer.getShaderGroup();
+            if (shaderGroup == null)
+                return;
+            List<Shader> listShaders = shaderGroup.getListShaders();
+            if (listShaders == null)
+                return;
+            listShaders.forEach(it -> {
+                if (it.getShaderManager().getShaderUniform("Phosphor") != null) {
+                    it.getShaderManager().getShaderUniform("Phosphor").set(strength, 0, 0);
+                }
+            });
         }
+    }
+
+    private boolean isUsingShader() {
+        EntityRenderer entityRenderer = mc.entityRenderer;
+        return entityRenderer.isShaderActive() && entityRenderer.getShaderGroup() != null && entityRenderer.getShaderGroup().getShaderGroupName().equalsIgnoreCase("minecraft:shaders/post/motionblur_core.json");
+    }
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+        Minecraft.getMinecraft().entityRenderer.stopUseShader();
     }
 
     public static void blur(float multiplier) {
@@ -82,7 +130,7 @@ public class MotionBlur extends Module {
 
             GlStateManager.matrixMode(GL11.GL_PROJECTION);
             GlStateManager.loadIdentity();
-            GlStateManager.ortho(0.0, width / sr.getScaleFactor(), height / sr.getScaleFactor(), 0.0, 2000.0, 4000.0);
+            GlStateManager.ortho(0.0, (double) width / sr.getScaleFactor(), (double) height / sr.getScaleFactor(), 0.0, 2000.0, 4000.0);
             GlStateManager.matrixMode(GL11.GL_MODELVIEW);
             GlStateManager.loadIdentity();
             GlStateManager.translate(0f, 0f, -2000f);

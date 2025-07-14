@@ -43,6 +43,7 @@
     "MixinRenderManager",
     "MixinRenderTNTPrimed",
     "MixinServerSelectionList",
+    "MixinShaderGroup",
     "WorldClientMixin_AnimationTick",
     "accessor.FontRendererAccessor",
     "accessor.GlStateManagerAccessor",
