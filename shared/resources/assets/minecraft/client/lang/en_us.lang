@@ -1,163 +1,286 @@
-# Interface
-mainmenu.single=Single player
+# UI
+mainmenu.single=Singleplayer
 mainmenu.multi=Multiplayer
-mainmenu.proxy=Netease Proxy
 mainmenu.settings=Settings
-mainmenu.login=Click to login!
-mainmenu.notlogin=You are not logged in, click here!
-mainmenu.latest=You are using latest version!
-mainmenu.notlatest=You are not latest! Latest version:
-mainmenu.welcome=Welcome,
-mainmenu.toupdate=, Click here to update!
+mainmenu.notlogin=You're not logged in. Click here to log in
+mainmenu.welcome=Welcome, %s
+mainmenu.latest=You're using the latest version!
+mainmenu.failed=Failed to fetch update!
+mainmenu.notlatest=You're not on the latest version. Click to update!
 
 music.title=Music
 music.search=Search
-music.disabled=Music function is off, check details at fpsmaster.top/faq/music
-music.name=Search Name
-music.list=Search Playlist ID
-music.notloggedin=Not logged in
-music.scantitle=Scan Code to login
-music.waitscan=Waiting for scan 
-music.waitconfirmation=Waiting for confirmation 
-music.loggedin=Logged in
+music.name=Search by Title
+music.list=Search by Playlist ID
+music.daily=Daily Mix
+music.notloggedin=Not Logged In
+music.scantitle=Scan to Log In
+music.waitscan=Waiting for scan
+music.waitconfirmation=Waiting for confirmation
+music.loggedin=Logged In
+
 theme.title=Theme
 theme.dark=Dark
 theme.light=Light
-theme.free=Free
-theme.vip=Sponsor
 
 oobe.welcome.title=Welcome
 oobe.welcome.next=Next
-oobe.login.privacy=We collect some anonymous data to improve experience, by continuing you agree to "Privacy Policy" and "Terms of Service"
-oobe.login.title=Login Account
-oobe.login.desc=You can register on the official FPSMaster website
+oobe.login.privacy=We collect anonymous data to improve the experience. By continuing, you agree to our Privacy Policy and Terms of Service.
+oobe.login.title=Log In
+oobe.login.desc=Register at the official FPSMaster site.
 oobe.login.username=Username
 oobe.login.password=Password
-oobe.login.register=Register Account
-oobe.login.login=Login
-oobe.login.skip=Offline Playing
+oobe.login.register=Register
+oobe.login.login=Log In
+oobe.login.skip=Play Offline
 oobe.login.info=Error Message!
 oobe.first.title=View Tutorial
 oobe.first.desc=First time here?
-oobe.first.next=Okay
+oobe.first.next=Got it
 oobe.first.skip=Skip
-oobe.done.title=Done!
-oobe.done.desc=Welcome to use
+oobe.done.title=All Set!
+oobe.done.desc=Welcome to the client
 oobe.done.start=Start
 
-microsoft.login.title=Logging into Microsoft Account
-microsoft.login.desc=Please go to the browser to continue
+microsoft.login.title=Logging in with Microsoft...
 
-# Function
-armordisplay=Armor Display
-armordisplay.desc=Display Armor Information
-betterchat=Chat Box
-betterchat.desc=Improved Chat Box
-betterchat.color=Color
-betterchat.betterfont=Better Font
-combodisplay=Combo Display
-combodisplay.desc=Display Combo Count
-combodisplay.color=Color
-cpsdisplay=Click Speed Display
-cpsdisplay.desc=Display Click Speed
-cpsdisplay.color=Color
-fpsdisplay=Frame Rate Display
-fpsdisplay.desc=Display Frame Rate
-fpsdisplay.color=Color
-hotbar=Item Bar
-hotbar.desc=Improved Item Bar
-keystrokes=Key Display
-keystrokes.desc=Display Keys
-keystrokes.color=Color
+# Modules
+armordisplay=Armor HUD
+armordisplay.desc=Displays equipped armor durability
+armordisplay.round=Rounded Corners
+armordisplay.backgroundcolor=Background Color
+armordisplay.fontshadow=Font Shadow
+armordisplay.betterfont=Clean Font
+armordisplay.mode=Display Mode
+armordisplay.mode.simplehoriz=Simple Horizontal
+armordisplay.mode.simplevertical=Simple Vertical
+armordisplay.mode.vertical=Detailed Vertical
+armordisplay.roundradius=Corner Radius
+armordisplay.background=Show Background
+
+betterchat=Chat Customizer
+betterchat.desc=Customize the chat background, font, and animations
+betterchat.color=Text Color
+betterchat.backgroundcolor=Background Color
+betterchat.fontshadow=Font Shadow
+betterchat.betterfont=Clean Font
+betterchat.roundradius=Corner Radius
+betterchat.background=Show Background
+
+combodisplay=Combo Counter
+combodisplay.desc=Displays current combo count
+combodisplay.textcolor=Text Color
+combodisplay.round=Rounded Corners
+combodisplay.backgroundcolor=Background Color
+combodisplay.fontshadow=Font Shadow
+combodisplay.betterfont=Clean Font
+combodisplay.roundradius=Corner Radius
+combodisplay.background=Show Background
+
+cpsdisplay=CPS Counter
+cpsdisplay.desc=Displays Clicks Per Second
+cpsdisplay.textcolor=Text Color
+cpsdisplay.round=Rounded Corners
+cpsdisplay.backgroundcolor=Background Color
+cpsdisplay.fontshadow=Font Shadow
+cpsdisplay.betterfont=Clean Font
+cpsdisplay.roundradius=Corner Radius
+cpsdisplay.background=Show Background
+
+fpsdisplay=FPS Counter
+fpsdisplay.desc=Displays Frames Per Second
+fpsdisplay.textcolor=Text Color
+fpsdisplay.roundradius=Corner Radius
+fpsdisplay.background=Show Background
+fpsdisplay.round=Rounded Corners
+fpsdisplay.backgroundcolor=Background Color
+fpsdisplay.fontshadow=Font Shadow
+fpsdisplay.betterfont=Clean Font
+
+minimap=Minimap
+minimap.desc=Minimap overlay
+
+hotbar=Hotbar
+hotbar.desc=Enhanced hotbar visuals
+
+keystrokes=Keystrokes
+keystrokes.desc=Displays pressed keys on screen
+keystrokes.textcolor=Text Color
 keystrokes.pressedcolor=Pressed Color
-keystrokes.rounded=Rounded
+keystrokes.round=Rounded Corners
+keystrokes.backgroundcolor=Background Color
+keystrokes.fontshadow=Font Shadow
+keystrokes.betterfont=Clean Font
+keystrokes.roundradius=Corner Radius
+keystrokes.background=Show Background
 
-potiondisplay=Potion Display
-potiondisplay.desc=Display Current Potion Effects
-potiondisplay.color=Background Color
+potiondisplay=Potion HUD
+potiondisplay.desc=Displays active potion effects
+potiondisplay.textcolor=Text Color
+potiondisplay.round=Rounded Corners
+potiondisplay.backgroundcolor=Background Color
+potiondisplay.fontshadow=Font Shadow
+potiondisplay.betterfont=Clean Font
+potiondisplay.roundradius=Corner Radius
+potiondisplay.background=Show Background
+
+pingdisplay=Ping Display
+pingdisplay.desc=Shows your ping to the server
+pingdisplay.textcolor=Text Color
+pingdisplay.round=Rounded Corners
+pingdisplay.backgroundcolor=Background Color
+pingdisplay.fontshadow=Font Shadow
+pingdisplay.betterfont=Clean Font
+pingdisplay.roundradius=Corner Radius
+pingdisplay.background=Show Background
+
 reachdisplay=Reach Display
-reachdisplay.desc=Display Attack Distance
+reachdisplay.desc=Displays hit distance on attack
+reachdisplay.round=Rounded Corners
+reachdisplay.backgroundcolor=Background Color
+reachdisplay.fontshadow=Font Shadow
+reachdisplay.betterfont=Clean Font
+reachdisplay.roundradius=Corner Radius
+reachdisplay.textcolor=Text Color
+reachdisplay.background=Show Background
+
 scoreboard=Scoreboard
-scoreboard.desc=Improved Scoreboard
-scoreboard.color=Color
-scoreboard.score=Score in Red
+scoreboard.desc=Customize the scoreboard
+scoreboard.textcolor=Text Color
+scoreboard.score=Score Color
+scoreboard.round=Rounded Corners
+scoreboard.backgroundcolor=Background Color
+scoreboard.fontshadow=Font Shadow
+scoreboard.betterfont=Clean Font
+scoreboard.roundradius=Corner Radius
+scoreboard.background=Show Background
+
 performance=Performance
-performance.desc=Optimize MC Frame Rate
+performance.desc=Optimize FPS
 performance.entitiesoptimize=Entity Rendering Optimization
-performance.fastcloud=Cloud Rendering Optimization
-performance.fastrender=Use Fast Rendering
-performance.fastload=Fast Load
-performance.fpslimit=FPS Limit when Out of Focus
+performance.fastcloud=Fast Clouds
+performance.fastrender=Fast Render
+performance.fastload=Fast World Loading
+performance.fpslimit=Limit FPS When Unfocused
 performance.entitylimit=Entity Limit
-performance.ignorestands=Ignore Armor Stand
+performance.ignorestands=Ignore Armor Stands
 performance.particleslimit=Particle Limit
 performance.screenshot=Screenshot Method
 performance.screenshot.fast=Fast
 performance.screenshot.vanilla=Vanilla
-fullbright=Keep Brightness
-fullbright.desc=Keep Brightness
+performance.blur=UI Gaussian Blur
+performance.fontoptimize=Font Optimization
+performance.staticparticlecolor=Static Particle Color
+performance.limitchunks=Chunk Load Limit
+performance.chunkupdatelimit=Chunk Update Limit
+
+fullbright=Fullbright
+fullbright.desc=Keep brightness at max
+
 itemphysics=Item Physics
-itemphysics.desc=Add Physical Effects to Drop Items
-moreparticles=More Particles
-moreparticles.desc=Add More Attack Particles
-moreparticles.sharpness=Sharp Particles
-moreparticles.alwayssharpness=Always Show More Sharp Particles
-moreparticles.crit=Critical Hit Particles
-moreparticles.alwayscrit=Always Show More Critical Hit Particles
+itemphysics.desc=Adds realistic item animations
+
+moreparticles=Extra Particles
+moreparticles.desc=Add more hit particles
+moreparticles.sharpness=Sharpness Particles
+moreparticles.alwayssharpness=Always Show Sharpness
+moreparticles.crit=Critical Particles
+moreparticles.alwayscrit=Always Show Criticals
 moreparticles.special=Special Particles
-moreparticles.special.none=No Effects
-moreparticles.special.heart=Heart
-moreparticles.special.flame=Flame
+moreparticles.special.none=None
+moreparticles.special.heart=Hearts
+moreparticles.special.flame=Flames
+moreparticles.special.blood=Blood
 moreparticles.special.damageindicator=Damage
-moreparticles.killeffect.none=No Effects
+moreparticles.killeffect.none=None
 moreparticles.killeffect.lightning=Lightning
 moreparticles.killeffect.explosion=Explosion
 moreparticles.killeffect=Kill Effect
+
 motionblur=Motion Blur
-motionblur.desc=Motion Blur
-motionblur.multiplier=Motion Blur Multiplier
-motionblur.mode=Motion Blur Mode
-motionblur.mode.classic=Classic
-motionblur.mode.new=New
-motionblur.fastrender=Caution! MotionBlur is not compatible with FastRender, we has disabled it automatically.
-sprint=Force Sprint
-sprint.desc=Keep Sprinting
-musicdisplay=Music Display
-musicdisplay.desc=Display the Music you are Playing
-musicdisplay.backgroundcolor=Song Display Background Color
-musicdisplay.progresscolor=Song Display Progress Bar Color
-musicdisplay.visual=Audio Visualization Color
-musicdisplay.amplitude=Visual Amplitude
+motionblur.desc=Adds motion blur
+motionblur.strength=Blur Strength
+motionblur.mode=Blur Mode
+motionblur.mode.old=Classic
+motionblur.mode.new=Modern
+motionblur.fastrender=Warning! Motion Blur is not compatible with Fast Render. Fast Render has been disabled.
+
+sprint=Toggle Sprint
+sprint.desc=Stay sprinting at all times
+sprint.togglesprint=Toggle Sprint
+sprint.betterfont=Clean Font
+
+musicdisplay=Music HUD
+musicdisplay.desc=Displays current playing music
+musicdisplay.backgroundcolor=Background Color
+musicdisplay.progresscolor=Progress Bar Color
+musicdisplay.visual=Visualizer Color
+musicdisplay.amplitude=Visualizer Strength
+musicdisplay.roundradius=Corner Radius
+musicdisplay.round=Rounded Corners
+musicdisplay.betterfont=Clean Font
+musicdisplay.background=Show Background
+
 oldanimations=Old Animations
-oldanimations.desc=Old Animations
-oldanimations.noshield=Do not Display Shield
-oldanimations.oldrod=Old Fishing Rod
+oldanimations.desc=Revert to old 1.7 animations
+oldanimations.noshield=Hide Shield
+oldanimations.oldrod=Old Rod
 oldanimations.oldbow=Old Bow
 oldanimations.oldswing=Old Swing
-oldanimations.oldblock=Old Block
-oldanimations.olddamage=Old Damage Animation
-oldanimations.oldusing=Old Usage Animation
-oldanimations.blockhit=Blocking Hand Swing
+oldanimations.blockswing=Block Swing
+oldanimations.oldblock=Old Blocking
+oldanimations.olddamage=Old Damage Anim
+oldanimations.oldusing=Old Use Anim
+oldanimations.blockhit=Block Hit
 oldanimations.x=X
 oldanimations.y=Y
 oldanimations.z=Z
-oldanimations.blockx=Blocking X
-oldanimations.blocky=Blocking Y
-oldanimations.blockz=Blocking Z
+oldanimations.scale=Scale
+oldanimations.blockx=Block X
+oldanimations.blocky=Block Y
+oldanimations.blockz=Block Z
+oldanimations.animationmode=Blocking Animation
+oldanimations.animationsneak=Sneak Animation
+oldanimations.animationmode.1.7=1.7
+oldanimations.animationmode.lunar=Lunar
+oldanimations.animationmode.swang=Swang
+oldanimations.animationmode.sigma=Sigma
+oldanimations.animationmode.swank=Swank
+oldanimations.animationmode.swong=Swong
+oldanimations.animationmode.debug=Debug
+oldanimations.animationmode.luna=Luna
+oldanimations.animationmode.jigsaw=Jigsaw
+oldanimations.animationmode.jello=Jello
+oldanimations.animationmode.push=Push
+
+irc=Client Chat
+irc.desc=Chat with users using the same client
+irc.enable=IRC enabled. Type %sirc <message> to chat
+irc.showmates=Show client users
+
 hitcolor=Hit Color
-hitcolor.desc=Hit Color
+hitcolor.desc=Color on hit
 hitcolor.color=Color
+
 hideindicator=Hide Attack Indicator
-hideindicator.desc=Hide Attack Indicator
+hideindicator.desc=Hides the attack cooldown bar
+
 lyricsdisplay=Lyrics Display
-lyricsdisplay.desc=Lyrics Display
-lyricsdisplay.color=Lyrics Color
-lyricsdisplay.bgcolor=Unplayed Lyrics Color
-crosshair=Crosshair
-crosshair.desc=Customized Crosshair
-crosshair.dynamic=Dynamic Range
+lyricsdisplay.desc=Show synced lyrics
+lyricsdisplay.textcolor=Active Line Color
+lyricsdisplay.textcolorbg=Inactive Line Color
+lyricsdisplay.round=Rounded Corners
+lyricsdisplay.backgroundcolor=Background Color
+lyricsdisplay.fontshadow=Font Shadow
+lyricsdisplay.betterfont=Clean Font
+lyricsdisplay.roundradius=Corner Radius
+lyricsdisplay.background=Show Background
+
+crosshair=Custom Crosshair
+crosshair.desc=Replaces the default crosshair
+crosshair.dynamic=Dynamic
 crosshair.outline=Outline
-crosshair.outlinewidth=Outline Length
+crosshair.outlinewidth=Outline Width
 crosshair.outlinecolor=Outline Color
 crosshair.length=Length
 crosshair.width=Thickness
@@ -166,97 +289,212 @@ crosshair.color=Color
 crosshair.dot=Dot
 crosshair.enemy=Enemy Color
 crosshair.friend=Friend Color
+
 firemodifier=Fire Modifier
-firemodifier.desc=Fire Modifier
+firemodifier.desc=Change vanilla fire overlay
 firemodifier.height=Height
 firemodifier.customcolor=Custom Color
 firemodifier.color=Color
-freelook=Free Look
-freelook.desc=Free Look
-freelook.bind=Shortcut Key
-blockoverlay=Block Highlight
-blockoverlay.desc=Highlight the Block you are Aiming at
+
+freelook=Freelook
+freelook.desc=Look around freely without rotating player
+freelook.bind=Keybind
+
+blockoverlay=Block Overlay
+blockoverlay.desc=Highlight targeted blocks
 blockoverlay.fill=Fill
 blockoverlay.fillcolor=Fill Color
 blockoverlay.outline=Outline
 blockoverlay.outlinecolor=Outline Color
 blockoverlay.throughblock=Through Block
 blockoverlay.width=Outline Width
+
 timechanger=Time Changer
-timechanger.desc=Change Time
+timechanger.desc=Change world time
 timechanger.time=Time
+
 tnttimer=TNT Timer
-tnttimer.desc=Display TNT Explosion Time
+tnttimer.desc=Displays time before TNT explodes
+tnttimer.duration=TNT Duration
+
 hitboxes=Hitboxes
-hitboxes.desc=Display Hitboxes
+hitboxes.desc=Show hitboxes
 hitboxes.color=Color
-customfov=Field of View
-customfov.desc=Customized Field of View
+
+customfov=Custom FOV
+customfov.desc=Modify FOV for different actions
 customfov.nospeedfov=No Speed FOV Change
-customfov.noflyfov=No Flying FOV Change
+customfov.noflyfov=No Fly FOV Change
 customfov.nobowfov=No Bow FOV Change
+
 nametags=Name Tags
-nametags.desc=Customized Name Tags
-nametags.showself=Display Your Own Name Tag
-nametags.rankmode=Rank Mode
-nametags.rankmode.none=Don't Display
-nametags.rankmode.bedwars=Bed Wars
-nametags.rankmode.bedwars-xp=Unlimited Firepower
-nametags.rankmode.skywars=Sky Wars
-nametags.rankmode.kit=Professional War
-taboverlay=Tab Display
-taboverlay.desc=Customized Tab Display
-taboverlay.showping=Display Latency
-preventbanning=Reduce False Positives in Huayueting
-preventbanning.desc=Reduce the probability of false positives in Huayueting by cancelling some anti-hacking methods
-preventbanning.mode=Mode
-preventbanning.mode.falling=Falling
-preventbanning.mode.air=Air
-preventbanning.mode.all=All
+nametags.desc=Custom name tag visuals
+nametags.showself=Show Own Nametag
+nametags.health=Show Health
+
+taboverlay=Tab Overlay
+taboverlay.desc=Customize the tab list
+taboverlay.showping=Show Ping
+
 inventorydisplay=Inventory Display
-inventorydisplay.desc=Display Inventory
+inventorydisplay.desc=Show inventory items on screen
+inventorydisplay.round=Rounded Corners
+inventorydisplay.backgroundcolor=Background Color
+inventorydisplay.roundradius=Corner Radius
+inventorydisplay.background=Show Background
+
 playerdisplay=Player Display
-playerdisplay.desc=Display Nearby Players' Information
-targetdisplay=Target Display
-targetdisplay.desc=Display Target Information
-targetdisplay.targetesp=Display Target ESP
+playerdisplay.desc=Show nearby player info
+playerdisplay.round=Rounded Corners
+playerdisplay.backgroundcolor=Background Color
+playerdisplay.fontshadow=Font Shadow
+playerdisplay.betterfont=Clean Font
+playerdisplay.roundradius=Corner Radius
+playerdisplay.background=Show Background
+
+targetdisplay=Target HUD
+targetdisplay.desc=Show information about target
+targetdisplay.targetesp=Target ESP
 targetdisplay.targetesp.glow=Glow
-targetdisplay.targetesp.none=No Display
-targetdisplay.targethud=Target Display
-targetdisplay.targethud.none=No Display
+targetdisplay.targetesp.none=None
+targetdisplay.targethud=Target HUD
+targetdisplay.targethud.none=None
 targetdisplay.targethud.simple=Simple
 targetdisplay.espcolor=ESP Color
-minimizedbobbing=Minimized Bobbing
-minimizedbobbing.desc=Stop Global Bobbing
+targetdisplay.roundradius=Corner Radius
+targetdisplay.background=Show Background
+targetdisplay.omitname=Omit Long Names
+
+minimizedbobbing=No Bobbing
+minimizedbobbing.desc=Removes all screen shake
+
 smoothzoom=Smooth Zoom
-smoothzoom.desc=Make Zoom Process Smooth
-smoothzoom.speed=Speed
-smoothzoom.speed.desc=Smooth Speed of Zoom Process
-protocol=Protocol
-protocol.desc=Huayueting Communication Protocol
-protocol.bypass=Bypass Open End Detection
-protocol.chestfix=Chest Fix
-skinchanger=Skin Modifier
+smoothzoom.desc=Smooth zooming
+smoothzoom.smoothzoom=Enable Smooth Zoom
+smoothzoom.speed=Zoom Speed
+smoothzoom.zoombind=Zoom Keybind
+smoothzoom.smoothmouse=Smooth Mouse Input
+
+skinchanger=Skin Changer
 skinchanger.skin=Skin Name
-skinchanger.desc=Skin Modifier
-nohurtcam=No Hurt Cam
-nohurtcam.desc=Remove Hurt View Shaking
+skinchanger.desc=Change your client skin
+
+nohurtcam=No Hurtcam
+nohurtcam.desc=Disable damage camera shake
+
 nameprotect=Name Protect
-nameprotect.desc=Not Showing Real Name
+nameprotect.desc=Hide your real in-game name
 nameprotect.name=Fake Name
 
+chatbot=Chat Bot
+chatbot.desc=Use LLM for automated replies
+chatbot.mode=Mode
+chatbot.mode.internal=Built-in
+chatbot.mode.custom=Custom
+chatbot.maxcontext=Max Context
+chatbot.apikey=API Key
+chatbot.model=Model
+chatbot.apiurl=API URL
+chatbot.prompt=Prompt
+chatbot.responddelay=Response Delay
+chatbot.cooldown=Cooldown
+chatbot.regex=Regex
+chatbot.ignoreself=Ignore Self
 
+translator=Translator
+translator.desc=Translate chat by typing "#lang message"
 
-# Category
-category.optimize=Optimization
+nohitdelay=No Hit Delay
+nohitdelay.desc=Remove click delay after a missed hit
+
+rawinput=Raw Input
+rawinput.desc=Use raw mouse movement
+
+fixedinventory=Fixed Inventory
+fixedinventory.desc=Prevent hotbar from moving with effects
+
+coordsdisplay=Coords HUD
+coordsdisplay.desc=Display your coordinates
+coordsdisplay.round=Rounded Corners
+coordsdisplay.backgroundcolor=Background Color
+coordsdisplay.textcolor=Text Color
+coordsdisplay.fontshadow=Font Shadow
+coordsdisplay.betterfont=Clean Font
+coordsdisplay.limitdisplay=Y Limit Display
+coordsdisplay.limitdisplayy=Y Limit
+coordsdisplay.roundradius=Corner Radius
+coordsdisplay.background=Show Background
+
+modslist=Mod List
+modslist.desc=Show enabled modules
+modslist.showtext=Show Custom Text
+modslist.text=Custom Text
+modslist.english=Use English Names
+modslist.color=Mod List Color
+modslist.rainbow=Rainbow Text
+modslist.backgroundcolor=Background Color
+modslist.betterfont=Clean Font
+modslist.roundradius=Corner Radius
+modslist.background=Show Background
+
+betterscreen=Enhanced UI
+betterscreen.desc=Improves vanilla UI visuals
+betterscreen.background=Enable Background
+betterscreen.backgroundanimation=Background Animation
+betterscreen.noflickering=No Flickering
+
+clientcommand=Client Commands
+clientcommand.desc=Use commands to control modules
+
+cheatersdetector=Cheater Detector
+cheatersdetector.desc=Detect and tag cheaters
+cheatersdetector.autohub=Auto Leave on Cheater
+cheatersdetector.autoreport=Auto Report Cheater
+cheatersdetector.cloud=Use Shared Hacker List
+
+clientsettings=Client Settings
+clientsettings.desc=General client settings
+clientsettings.clickguikey=GUI Hotkey
+clientsettings.fixedscale=Fixed GUI Scale
+clientsettings.blur=Blur UI Elements
+clientsettings.command=Client Command
+clientsettings.prefix=Command Prefix
+
+dragonwings=Dragon Wings
+dragonwings.desc=Display dragon wings
+dragonwings.colored=Colored Wings
+dragonwings.color=Wing Color
+dragonwings.scale=Scale
+dragonwings.chroma=Chroma
+
+directiondisplay=Direction HUD
+directiondisplay.desc=Display a compass
+damageindicator=Damage Indicator
+damageindicator.desc=Show damage numbers on hit
+
+# Categories
+category.optimize=Performance
 category.render=Visual
 category.utility=Utility
 category.interface=Interface
 category.music=Music
 category.theme=Theme
-category.ornament=Ornament
+category.ornament=Cosmetics
 
-# Others
-irc.not_login=§c[IRC] §r§cYou are not connected to IRC, please report this issue or check your network connection.
-irc.disconnect=§c[IRC] §r§cYou are disconnected, please reconnect.
-special.under_dev=Under development, please wait for version update
+# Notifications
+notification.module.enable=Module Enabled
+notification.module.enable.desc=%s enabled
+notification.module.disable=Module Disabled
+notification.module.disable.desc=%s disabled
+notification.music=Music
+notification.music.next=Now Playing: %s
+
+# Other
+irc.not_login=§c[IRC] §r§cYou're not connected to IRC. Check your connection or report the issue.
+irc.disconnect=§c[IRC] §r§cDisconnected. Please reconnect.
+special.under_dev=Under development. Wait for future updates.
+translate.hover=Click to Translate
+command.notfound=Command not found. If the client command affects your chat, disable ClientSettings -> Client Command.
+blur.fast_render=UI blur is not compatible with Fast Render. Please disable Fast Render first.
+blur.performance=Blur may reduce performance. Disable on low-end PCs!
+motionblur.fast_render=Motion Blur is not compatible with Fast Render. Fast Render has been disabled.

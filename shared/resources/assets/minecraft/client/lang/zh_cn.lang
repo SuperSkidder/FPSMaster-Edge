@@ -1,7 +1,6 @@
 # 界面
 mainmenu.single=单人游戏
 mainmenu.multi=多人游戏
-mainmenu.proxy=网易代理
 mainmenu.settings=设置
 mainmenu.notlogin=您未登录，点此登录
 mainmenu.welcome=欢迎您，%s
@@ -11,7 +10,6 @@ mainmenu.notlatest=您使用的不是最新版本，点此更新！
 
 music.title=音乐
 music.search=搜索
-music.disabled=音乐功能已关闭，详情查看 fpsmaster.top/faq/music
 music.name=搜索名称
 music.list=搜索歌单ID
 music.daily=日推
@@ -24,8 +22,6 @@ music.loggedin=已登录
 theme.title=主题
 theme.dark=暗色
 theme.light=亮色
-theme.free=免费
-theme.vip=赞助
 
 oobe.welcome.title=欢迎
 oobe.welcome.next=下一步
@@ -50,7 +46,7 @@ microsoft.login.title=正在登录微软账号
 
 # 功能
 armordisplay=护甲显示
-armordisplay.desc=显示护甲信息
+armordisplay.desc=显示玩家的护甲信息
 armordisplay.round=背景圆角
 armordisplay.backgroundcolor=背景颜色
 armordisplay.fontshadow=字体阴影
@@ -63,7 +59,7 @@ armordisplay.roundradius=圆角半径
 armordisplay.background=背景
 
 betterchat=聊天框
-betterchat.desc=更好的聊天框
+betterchat.desc=修改聊天框的背景、字体，以及添加动画等
 betterchat.color=颜色
 betterchat.backgroundcolor=背景颜色
 betterchat.fontshadow=字体阴影
@@ -82,7 +78,7 @@ combodisplay.roundradius=圆角半径
 combodisplay.background=背景
 
 cpsdisplay=点击速度显示
-cpsdisplay.desc=显示点击速度
+cpsdisplay.desc=显示点击速度(CPS)
 cpsdisplay.textcolor=文字颜色
 cpsdisplay.round=背景圆角
 cpsdisplay.backgroundcolor=背景颜色
@@ -92,7 +88,7 @@ cpsdisplay.roundradius=圆角半径
 cpsdisplay.background=背景
 
 fpsdisplay=帧数显示
-fpsdisplay.desc=显示帧数
+fpsdisplay.desc=显示帧数(FPS)
 fpsdisplay.textcolor=文字颜色
 fpsdisplay.roundradius=圆角半径
 fpsdisplay.background=背景
@@ -102,12 +98,13 @@ fpsdisplay.fontshadow=字体阴影
 fpsdisplay.betterfont=更好的字体
 
 minimap=小地图
-minimap.desc=显示小地图
+minimap.desc=小地图组件
 
 hotbar=物品栏
 hotbar.desc=更好的物品栏
+
 keystrokes=按键显示
-keystrokes.desc=显示按键
+keystrokes.desc=在屏幕上显示按键情况
 keystrokes.textcolor=文字颜色
 keystrokes.pressedcolor=按下颜色
 keystrokes.round=背景圆角
@@ -118,7 +115,7 @@ keystrokes.roundradius=圆角半径
 keystrokes.background=背景
 
 potiondisplay=药水显示
-potiondisplay.desc=显示当前的药水效果
+potiondisplay.desc=显示玩家的药水效果
 potiondisplay.textcolor=文字颜色
 potiondisplay.round=背景圆角
 potiondisplay.backgroundcolor=背景颜色
@@ -128,7 +125,7 @@ potiondisplay.roundradius=圆角半径
 potiondisplay.background=背景
 
 pingdisplay=延迟显示
-pingdisplay.desc=显示自己的延迟
+pingdisplay.desc=显示玩家到服务器的延迟(Ping)
 pingdisplay.textcolor=文字颜色
 pingdisplay.round=背景圆角
 pingdisplay.backgroundcolor=背景颜色
@@ -138,7 +135,7 @@ pingdisplay.roundradius=圆角半径
 pingdisplay.background=背景
 
 reachdisplay=攻击距离显示
-reachdisplay.desc=显示攻击的距离
+reachdisplay.desc=在每次攻击时显示攻击的距离
 reachdisplay.round=背景圆角
 reachdisplay.backgroundcolor=背景颜色
 reachdisplay.fontshadow=字体阴影
@@ -149,7 +146,7 @@ reachdisplay.background=背景
 
 
 scoreboard=计分板
-scoreboard.desc=更好的计分板
+scoreboard.desc=自定义计分板的样式
 scoreboard.textcolor=文字颜色
 scoreboard.score=红字
 scoreboard.round=背景圆角
@@ -165,8 +162,8 @@ performance.desc=优化MC帧数
 performance.entitiesoptimize=实体渲染优化
 performance.fastcloud=云渲染优化
 performance.fastrender=使用快速渲染
-performance.fastload=快速加载
-performance.fpslimit=失焦FPS限制
+performance.fastload=快速加载世界
+performance.fpslimit=限制客户端失去焦点时的帧数
 performance.entitylimit=实体限制
 performance.ignorestands=忽略盔甲架
 performance.particleslimit=粒子限制
@@ -181,7 +178,7 @@ performance.chunkupdatelimit=区块更新限制
 
 
 fullbright=保持亮度
-fullbright.desc=保持亮度
+fullbright.desc=保持视野明亮
 
 itemphysics=物品物理
 itemphysics.desc=给掉落物添加物理效果
@@ -283,28 +280,28 @@ lyricsdisplay.betterfont=更好的字体
 lyricsdisplay.roundradius=圆角半径
 lyricsdisplay.background=背景
 
-crosshair=准星
-crosshair.desc=自定义准心
-crosshair.dynamic=动态范围
-crosshair.outline=描边
+crosshair=自定义准心
+crosshair.desc=使用一个自定义的准星替代原版的准星
+crosshair.dynamic=动态变化
+crosshair.outline=是否描边
 crosshair.outlinewidth=描边长度
 crosshair.outlinecolor=描边颜色
 crosshair.length=长度
 crosshair.width=粗细
 crosshair.gap=间隔
 crosshair.color=颜色
-crosshair.dot=点
-crosshair.enemy=敌对颜色
-crosshair.friend=友好颜色
+crosshair.dot=中心点
+crosshair.enemy=敌对生物颜色
+crosshair.friend=友好生物颜色
 
 firemodifier=火焰修改
-firemodifier.desc=火焰修改
+firemodifier.desc=修改原版的火焰效果
 firemodifier.height=高度
 firemodifier.customcolor=自定义颜色
 firemodifier.color=颜色
 
 freelook=自由视角
-freelook.desc=自由视角
+freelook.desc=可以在不改变玩家朝向的情况下自由移动视角
 freelook.bind=快捷键
 
 blockoverlay=方块高亮
@@ -317,7 +314,7 @@ blockoverlay.throughblock=穿透方块
 blockoverlay.width=描边宽度
 
 timechanger=时间修改
-timechanger.desc=修改时间
+timechanger.desc=修改世界时间
 timechanger.time=时间
 
 tnttimer=TNT时间显示
@@ -328,8 +325,8 @@ hitboxes=碰撞箱
 hitboxes.desc=显示碰撞箱
 hitboxes.color=颜色
 
-customfov=视场角
-customfov.desc=自定义视场角
+customfov=自定义视场角
+customfov.desc=修改各个情况下的视场角(FOV)
 customfov.nospeedfov=没有速度视角变化
 customfov.noflyfov=没有飞行视角变化
 customfov.nobowfov=没有弓箭视角变化
@@ -338,33 +335,20 @@ nametags=名字标签
 nametags.desc=自定义名字标签
 nametags.showself=显示自己的名字标签
 nametags.health=显示血条
-nametags.rankmode=排名模式
-nametags.rankmode.none=不显示
-nametags.rankmode.bedwars=起床战争
-nametags.rankmode.bedwars-xp=无限火力
-nametags.rankmode.skywars=空岛战争
-nametags.rankmode.kit=职业战争
 
 taboverlay=Tab显示
-taboverlay.desc=自定义Tab显示
-taboverlay.showping=显示延迟
-
-preventbanning=减少花雨庭误封
-preventbanning.desc=通过取消一些防砍减少花雨庭误封的概率
-preventbanning.mode=模式
-preventbanning.mode.falling=下坠
-preventbanning.mode.air=空中
-preventbanning.mode.all=所有
+taboverlay.desc=自定义Tab界面
+taboverlay.showping=显示数字延迟
 
 inventorydisplay=物品栏显示
-inventorydisplay.desc=显示物品栏
+inventorydisplay.desc=显示物品栏内物品
 inventorydisplay.round=背景圆角
 inventorydisplay.backgroundcolor=背景颜色
 inventorydisplay.roundradius=圆角半径
 inventorydisplay.background=背景
 
 playerdisplay=玩家显示
-playerdisplay.desc=显示附近玩家信息
+playerdisplay.desc=显示附近玩家的信息
 playerdisplay.round=背景圆角
 playerdisplay.backgroundcolor=背景颜色
 playerdisplay.fontshadow=字体阴影
@@ -394,11 +378,6 @@ smoothzoom.smoothzoom=缩放平滑
 smoothzoom.speed=速度
 smoothzoom.zoombind=快捷键
 smoothzoom.smoothmouse=鼠标平滑
-
-protocol=协议
-protocol.desc=花雨庭通信协议
-protocol.bypass=绕过开端检测
-protocol.chestfix=箱子修复
 
 skinchanger=皮肤修改器
 skinchanger.skin=皮肤名称
@@ -473,7 +452,6 @@ betterscreen.noflickering=防止闪烁
 clientcommand=客户端命令
 clientcommand.desc=使用命令执行客户端功能
 
-
 cheatersdetector=作弊者检测
 cheatersdetector.desc=检测作弊者并特殊标记
 cheatersdetector.autohub=检测到作弊者自动退出
@@ -485,6 +463,7 @@ clientsettings.desc=调整客户端各类设置
 clientsettings.clickguikey=设置界面快捷键
 clientsettings.fixedscale=固定界面缩放比例
 clientsettings.blur=界面组件模糊
+clientsettings.command=客户端命令
 clientsettings.prefix=命令前缀
 
 dragonwings=龙翅膀
@@ -521,10 +500,7 @@ irc.not_login=§c[IRC] §r§c您未连接到IRC，请报告本问题或检查网
 irc.disconnect=§c[IRC] §r§c您已断开连接，请重新连接。
 special.under_dev=正在开发中，请等待版本更新
 translate.hover=点此翻译
-command.notfound=未找到命令，如果客户端命令影响了您的消息，请关闭实用->客户端命令 功能。
+command.notfound=未找到命令，如果客户端命令影响了您的消息，请在客户端设置中关闭客户端命令功能。
 blur.fast_render=组件模糊与快速渲染不兼容，如要使用模糊效果，请先在设置中关闭快速渲染。
 blur.performance=组件模糊会极大影响性能，若您的配置较低则不建议开启！
 motionblur.fast_render=快速渲染与运动模糊不兼容，已为您自动关闭快速渲染。
-
-# 插件
-plugin_manager.title=插件市场

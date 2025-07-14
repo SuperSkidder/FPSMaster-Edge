@@ -17,11 +17,12 @@ public class ClientSettings extends InterfaceModule {
     public static BooleanSetting blur = new BooleanSetting("blur", false);
     public static BindSetting keyBind = new BindSetting("ClickGuiKey", Keyboard.KEY_RSHIFT);
     public static BooleanSetting fixedScale = new BooleanSetting("FixedScale", true);
-    public static final TextSetting prefix = new TextSetting("prefix", "#");
+    public static BooleanSetting clientCommand = new BooleanSetting("Command", true);
+    public static final TextSetting prefix = new TextSetting("prefix", "#", () -> clientCommand.getValue());
 
     public ClientSettings() {
         super("ClientSettings", Category.Utility);
-        addSettings(prefix, keyBind, fixedScale, blur);
+        addSettings(keyBind, fixedScale, blur, clientCommand, prefix);
         EventDispatcher.registerListener(this);
     }
 
@@ -32,8 +33,8 @@ public class ClientSettings extends InterfaceModule {
     }
 
     @Subscribe
-    public void onValueChange(EventValueChange e){
-        if (e.setting == blur && ((boolean) e.newValue)){
+    public void onValueChange(EventValueChange e) {
+        if (e.setting == blur && ((boolean) e.newValue)) {
             if (OptifineUtil.isFastRender()) {
                 Utility.sendClientNotify(FPSMaster.i18n.get("blur.fast_render"));
                 e.cancel();
