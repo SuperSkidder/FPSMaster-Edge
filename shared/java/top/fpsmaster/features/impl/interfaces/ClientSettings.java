@@ -16,7 +16,7 @@ import top.fpsmaster.utils.Utility;
 public class ClientSettings extends InterfaceModule {
     public static BooleanSetting blur = new BooleanSetting("blur", false);
     public static BindSetting keyBind = new BindSetting("ClickGuiKey", Keyboard.KEY_RSHIFT);
-    public static BooleanSetting fixedScale = new BooleanSetting("FixedScale", true);
+    public static BooleanSetting fixedScale = new BooleanSetting("FixedScale", false);
     public static BooleanSetting clientCommand = new BooleanSetting("Command", true);
     public static final TextSetting prefix = new TextSetting("prefix", "#", () -> clientCommand.getValue());
 
