@@ -87,9 +87,9 @@ public class Login extends Scene {
 
         Render2DUtils.drawRect(0f, 0f, sr.getScaledWidth(), sr.getScaledHeight(), new Color(235, 242, 255).getRGB());
 
-        FPSMaster.fontManager.s24.drawCenteredString(FPSMaster.i18n.get("oobe.login.desc"), sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f - 90, FPSMaster.theme.getTextColorDescription().getRGB());
-        FPSMaster.fontManager.s18.drawString(FPSMaster.i18n.get("oobe.login.register"), sr.getScaledWidth() / 2f - 90, sr.getScaledHeight() / 2f + 15, FPSMaster.theme.getPrimary().getRGB());
-        FPSMaster.fontManager.s40.drawCenteredString(FPSMaster.i18n.get("oobe.login.title"), sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f - 75, FPSMaster.theme.getPrimary().getRGB());
+        FPSMaster.fontManager.s24.drawCenteredString(FPSMaster.i18n.get("oobe.login.desc"), sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f - 90, new Color(162, 162, 162).getRGB());
+        FPSMaster.fontManager.s18.drawString(FPSMaster.i18n.get("oobe.login.register"), sr.getScaledWidth() / 2f - 90, sr.getScaledHeight() / 2f + 15, new Color(113, 127, 254).getRGB());
+        FPSMaster.fontManager.s40.drawCenteredString(FPSMaster.i18n.get("oobe.login.title"), sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f - 75, new Color(113, 127, 254).getRGB());
 
         btn.render(sr.getScaledWidth() / 2f - 70, sr.getScaledHeight() / 2f + 40, 60f, 24f, mouseX, mouseY);
         btn2.render(sr.getScaledWidth() / 2f + 5, sr.getScaledHeight() / 2f + 40, 60f, 24f, mouseX, mouseY);

@@ -51,23 +51,23 @@ public class SearchBox extends Gui {
         this.font = fontrendererObj;
         this.runnable = runnable;
         this.placeholder = placeholder;
-        this.enabledColor = FPSMaster.theme.getTextboxEnabled();
-        this.disabledColor = FPSMaster.theme.getTextboxDisabled();
+        this.enabledColor = new Color(58, 58, 58);
+        this.disabledColor = new Color(30, 30, 30);
     }
 
     public SearchBox(String placeholder) {
         this.font = FPSMaster.fontManager.s18;
         this.placeholder = placeholder;
-        this.enabledColor = FPSMaster.theme.getTextboxEnabled();
-        this.disabledColor = FPSMaster.theme.getTextboxDisabled();
+        this.enabledColor = new Color(58, 58, 58);
+        this.disabledColor = new Color(30, 30, 30);
     }
 
     public SearchBox(String s, Runnable runnable) {
         this.font = FPSMaster.fontManager.s18;
         this.placeholder = s;
         this.runnable = runnable;
-        this.enabledColor = FPSMaster.theme.getTextboxEnabled();
-        this.disabledColor = FPSMaster.theme.getTextboxDisabled();
+        this.enabledColor = new Color(58, 58, 58);
+        this.disabledColor = new Color(30, 30, 30);
     }
 
     public void updateCursorCounter() {

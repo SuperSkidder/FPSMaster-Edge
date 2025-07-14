@@ -17,7 +17,7 @@ public class CategoryComponent {
 
     public CategoryComponent(Category category) {
         this.category = category;
-        animationName.setColor(FPSMaster.theme.getCategoryText());
+        animationName.setColor(new Color(234, 234, 234));
     }
 
     public void render(float x, float y, float width, float height, float mouseX, float mouseY, boolean selected) {

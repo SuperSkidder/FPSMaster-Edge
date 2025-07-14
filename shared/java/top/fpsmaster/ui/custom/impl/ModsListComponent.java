@@ -36,7 +36,7 @@ public class ModsListComponent extends Component {
         if (modlist.showLogo.getValue()) {
             float stringWidth = getStringWidth(36, modlist.text.getValue());
             drawString(36, modlist.text.getValue(), (float) (x + 0.5 + width - stringWidth), y + 0.5f, new Color(0, 0, 0, 100).getRGB());
-            drawString(36, modlist.text.getValue(), x + width - stringWidth, y, FPSMaster.theme.getPrimary().getRGB());
+            drawString(36, modlist.text.getValue(), x + width - stringWidth, y, new Color(113, 127, 254).getRGB());
             modY = 20f;
         }
 

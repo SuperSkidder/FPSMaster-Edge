@@ -37,7 +37,7 @@ public class ModuleRenderer extends ValueRender {
 
     public ModuleRenderer(Module mod) {
         this.mod = mod;
-        content = new ColorAnimation(mod.isEnabled() ? FPSMaster.theme.getModuleEnabled() : FPSMaster.theme.getModuleDisabled());
+        content = new ColorAnimation(mod.isEnabled() ? new Color(66, 66, 66) : new Color(40, 40, 40));
         mod.settings.forEach(new Consumer<Setting<?>>() {
             @Override
             public void accept(Setting<?> setting) {
@@ -68,11 +68,11 @@ public class ModuleRenderer extends ValueRender {
         option.update();
 
         if (mod.isEnabled()) {
-            content.start(content.getColor(), FPSMaster.theme.getModuleTextEnabled(), 0.2f, Type.EASE_IN_OUT_QUAD);
+            content.start(content.getColor(), new Color(255, 255, 255), 0.2f, Type.EASE_IN_OUT_QUAD);
             option.start(option.getColor(), new Color(89, 101, 241), 0.2f, Type.EASE_IN_OUT_QUAD);
             optionX = (float) AnimationUtils.base(optionX, 10, 0.2f);
         } else {
-            content.start(content.getColor(), FPSMaster.theme.getModuleTextDisabled(), 0.2f, Type.EASE_IN_OUT_QUAD);
+            content.start(content.getColor(), new Color(156, 156, 156), 0.2f, Type.EASE_IN_OUT_QUAD);
             option.start(option.getColor(), new Color(255, 255, 255), 0.2f, Type.EASE_IN_OUT_QUAD);
             optionX = (float) AnimationUtils.base(optionX, 0, 0.2f);
         }
@@ -159,7 +159,7 @@ public class ModuleRenderer extends ValueRender {
                 FPSMaster.i18n.get(mod.name.toLowerCase(Locale.getDefault()) + ".desc"),
                 x + 40,
                 y + 20,
-                FPSMaster.theme.getTextColorDescription().getRGB()
+                new Color(162, 162, 162).getRGB()
         );
 
         float settingsHeight = 0f;

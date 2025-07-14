@@ -1,6 +1,5 @@
 package top.fpsmaster.ui.click;
 
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -13,12 +12,8 @@ import top.fpsmaster.ui.ai.AIChatPanel;
 import top.fpsmaster.ui.click.component.ScrollContainer;
 import top.fpsmaster.ui.click.music.MusicPanel;
 import top.fpsmaster.ui.click.modules.ModuleRenderer;
-import top.fpsmaster.ui.click.music.NewMusicPanel;
-import top.fpsmaster.ui.click.themes.DarkTheme;
-import top.fpsmaster.ui.click.themes.LightTheme;
 import top.fpsmaster.utils.math.animation.Animation;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
-import top.fpsmaster.utils.math.animation.ColorAnimation;
 import top.fpsmaster.utils.math.animation.Type;
 import top.fpsmaster.utils.render.Render2DUtils;
 import top.fpsmaster.utils.render.ScaledGuiScreen;
@@ -110,7 +105,7 @@ public class MainPanel extends ScaledGuiScreen {
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         Render2DUtils.doGlScissor(
-                x, y+10, width,
+                x, y + 10, width,
                 (height - 18),
                 scaleFactor
         );
@@ -169,7 +164,7 @@ public class MainPanel extends ScaledGuiScreen {
                 categoryAnimation,
                 140,
                 14,
-                new Color(0,0,0,200).getRGB()
+                new Color(0, 0, 0, 200).getRGB()
         );
 
         float my = y + 60;
@@ -226,9 +221,6 @@ public class MainPanel extends ScaledGuiScreen {
     public void initGui() {
         super.initGui();
         aiChatPanel.init();
-        ScaledResolution sr = new ScaledResolution(mc);
-        int scaledWidth = sr.getScaledWidth();
-        int scaledHeight = sr.getScaledHeight();
         scaleAnimation.fstart(0.8, 1.0, 0.2f, Type.EASE_IN_OUT_QUAD);
         close = false;
 
@@ -237,10 +229,8 @@ public class MainPanel extends ScaledGuiScreen {
 //            height = scaledHeight / 2f;
 //        }
 
-        if (x == -1 || y == -1) {
-            x = (int) ((scaledWidth - width) / 2);
-            y = (int) ((scaledHeight - height) / 2);
-        }
+        x = (int) ((guiWidth - width) / 2);
+        y = (int) ((guiHeight - height) / 2);
 
         categories.clear();
         for (Category c : Category.values()) {
@@ -287,13 +277,13 @@ public class MainPanel extends ScaledGuiScreen {
         aiChatPanel.click(mouseX, mouseY, mouseButton);
         if (!Render2DUtils.isHoveredWithoutScale(x, y, width, height, mouseX, mouseY)) return;
 
-        if (mouseButton == 0 && Render2DUtils.isHoveredWithoutScale(
-                x + leftWidth, y, width - leftWidth, 20f, mouseX, mouseY
-        )) {
-            drag = true;
-            dragX = mouseX - x;
-            dragY = mouseY - y;
-        }
+//        if (mouseButton == 0 && Render2DUtils.isHoveredWithoutScale(
+//                x + leftWidth, y, width - leftWidth, 20f, mouseX, mouseY
+//        )) {
+//            drag = true;
+//            dragX = mouseX - x;
+//            dragY = mouseY - y;
+//        }
 
 //        if (mouseButton == 0 && Render2DUtils.isHoveredWithoutScale(
 //                x + width - 20, y + height - 20, 20f, 20f, mouseX, mouseY

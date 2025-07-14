@@ -16,6 +16,7 @@ import top.fpsmaster.ui.custom.Position;
 import top.fpsmaster.utils.os.FileUtils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigManager {
 
@@ -68,8 +69,9 @@ public class ConfigManager {
     public void saveConfig(String name) throws FileException {
         saveComponents();
         JsonObject json = new JsonObject();
-        json.addProperty("theme", FPSMaster.themeSlot);
-        json.addProperty("clientConfigure", gson.toJson(configure.configures));
+        JsonObject configures = new JsonObject();
+        configure.configures.forEach(configures::addProperty);
+        json.add("clientConfigure", configures);
 
         for (Module module : FPSMaster.moduleManager.modules) {
             JsonObject moduleJson = new JsonObject();
@@ -103,7 +105,6 @@ public class ConfigManager {
         readComponents();
         jsonStr = FileUtils.readFile(name + ".json");
         JsonObject json = gson.fromJson(jsonStr, JsonObject.class);
-        FPSMaster.themeSlot = json.get("theme").getAsString();
 
         for (Module module : FPSMaster.moduleManager.modules) {
             JsonObject moduleJson = json.getAsJsonObject(module.name);
@@ -143,7 +144,10 @@ public class ConfigManager {
             }
         }
 
-        configure.configures = gson.fromJson(json.get("clientConfigure").getAsString(), HashMap.class);
+        JsonObject clientConfigure = json.get("clientConfigure").getAsJsonObject();
+        for (Map.Entry<String, JsonElement> element : clientConfigure.entrySet()) {
+            configure.configures.put(element.getKey(), element.getValue().getAsString());
+        }
     }
 
     private void openDefaultModules() {

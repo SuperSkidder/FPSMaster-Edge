@@ -38,14 +38,14 @@ public class GuiWaiting extends GuiScreen {
             MicrosoftLogin.loginProgressMessage,
             sr.getScaledWidth() / 2f,
             sr.getScaledHeight() / 2f - 30,
-            FPSMaster.theme.getTextColorDescription().getRGB()
+                new Color(162, 162, 162).getRGB()
         );
 
         FPSMaster.fontManager.s40.drawCenteredString(
             FPSMaster.i18n.get("microsoft.login.title"),
             sr.getScaledWidth() / 2f,
             sr.getScaledHeight() / 2f + 10,
-            FPSMaster.theme.getPrimary().getRGB()
+                new Color(113, 127, 254).getRGB()
         );
 
         // Check if logged in and switch to the main menu

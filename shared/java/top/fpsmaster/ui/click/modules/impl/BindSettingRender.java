@@ -26,7 +26,7 @@ public class BindSettingRender extends SettingRender<BindSetting> {
     public void render(float x, float y, float width, float height, float mouseX, float mouseY, boolean custom) {
         float fw = FPSMaster.fontManager.s16.drawString(
             FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
-            x + 10, y + 2, FPSMaster.theme.getTextColorTitle().getRGB()
+            x + 10, y + 2, new Color(234, 234, 234).getRGB()
         );
         String keyName = Keyboard.getKeyName(setting.getValue());
         UFontRenderer s16b = FPSMaster.fontManager.s16;
@@ -41,7 +41,7 @@ public class BindSettingRender extends SettingRender<BindSetting> {
             );
         }
         Render2DUtils.drawOptimizedRoundedRect(x + 15 + fw, y, width1, 12f, colorAnimation.getColor());
-        s16b.drawString(keyName, x + 18 + fw, y + 2, FPSMaster.theme.getTextColorTitle().getRGB());
+        s16b.drawString(keyName, x + 18 + fw, y + 2, new Color(234, 234, 234).getRGB());
         if (MainPanel.bindLock.equals(setting.name)) {
             colorAnimation.base(new Color(255,255,255,80));
         } else {

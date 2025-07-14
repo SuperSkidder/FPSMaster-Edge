@@ -156,7 +156,7 @@ public class MusicPanel {
 
     public static void draw(float x, float y, float width, float height, int mouseX, int mouseY, int scaleFactor) {
         if (isWaitingLogin) {
-            FPSMaster.fontManager.s18.drawCenteredString("<", x + 20, y + 20, FPSMaster.theme.getTextColorTitle().getRGB());
+            FPSMaster.fontManager.s18.drawCenteredString("<", x + 20, y + 20, new Color(234, 234, 234).getRGB());
             if (Render2DUtils.isHovered(x + 20, y + 20, 20f, 20f, mouseX, mouseY) && Mouse.isButtonDown(0)) {
                 isWaitingLogin = false;
             }
@@ -182,7 +182,7 @@ public class MusicPanel {
                     isWaitingLogin = false;
                     break;
             }
-            FPSMaster.fontManager.s18.drawCenteredString(FPSMaster.i18n.get(scan), x + width / 2, y + height / 2 + 60, FPSMaster.theme.getTextColorTitle().getRGB());
+            FPSMaster.fontManager.s18.drawCenteredString(FPSMaster.i18n.get(scan), x + width / 2, y + height / 2 + 60, new Color(234, 234, 234).getRGB());
             return;
         }
         MusicPanel.x = x;
@@ -201,8 +201,8 @@ public class MusicPanel {
             AtomicReference<Float> musicHeight = new AtomicReference<>(0f);
 
             Render2DUtils.drawRect(x, dY.get() - 6, width - 10, 0.5f, new Color(100, 100, 100, 50));
-            FPSMaster.fontManager.s16.drawString("#", x + 12, dY.get() - 20, FPSMaster.theme.getTextColorTitle().getRGB());
-            FPSMaster.fontManager.s16.drawString("标题", x + 30, dY.get() - 20, FPSMaster.theme.getTextColorTitle().getRGB());
+            FPSMaster.fontManager.s16.drawString("#", x + 12, dY.get() - 20, new Color(234, 234, 234).getRGB());
+            FPSMaster.fontManager.s16.drawString("标题", x + 30, dY.get() - 20, new Color(234, 234, 234).getRGB());
 
             // music list
             container.draw(x, y + 50, width - 5, height - 80, mouseX, mouseY, () -> {
@@ -211,20 +211,20 @@ public class MusicPanel {
                     if (Render2DUtils.isHovered(x, dY.get(), width - 10f, 40f, mouseX, mouseY) && mouseY > y + 50 && mouseY < y + height - 34) {
                         Render2DUtils.drawOptimizedRoundedRect(x, dY.get(), width - 10, 40f, new Color(200, 200, 200, 50));
                     }
-                    FPSMaster.fontManager.s16.drawCenteredString("" + i, x + 15, dY.get() + 15, FPSMaster.theme.getTextColorTitle().getRGB());
+                    FPSMaster.fontManager.s16.drawCenteredString("" + i, x + 15, dY.get() + 15, new Color(234, 234, 234).getRGB());
                     if (dY.get() > y && dY.get() < y + height - 10) {
                         if (music.isLoadedImage) {
                             Render2DUtils.drawImage(new ResourceLocation("music/netease/" + music.id), x + 30, dY.get() + 10, 20f, 20f, -1);
                         } else {
-                            Render2DUtils.drawOptimizedRoundedRect(x + 30, dY.get() + 10, 20f, 20f, FPSMaster.theme.getMusicBlank());
+                            Render2DUtils.drawOptimizedRoundedRect(x + 30, dY.get() + 10, 20f, 20f, new Color(200, 200, 200, 255));
                         }
                     }
                     if (MusicPlayer.playList.current == i) {
-                        FPSMaster.fontManager.s16.drawString(music.name + "  " + music.author, x + 60, dY.get() + 10, FPSMaster.theme.getTextColorTitle().getRGB());
-                        FPSMaster.fontManager.s16.drawString(music.author, x + 60, dY.get() + 20, FPSMaster.theme.getTextColorDescription().getRGB());
+                        FPSMaster.fontManager.s16.drawString(music.name + "  " + music.author, x + 60, dY.get() + 10, new Color(234, 234, 234).getRGB());
+                        FPSMaster.fontManager.s16.drawString(music.author, x + 60, dY.get() + 20, new Color(162, 162, 162).getRGB());
                     } else {
-                        FPSMaster.fontManager.s16.drawString(music.name + "  " + music.author, x + 60, dY.get() + 10, FPSMaster.theme.getTextColorTitle().getRGB());
-                        FPSMaster.fontManager.s16.drawString(music.author, x + 60, dY.get() + 20, FPSMaster.theme.getTextColorDescription().getRGB());
+                        FPSMaster.fontManager.s16.drawString(music.name + "  " + music.author, x + 60, dY.get() + 10, new Color(234, 234, 234).getRGB());
+                        FPSMaster.fontManager.s16.drawString(music.author, x + 60, dY.get() + 20, new Color(162, 162, 162).getRGB());
                     }
                     dY.updateAndGet(v -> new Float((float) (v + 40f)));
                     musicHeight.updateAndGet(v -> new Float((float) (v + 40f)));
@@ -233,7 +233,7 @@ public class MusicPanel {
             });
 
         } else {
-            FPSMaster.fontManager.s18.drawCenteredString("...", x + width / 2, y + 60, FPSMaster.theme.getTextColorTitle().getRGB());
+            FPSMaster.fontManager.s18.drawCenteredString("...", x + width / 2, y + 60, new Color(234, 234, 234).getRGB());
         }
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
@@ -265,14 +265,14 @@ public class MusicPanel {
             }
             int stringWidth = FPSMaster.fontManager.s16.getStringWidth(FPSMaster.i18n.get("music.notLoggedIn"));
             if (Render2DUtils.isHovered(x + width - stringWidth - 5, y + 10, stringWidth, 16f, mouseX, mouseY)) {
-                FPSMaster.fontManager.s16.drawString(FPSMaster.i18n.get("music.notloggedin"), x + width - stringWidth - 5, y + 10, FPSMaster.theme.getTextColorTitle().getRGB());
+                FPSMaster.fontManager.s16.drawString(FPSMaster.i18n.get("music.notloggedin"), x + width - stringWidth - 5, y + 10, new Color(234, 234, 234).getRGB());
                 if (Mouse.isButtonDown(0)) {
                     isWaitingLogin = true;
                     reloadImg();
                     code = 801;
                 }
             } else {
-                FPSMaster.fontManager.s16.drawString(FPSMaster.i18n.get("music.notloggedin"), x + width - stringWidth - 5, y + 10, FPSMaster.theme.getTextColorDescription().getRGB());
+                FPSMaster.fontManager.s16.drawString(FPSMaster.i18n.get("music.notloggedin"), x + width - stringWidth - 5, y + 10, new Color(162, 162, 162).getRGB());
             }
         } else {
             int stringWidth = FPSMaster.fontManager.s16.getStringWidth(nickname);
@@ -288,7 +288,7 @@ public class MusicPanel {
 
         // 操作栏
         AbstractMusic current = MusicPlayer.playList.current();
-        Render2DUtils.drawRect(x, y + height - 30, width, 2f, FPSMaster.theme.getFrontBackground().getRGB());
+        Render2DUtils.drawRect(x, y + height - 30, width, 2f, new Color(58, 58, 58).getRGB());
         Render2DUtils.drawRect(x, y + height - 30, width * MusicPlayer.getPlayProgress(), 2f, -1);
         if (Render2DUtils.isHovered(x, y + height - 32, width, 4f, mouseX, mouseY)) {
             Render2DUtils.drawRect(x, y + height - 31f, width * MusicPlayer.getPlayProgress(), 4f, -1);
@@ -296,7 +296,7 @@ public class MusicPanel {
 
         // 音量
         Render2DUtils.drawImage(new ResourceLocation("client/textures/ui/volume.png"), x + width - 50, y + height - 16, 7f, 7f, -1);
-        Render2DUtils.drawRect(x + width - 40, y + height - 14, 30f, 2f, FPSMaster.theme.getFrontBackground().getRGB());
+        Render2DUtils.drawRect(x + width - 40, y + height - 14, 30f, 2f, new Color(58, 58, 58).getRGB());
         Render2DUtils.drawRect(x + width - 40, y + height - 14, 30 * MusicPlayer.getVolume(), 2f, -1);
         if (Render2DUtils.isHovered(x + width - 40, y + height - 14, 30f, 2f, mouseX, mouseY)) {
             Render2DUtils.drawRect(x + width - 40, y + height - 14.5f, 30 * MusicPlayer.getVolume(), 3f, -1);
@@ -308,7 +308,7 @@ public class MusicPanel {
         int trimWidth = (int) (width / 2 - 100);
         if (!MusicPlayer.playList.musics.isEmpty() && current != null) {
             String name = FPSMaster.fontManager.s18.trimString(current.name + " - " + current.author, trimWidth, false);
-            FPSMaster.fontManager.s18.drawString(name, x + 30, y + height - 23, FPSMaster.theme.getTextColorTitle().getRGB());
+            FPSMaster.fontManager.s18.drawString(name, x + 30, y + height - 23, new Color(234, 234, 234).getRGB());
             String progress = "0:00/0:00";
             if (JLayerHelper.clip != null) {
                 double duration = JLayerHelper.getDuration();
@@ -316,11 +316,11 @@ public class MusicPanel {
                 int seconds = (int) ((duration * MusicPlayer.getPlayProgress() - minutes) * 60);
                 progress = minutes + ":" + seconds + "/" + (int) duration + ":" + (int) ((duration - (int) duration) * 60);
             }
-            FPSMaster.fontManager.s16.drawString(progress, x + 30, y + height - 14, FPSMaster.theme.getTextColorDescription().getRGB());
+            FPSMaster.fontManager.s16.drawString(progress, x + 30, y + height - 14, new Color(162, 162, 162).getRGB());
             if (MusicPlayer.playList.current() != null && ((Music) MusicPlayer.playList.current()).isLoadedImage) {
                 Render2DUtils.drawImage(new ResourceLocation("music/netease/" + ((Music) MusicPlayer.playList.current()).id), x + 5, y + height - 24, 20f, 20f, -1);
             } else {
-                Render2DUtils.drawOptimizedRoundedRect(x + 5, y + height - 24, 20f, 20f, FPSMaster.theme.getMusicBlank());
+                Render2DUtils.drawOptimizedRoundedRect(x + 5, y + height - 24, 20f, 20f, new Color(200, 200, 200, 255));
             }
         }
         ResourceLocation res = new ResourceLocation("client/gui/settings/music/loop.png");
@@ -335,10 +335,10 @@ public class MusicPanel {
                 res = new ResourceLocation("client/gui/settings/music/loop.png");
                 break;
         }
-        Render2DUtils.drawImage(res, x + width / 2 - 55, y + height - 21, 12f, 12f, FPSMaster.theme.getTextColorTitle());
-        Render2DUtils.drawImage(new ResourceLocation("client/gui/settings/music/previous.png"), x + width / 2 - 35, y + height - 23, 16f, 16f, FPSMaster.theme.getTextColorTitle());
+        Render2DUtils.drawImage(res, x + width / 2 - 55, y + height - 21, 12f, 12f, new Color(234, 234, 234));
+        Render2DUtils.drawImage(new ResourceLocation("client/gui/settings/music/previous.png"), x + width / 2 - 35, y + height - 23, 16f, 16f, new Color(234, 234, 234));
         Render2DUtils.drawImage(MusicPlayer.isPlaying ? new ResourceLocation("client/gui/settings/music/pause.png") : new ResourceLocation("client/gui/settings/music/play.png"), x + width / 2 - 15, y + height - 23, 35 / 2f, 35 / 2f, -1);
-        Render2DUtils.drawImage(new ResourceLocation("client/gui/settings/music/next.png"), x + width / 2 + 5, y + height - 23, 16f, 16f, FPSMaster.theme.getTextColorTitle());
+        Render2DUtils.drawImage(new ResourceLocation("client/gui/settings/music/next.png"), x + width / 2 + 5, y + height - 23, 16f, 16f, new Color(234, 234, 234));
     }
 
     private static String extractMiddleContent(String input, String prefix, String suffix) {

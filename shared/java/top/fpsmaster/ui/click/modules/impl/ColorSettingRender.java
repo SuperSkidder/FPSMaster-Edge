@@ -35,16 +35,16 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
     ) {
         float tW = FPSMaster.fontManager.s16.drawString(
                 FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
-                x + 10, y + 3, FPSMaster.theme.getTextColorDescription().getRGB()
+                x + 10, y + 3, new Color(162, 162, 162).getRGB()
         );
-        Render2DUtils.drawOptimizedRoundedRect(x + tW + 26, y + 1, 80f, 14f, FPSMaster.theme.getBackground());
+        Render2DUtils.drawOptimizedRoundedRect(x + tW + 26, y + 1, 80f, 14f, new Color(39, 39, 39));
 
         CustomColor customColor = setting.getValue();
         Render2DUtils.drawOptimizedRoundedRect(x + tW + 27, y + 2, 12f, 12f, customColor.getRGB());
 
         FPSMaster.fontManager.s16.drawString(
                 "#" + Integer.toHexString(setting.getRGB()).toUpperCase(Locale.getDefault()),
-                x + tW + 44, y + 2, FPSMaster.theme.getTextColorTitle().getRGB()
+                x + tW + 44, y + 2, new Color(234, 234, 234).getRGB()
         );
 
         if (aHeight > 1) {
@@ -155,7 +155,7 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
     ) {
         float tW = FPSMaster.fontManager.s16.drawString(
                 FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
-                x + 10, y + 2, FPSMaster.theme.getTextColorDescription().getRGB()
+                x + 10, y + 2, new Color(162, 162, 162).getRGB()
         );
         if (Render2DUtils.isHovered(x + tW + 26, y + 1, 80f, 14f, (int) mouseX, (int) mouseY) && btn == 0) {
             expand = !expand;

@@ -32,7 +32,7 @@ public class BooleanSettingRender extends SettingRender<BooleanSetting> {
         Render2DUtils.drawOptimizedRoundedRect(x + 14, y + 3, 6f, 6f, 3, box.getColor().getRGB());
         FPSMaster.fontManager.s16.drawString(
             FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
-            x + 26, y + 1, FPSMaster.theme.getTextColorDescription().getRGB()
+            x + 26, y + 1, new Color(162, 162, 162).getRGB()
         );
         this.height = 12f;
     }

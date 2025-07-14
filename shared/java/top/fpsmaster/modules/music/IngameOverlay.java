@@ -82,14 +82,14 @@ public class IngameOverlay {
                 current.name,
                 x + 40,
                 y + 6,
-                FPSMaster.theme.getTextColorTitle().getRGB()
+                new Color(234, 234, 234).getRGB()
         );
 
         FPSMaster.fontManager.s16.drawString(
                 current.author,
                 x + 40,
                 y + 18,
-                FPSMaster.theme.getTextColorDescription().getRGB()
+                new Color(162, 162, 162).getRGB()
         );
     }
 }

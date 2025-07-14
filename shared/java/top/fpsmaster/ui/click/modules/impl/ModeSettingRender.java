@@ -9,6 +9,7 @@ import top.fpsmaster.ui.click.modules.SettingRender;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
+import java.awt.*;
 import java.util.Locale;
 
 public class ModeSettingRender extends SettingRender<ModeSetting> {
@@ -23,22 +24,22 @@ public class ModeSettingRender extends SettingRender<ModeSetting> {
     @Override
     public void render(float x, float y, float width, float height, float mouseX, float mouseY, boolean custom) {
         float fw = FPSMaster.fontManager.s16.drawString(
-            FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
-            x + 10, y + 8, FPSMaster.theme.getTextColorDescription().getRGB()
+                FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
+                x + 10, y + 8, new Color(162, 162, 162).getRGB()
         );
         float maxWidth = 80f;
         Render2DUtils.drawOptimizedRoundedBorderRect(
-            x + 16 + fw,
-            y + 4,
-            maxWidth,
-            16 + expandH,
-            0.5f,
-            FPSMaster.theme.getModeBox(),
-            FPSMaster.theme.getModeBoxBorder()
+                x + 16 + fw,
+                y + 4,
+                maxWidth,
+                16 + expandH,
+                0.5f,
+                new Color(52, 52, 52),
+                new Color(255, 255, 255, 50)
         );
         FPSMaster.fontManager.s18.drawString(
-            FPSMaster.i18n.get((mod.name + "." + setting.name + "." + setting.getModeName()).toLowerCase(Locale.getDefault())),
-            x + 20 + fw, y + 7, FPSMaster.theme.getTextColorTitle().getRGB()
+                FPSMaster.i18n.get((mod.name + "." + setting.name + "." + setting.getModeName()).toLowerCase(Locale.getDefault())),
+                x + 20 + fw, y + 7, new Color(234, 234, 234).getRGB()
         );
 
         // Rotate this icon
@@ -48,12 +49,12 @@ public class ModeSettingRender extends SettingRender<ModeSetting> {
         GL11.glRotatef(rotatePercent * 180, 0f, 0f, 1f);
         GL11.glTranslatef(-(x + 16 + fw + maxWidth - 12), -(y + 12), 0f);
         Render2DUtils.drawImage(
-            new ResourceLocation("client/gui/settings/icons/arrow.png"),
-            x + 16 + fw + maxWidth - 16,
-            y + 8,
-            8f,
-            8f,
-            FPSMaster.theme.getTextColorTitle()
+                new ResourceLocation("client/gui/settings/icons/arrow.png"),
+                x + 16 + fw + maxWidth - 16,
+                y + 8,
+                8f,
+                8f,
+                new Color(234, 234, 234)
         );
         GL11.glPopMatrix();
         if (expand) {
@@ -61,13 +62,13 @@ public class ModeSettingRender extends SettingRender<ModeSetting> {
             for (int i = 1; i <= setting.getModesSize(); i++) {
                 if (Render2DUtils.isHovered(x + 20 + fw, y + 4 + i * 14, maxWidth, 16f, (int) mouseX, (int) mouseY)) {
                     FPSMaster.fontManager.s16.drawString(
-                        FPSMaster.i18n.get((mod.name + "." + setting.name + "." + setting.getMode(i)).toLowerCase(Locale.getDefault())),
-                        x + 20 + fw, y + 7 + i * 14, FPSMaster.theme.getTextColorDescriptionHover().getRGB()
+                            FPSMaster.i18n.get((mod.name + "." + setting.name + "." + setting.getMode(i)).toLowerCase(Locale.getDefault())),
+                            x + 20 + fw, y + 7 + i * 14, new Color(182, 182, 182).getRGB()
                     );
                 } else {
                     FPSMaster.fontManager.s16.drawString(
-                        FPSMaster.i18n.get((mod.name + "." + setting.name + "." + setting.getMode(i)).toLowerCase(Locale.getDefault())),
-                        x + 20 + fw, y + 7 + i * 14, FPSMaster.theme.getTextColorDescription().getRGB()
+                            FPSMaster.i18n.get((mod.name + "." + setting.name + "." + setting.getMode(i)).toLowerCase(Locale.getDefault())),
+                            x + 20 + fw, y + 7 + i * 14, new Color(162, 162, 162).getRGB()
                     );
                 }
             }
@@ -80,8 +81,8 @@ public class ModeSettingRender extends SettingRender<ModeSetting> {
     @Override
     public void mouseClick(float x, float y, float width, float height, float mouseX, float mouseY, int btn) {
         float fw = FPSMaster.fontManager.s16.drawString(
-            FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
-            x + 10, y + 8, FPSMaster.theme.getTextColorDescription().getRGB()
+                FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
+                x + 10, y + 8, new Color(162, 162, 162).getRGB()
         );
         float maxWidth = 80f;
         if (Render2DUtils.isHovered(x + 16 + fw, y + 4, maxWidth, 16f, (int) mouseX, (int) mouseY)) {

@@ -42,8 +42,8 @@ public class MusicComponent extends Component {
                 -1
         );
 
-        drawString(18, current.name, x + 40, y + 6, FPSMaster.theme.getTextColorTitle().getRGB());
-        drawString(16, current.author, x + 40, y + 18, FPSMaster.theme.getTextColorDescription().getRGB());
+        drawString(18, current.name, x + 40, y + 6, new Color(234, 234, 234).getRGB());
+        drawString(16, current.author, x + 40, y + 18, new Color(162, 162, 162).getRGB());
     }
 
     @Override

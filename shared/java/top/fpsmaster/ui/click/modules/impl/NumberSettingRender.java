@@ -26,7 +26,7 @@ public class NumberSettingRender extends SettingRender<NumberSetting> {
     public void render(float x, float y, float width, float height, float mouseX, float mouseY, boolean custom) {
         float fw = FPSMaster.fontManager.s16.drawString(
                 FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
-                x + 10, y + 2, FPSMaster.theme.getTextColorDescription().getRGB()
+                x + 10, y + 2, new Color(162, 162, 162).getRGB()
         );
         Render2DUtils.drawOptimizedRoundedRect(x + 16 + fw, y + 3, 160f, 6f, new Color(0,0,0,80));
         float percent = (setting.getValue().floatValue() - setting.min.floatValue()) / (setting.max.floatValue() - setting.min.floatValue());
@@ -36,7 +36,7 @@ public class NumberSettingRender extends SettingRender<NumberSetting> {
                 setting.getValue().toString(),
                 x + fw + 20 + 160,
                 y + 2,
-                FPSMaster.theme.getTextNumber().getRGB()
+                new Color(128, 128, 128).getRGB()
         );
         if (!Mouse.isButtonDown(0)) MainPanel.dragLock = "null";
         if (MainPanel.dragLock.equals(mod.name + setting.name + 4)) {
@@ -54,7 +54,7 @@ public class NumberSettingRender extends SettingRender<NumberSetting> {
     public void mouseClick(float x, float y, float width, float height, float mouseX, float mouseY, int btn) {
         float fw = FPSMaster.fontManager.s16.drawString(
                 FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
-                x + 10, y + 2, FPSMaster.theme.getTextColorDescription().getRGB()
+                x + 10, y + 2, new Color(182, 182, 182).getRGB()
         );
         if (Render2DUtils.isHovered(x + 16 + fw, y, 160f, height, (int) mouseX, (int) mouseY) && Mouse.isButtonDown(0)) {
             if (btn == 0 && MainPanel.dragLock.equals("null")) {

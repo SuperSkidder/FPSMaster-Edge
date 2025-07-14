@@ -22,10 +22,10 @@ public class TextSettingRender extends SettingRender<TextSetting> {
 
     @Override
     public void render(float x, float y, float width, float height, float mouseX, float mouseY, boolean custom) {
-        inputBox.backGroundColor = FPSMaster.theme.getTextboxEnabled().getRGB();
-        inputBox.fontColor = FPSMaster.theme.getTextColorTitle().getRGB();
+        inputBox.backGroundColor = new Color(58, 58, 58).getRGB();
+        inputBox.fontColor = new Color(234, 234, 234).getRGB();
         String text = FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault()));
-        FPSMaster.fontManager.s16.drawString(text, x + 18, y + 6, FPSMaster.theme.getTextColorDescription().getRGB());
+        FPSMaster.fontManager.s16.drawString(text, x + 18, y + 6, new Color(162, 162, 162).getRGB());
         inputBox.drawTextBox(
                 x + Math.max(FPSMaster.fontManager.s16.getStringWidth(inputBox.placeHolder), FPSMaster.fontManager.s16.getStringWidth(text)) + 20,
                 y + 2,

@@ -16,9 +16,6 @@ import top.fpsmaster.modules.lua.LuaManager;
 import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.modules.music.netease.NeteaseApi;
 import top.fpsmaster.ui.click.music.MusicPanel;
-import top.fpsmaster.ui.click.themes.DarkTheme;
-import top.fpsmaster.ui.click.themes.LightTheme;
-import top.fpsmaster.ui.click.themes.Theme;
 import top.fpsmaster.ui.custom.ComponentsManager;
 import top.fpsmaster.ui.screens.oobe.OOBEScreen;
 import top.fpsmaster.utils.GitInfo;
@@ -47,9 +44,6 @@ public class FPSMaster {
 
     public static String CLIENT_NAME = "FPSMaster";
     public static String CLIENT_VERSION = "v4";
-
-    public static Theme theme = new DarkTheme();
-    public static String themeSlot = "dark";
 
     public static ModuleManager moduleManager = new ModuleManager();
     public static FontManager fontManager = new FontManager();
@@ -101,11 +95,6 @@ public class FPSMaster {
     private void initializeConfigures() throws Exception {
         ClientLogger.info("Initializing Config...");
         configManager.loadConfig("default");
-        if ("dark".equals(themeSlot)) {
-            theme = new DarkTheme();
-        } else {
-            theme = new LightTheme();
-        }
         MusicPlayer.setVolume(Float.parseFloat(configManager.configure.getOrCreate("volume", "1")));
         NeteaseApi.cookies = FileUtils.readTempValue("cookies");
         MusicPanel.nickname = FileUtils.readTempValue("nickname");

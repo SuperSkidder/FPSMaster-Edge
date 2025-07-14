@@ -48,7 +48,7 @@ public class GuiButton {
                 FPSMaster.i18n.get(text),
                 x + width / 2,
                 y + height / 2 - 4,
-                FPSMaster.theme.getButtonText().getRGB()
+                new Color(255, 255, 255).getRGB()
         );
     }
 
