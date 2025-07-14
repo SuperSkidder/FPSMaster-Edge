@@ -4,15 +4,13 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.ModsList;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
-import top.fpsmaster.features.settings.impl.TextSetting;
 import top.fpsmaster.font.impl.UFontRenderer;
+import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.utils.render.Render2DUtils;
-import top.fpsmaster.interfaces.ProviderManager;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

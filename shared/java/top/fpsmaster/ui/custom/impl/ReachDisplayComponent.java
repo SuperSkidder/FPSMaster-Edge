@@ -1,6 +1,5 @@
 package top.fpsmaster.ui.custom.impl;
 
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.ReachDisplay;
 import top.fpsmaster.ui.custom.Component;
 

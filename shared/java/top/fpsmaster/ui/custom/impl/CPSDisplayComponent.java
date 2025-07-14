@@ -1,6 +1,5 @@
 package top.fpsmaster.ui.custom.impl;
 
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.CPSDisplay;
 import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.wrapper.TextFormattingProvider;

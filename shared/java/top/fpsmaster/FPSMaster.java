@@ -1,6 +1,5 @@
 package top.fpsmaster;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import top.fpsmaster.exception.ExceptionHandler;
 import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.GlobalSubmitter;
@@ -11,6 +10,7 @@ import top.fpsmaster.modules.account.AccountManager;
 import top.fpsmaster.modules.client.AsyncTask;
 import top.fpsmaster.modules.client.ClientUsersManager;
 import top.fpsmaster.modules.config.ConfigManager;
+import top.fpsmaster.modules.i18n.Language;
 import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.modules.lua.LuaManager;
 import top.fpsmaster.modules.music.MusicPlayer;
@@ -20,7 +20,6 @@ import top.fpsmaster.ui.custom.ComponentsManager;
 import top.fpsmaster.ui.screens.oobe.OOBEScreen;
 import top.fpsmaster.utils.GitInfo;
 import top.fpsmaster.utils.os.FileUtils;
-import top.fpsmaster.modules.i18n.Language;
 import top.fpsmaster.utils.os.HttpRequest;
 import top.fpsmaster.utils.thirdparty.github.UpdateChecker;
 import top.fpsmaster.websocket.client.WsClient;

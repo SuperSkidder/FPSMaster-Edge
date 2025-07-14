@@ -10,7 +10,6 @@ import top.fpsmaster.features.settings.impl.*;
 import top.fpsmaster.modules.lua.LuaModule;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.impl.*;
-import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.math.animation.ColorAnimation;
 import top.fpsmaster.utils.math.animation.Type;
@@ -20,10 +19,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.function.Consumer;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.glEnable;
 
 public class ModuleRenderer extends ValueRender {
     ArrayList<SettingRender<?>> settingsRenderers = new ArrayList<>();

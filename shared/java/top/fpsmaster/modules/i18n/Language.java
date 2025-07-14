@@ -3,9 +3,6 @@ package top.fpsmaster.modules.i18n;
 import top.fpsmaster.exception.FileException;
 import top.fpsmaster.utils.os.FileUtils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 

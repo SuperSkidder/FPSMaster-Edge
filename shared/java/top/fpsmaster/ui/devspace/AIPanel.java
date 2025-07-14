@@ -1,9 +1,7 @@
 package top.fpsmaster.ui.devspace;
 
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.utils.render.Render2DUtils;
 
 import java.awt.*;

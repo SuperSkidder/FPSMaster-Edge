@@ -5,9 +5,8 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import top.fpsmaster.features.impl.interfaces.InventoryDisplay;
-import top.fpsmaster.ui.custom.Component;
-import top.fpsmaster.utils.Utility;
 import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.ui.custom.Component;
 
 import static top.fpsmaster.utils.Utility.mc;
 

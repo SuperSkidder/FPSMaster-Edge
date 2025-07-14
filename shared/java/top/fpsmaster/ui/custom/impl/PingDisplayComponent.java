@@ -1,9 +1,8 @@
 package top.fpsmaster.ui.custom.impl;
 
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.PingDisplay;
-import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.ui.custom.Component;
 
 public class PingDisplayComponent extends Component {
 

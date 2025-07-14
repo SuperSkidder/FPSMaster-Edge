@@ -1,7 +1,6 @@
 package top.fpsmaster.ui.minimap.interfaces;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -9,9 +8,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.MiniMap;
-import top.fpsmaster.ui.custom.Component;
-import top.fpsmaster.ui.minimap.XaeroMinimap;
 import top.fpsmaster.minimap.Minimap;
+import top.fpsmaster.ui.custom.Component;
 
 import java.util.ArrayList;
 

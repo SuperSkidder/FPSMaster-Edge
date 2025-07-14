@@ -1,7 +1,6 @@
 package top.fpsmaster.ui.custom.impl;
 
 import net.minecraft.client.Minecraft;
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.FPSDisplay;
 import top.fpsmaster.ui.custom.Component;
 

@@ -7,9 +7,7 @@ import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.modules.music.AbstractMusic;
 import top.fpsmaster.modules.music.MusicPlayer;
-import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.modules.music.netease.deserialize.MusicWrapper;
-import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.os.HttpRequest;
 

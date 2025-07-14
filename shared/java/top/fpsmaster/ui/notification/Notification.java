@@ -6,7 +6,7 @@ import top.fpsmaster.utils.math.animation.Animation;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Notification {
     private final String title;

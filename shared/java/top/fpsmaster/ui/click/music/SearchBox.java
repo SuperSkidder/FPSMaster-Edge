@@ -7,10 +7,10 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.font.impl.UFontRenderer;
-import top.fpsmaster.utils.math.MathUtils;
 import top.fpsmaster.utils.math.animation.ColorAnimation;
 import top.fpsmaster.utils.render.Render2DUtils;
-import java.awt.Color;
+
+import java.awt.*;
 
 public class SearchBox extends Gui {
     private UFontRenderer font;

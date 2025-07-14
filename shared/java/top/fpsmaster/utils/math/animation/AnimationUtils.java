@@ -3,8 +3,6 @@ package top.fpsmaster.utils.math.animation;
 import net.minecraft.client.Minecraft;
 import top.fpsmaster.utils.Utility;
 
-import java.util.Arrays;
-
 public class AnimationUtils extends Utility {
 
     private static float debugFPS() {

@@ -2,7 +2,8 @@ package top.fpsmaster.features.settings.impl;
 
 import top.fpsmaster.features.settings.Setting;
 import top.fpsmaster.features.settings.impl.utils.CustomColor;
-import java.awt.Color;
+
+import java.awt.*;
 
 public class ColorSetting extends Setting<CustomColor> {
 

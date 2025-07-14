@@ -8,7 +8,7 @@ import top.fpsmaster.font.impl.UFontRenderer;
 import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.utils.math.animation.ColorAnimation;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class KeystrokesComponent extends Component {

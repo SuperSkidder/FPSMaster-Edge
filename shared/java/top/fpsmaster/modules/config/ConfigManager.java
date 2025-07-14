@@ -1,6 +1,9 @@
 package top.fpsmaster.modules.config;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.impl.optimizes.OldAnimations;
@@ -15,7 +18,6 @@ import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.ui.custom.Position;
 import top.fpsmaster.utils.os.FileUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class ConfigManager {

@@ -10,10 +10,10 @@ import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.SettingRender;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.os.OSUtil;
-import top.fpsmaster.utils.render.shader.GradientUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
+import top.fpsmaster.utils.render.shader.GradientUtils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Locale;
 
 import static java.lang.Math.max;

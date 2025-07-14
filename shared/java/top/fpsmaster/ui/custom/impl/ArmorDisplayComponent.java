@@ -3,13 +3,11 @@ package top.fpsmaster.ui.custom.impl;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.ArmorDisplay;
-import top.fpsmaster.ui.custom.Component;
-import top.fpsmaster.utils.Utility;
 import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.ui.custom.Component;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 

@@ -1,12 +1,9 @@
 package top.fpsmaster.utils.thirdparty.microsoft;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpServer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
 import top.fpsmaster.interfaces.ProviderManager;
-import top.fpsmaster.interfaces.game.IMinecraftProvider;
 import top.fpsmaster.ui.screens.mainmenu.MainMenu;
 import top.fpsmaster.utils.os.HttpRequest;
 
@@ -18,7 +15,6 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.concurrent.Executors;

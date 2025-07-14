@@ -7,7 +7,6 @@ import net.minecraft.util.ResourceLocation;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.HashMap;
 
 public class AWTUtils {

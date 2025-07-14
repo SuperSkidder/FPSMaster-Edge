@@ -6,7 +6,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import org.jetbrains.annotations.NotNull;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventAttack;
 import top.fpsmaster.features.impl.InterfaceModule;
@@ -16,7 +15,7 @@ import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.wrapper.util.WrapperAxisAlignedBB;
 import top.fpsmaster.wrapper.util.WrapperVec3;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.List;
 
 import static top.fpsmaster.utils.Utility.mc;

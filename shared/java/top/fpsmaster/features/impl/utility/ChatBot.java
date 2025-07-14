@@ -1,25 +1,22 @@
 package top.fpsmaster.features.impl.utility;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventPacket;
 import top.fpsmaster.event.events.EventSendChatMessage;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
-import top.fpsmaster.features.settings.Setting;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.features.settings.impl.ModeSetting;
 import top.fpsmaster.features.settings.impl.NumberSetting;
 import top.fpsmaster.features.settings.impl.TextSetting;
+import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.ui.notification.NotificationManager;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.math.MathTimer;
 import top.fpsmaster.utils.thirdparty.openai.OpenAI;
-import top.fpsmaster.interfaces.ProviderManager;
-import top.fpsmaster.ui.notification.NotificationManager;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;

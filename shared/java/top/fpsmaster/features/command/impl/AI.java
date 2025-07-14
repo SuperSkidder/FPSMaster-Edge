@@ -1,16 +1,13 @@
 package top.fpsmaster.features.command.impl;
 
-import com.google.gson.JsonArray;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.command.Command;
-import top.fpsmaster.modules.client.AsyncTask;
 import top.fpsmaster.modules.lua.LuaManager;
 import top.fpsmaster.modules.lua.LuaScript;
 import top.fpsmaster.modules.lua.RawLua;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.os.FileUtils;
-import top.fpsmaster.utils.thirdparty.openai.OpenAI;
 import top.fpsmaster.utils.thirdparty.openai.OpenAIClient;
 
 import java.io.IOException;

@@ -4,14 +4,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.TargetDisplay;
+import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.math.animation.ColorAnimation;
 import top.fpsmaster.utils.render.Render2DUtils;
-import top.fpsmaster.interfaces.ProviderManager;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class TargetHUDComponent extends Component {
 

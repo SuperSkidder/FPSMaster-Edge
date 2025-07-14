@@ -2,9 +2,7 @@ package top.fpsmaster.features.impl.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityTNTPrimed;
 import org.lwjgl.opengl.GL11;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventAttack;
@@ -14,12 +12,10 @@ import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.utils.math.MathTimer;
-import top.fpsmaster.wrapper.entities.EntityTNTPrimedUtil;
 
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DamageIndicator extends Module {
     private EntityLivingBase lastAttack;

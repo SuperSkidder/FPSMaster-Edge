@@ -4,14 +4,12 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.PotionDisplay;
-import top.fpsmaster.font.impl.UFontRenderer;
+import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.utils.Utility;
-import top.fpsmaster.interfaces.ProviderManager;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class PotionDisplayComponent extends Component {
 

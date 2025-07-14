@@ -1,6 +1,5 @@
 package top.fpsmaster.font;
 
-import top.fpsmaster.font.impl.StringCache;
 import top.fpsmaster.font.impl.UFontRenderer;
 
 import java.util.HashMap;

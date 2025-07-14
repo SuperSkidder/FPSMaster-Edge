@@ -1,10 +1,7 @@
 package top.fpsmaster.features.command.impl;
 
 import net.minecraft.client.Minecraft;
-import top.fpsmaster.FPSMaster;
-import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.command.Command;
-import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.dev.DevMode;
 import top.fpsmaster.modules.lua.LuaManager;
 import top.fpsmaster.ui.devspace.DevSpace;

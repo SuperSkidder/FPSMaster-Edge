@@ -10,7 +10,7 @@ import top.fpsmaster.features.settings.impl.NumberSetting;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.wrapper.entities.EntityTNTPrimedUtil;
 
-import java.awt.Color;
+import java.awt.*;
 import java.text.DecimalFormat;
 
 public class TNTTimer extends Module {

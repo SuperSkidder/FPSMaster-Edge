@@ -5,7 +5,6 @@ import party.iroiro.luajava.value.LuaValue;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.*;
 import top.fpsmaster.features.manager.Category;
-import top.fpsmaster.features.manager.Module;
 
 import java.util.HashMap;
 import java.util.Map;

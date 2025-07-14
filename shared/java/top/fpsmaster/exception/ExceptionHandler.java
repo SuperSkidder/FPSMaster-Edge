@@ -2,9 +2,6 @@ package top.fpsmaster.exception;
 
 import top.fpsmaster.modules.logger.ClientLogger;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 /**
  * Centralized exception handler for the FPSMaster application.
  * This class provides methods to handle different types of exceptions in a consistent way.

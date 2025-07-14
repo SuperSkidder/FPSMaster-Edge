@@ -1,14 +1,11 @@
 package top.fpsmaster.websocket.client;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.features.impl.utility.IRC;
 import top.fpsmaster.interfaces.ProviderManager;
-import top.fpsmaster.modules.client.ClientUsersManager;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.websocket.data.message.Packet;
 import top.fpsmaster.websocket.data.message.client.*;

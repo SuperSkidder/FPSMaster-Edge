@@ -2,8 +2,6 @@ package top.fpsmaster.modules.music.netease;
 
 import top.fpsmaster.utils.os.HttpRequest;
 
-import java.io.IOException;
-
 public class NeteaseApi {
     private static final String BASE_URL = "https://music.skidder.top/";
 

@@ -1,8 +1,6 @@
 package top.fpsmaster.modules.lua.parser;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public abstract class Statement {
     public static class ExpressionStatement extends Statement {

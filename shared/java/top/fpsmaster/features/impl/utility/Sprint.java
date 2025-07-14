@@ -1,16 +1,12 @@
 package top.fpsmaster.features.impl.utility;
 
-import net.minecraft.potion.Potion;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventKey;
 import top.fpsmaster.event.events.EventUpdate;
 import top.fpsmaster.features.impl.InterfaceModule;
 import top.fpsmaster.features.manager.Category;
-import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.interfaces.ProviderManager;
-import top.fpsmaster.utils.Utility;
-import top.fpsmaster.wrapper.MinecraftProvider;
 
 import static top.fpsmaster.utils.Utility.mc;
 

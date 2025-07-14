@@ -3,12 +3,9 @@ package top.fpsmaster.features.command.impl;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.command.Command;
 import top.fpsmaster.features.impl.utility.IRC;
-import top.fpsmaster.features.impl.utility.SkinChanger;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.account.AccountManager;
 import top.fpsmaster.utils.Utility;
-
-import static top.fpsmaster.utils.Utility.mc;
 
 public class IRCChat extends Command {
 

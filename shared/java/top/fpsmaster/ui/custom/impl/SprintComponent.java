@@ -1,6 +1,5 @@
 package top.fpsmaster.ui.custom.impl;
 
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.utility.Sprint;
 import top.fpsmaster.ui.custom.Component;
 

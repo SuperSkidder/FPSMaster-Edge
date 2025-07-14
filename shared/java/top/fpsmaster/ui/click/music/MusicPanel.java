@@ -20,10 +20,9 @@ import top.fpsmaster.ui.click.component.ScrollContainer;
 import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.File;
 import java.util.Base64;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MusicPanel {

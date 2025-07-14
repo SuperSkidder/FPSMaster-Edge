@@ -1,7 +1,6 @@
 package top.fpsmaster.event.events;
 
 import top.fpsmaster.event.CancelableEvent;
-import top.fpsmaster.event.Event;
 import top.fpsmaster.features.settings.Setting;
 
 public class EventValueChange extends CancelableEvent {

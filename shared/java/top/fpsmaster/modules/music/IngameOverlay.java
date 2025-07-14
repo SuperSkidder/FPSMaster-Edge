@@ -5,13 +5,12 @@ import net.minecraft.util.ResourceLocation;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.MusicOverlay;
 import top.fpsmaster.font.impl.UFontRenderer;
-import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.modules.music.netease.Music;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class IngameOverlay {
     private static float songProgress = 0f;

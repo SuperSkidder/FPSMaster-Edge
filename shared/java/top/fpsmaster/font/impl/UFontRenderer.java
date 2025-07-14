@@ -5,14 +5,11 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.client.GlobalTextFilter;
-import top.fpsmaster.font.FontManager;
 import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.utils.os.FileUtils;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 

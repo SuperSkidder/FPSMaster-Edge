@@ -14,8 +14,7 @@ import top.fpsmaster.features.settings.impl.ColorSetting;
 import top.fpsmaster.features.settings.impl.ModeSetting;
 import top.fpsmaster.interfaces.ProviderManager;
 
-import java.awt.Color;
-import java.util.List;
+import java.awt.*;
 
 public class TargetDisplay extends InterfaceModule {
     private ModeSetting targetESP = new ModeSetting("TargetESP", 0, "glow", "none");

@@ -3,9 +3,7 @@ package top.fpsmaster.utils.render;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
-import top.fpsmaster.features.impl.interfaces.ClientSettings;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class ScaledGuiScreen extends GuiScreen {

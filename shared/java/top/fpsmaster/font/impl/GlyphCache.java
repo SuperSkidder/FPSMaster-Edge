@@ -3,6 +3,7 @@ package top.fpsmaster.font.impl;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
+
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
@@ -11,8 +12,8 @@ import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 /**
  * The GlyphCache class is responsible for caching pre-rendered images of every glyph using OpenGL textures. This class is also

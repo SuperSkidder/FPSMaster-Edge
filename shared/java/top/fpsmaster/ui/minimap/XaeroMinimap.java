@@ -1,6 +1,5 @@
 package top.fpsmaster.ui.minimap;
 
-import net.minecraft.client.Minecraft;
 import top.fpsmaster.ui.minimap.interfaces.InterfaceHandler;
 
 import java.io.IOException;

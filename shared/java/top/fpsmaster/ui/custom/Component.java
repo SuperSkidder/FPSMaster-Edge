@@ -6,16 +6,16 @@ import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import top.fpsmaster.FPSMaster;
-import top.fpsmaster.font.impl.UFontRenderer;
 import top.fpsmaster.features.impl.InterfaceModule;
 import top.fpsmaster.features.impl.interfaces.ClientSettings;
+import top.fpsmaster.font.impl.UFontRenderer;
+import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
-import top.fpsmaster.interfaces.ProviderManager;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Component {
     private float dragX = 0f;

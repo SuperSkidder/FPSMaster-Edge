@@ -4,7 +4,6 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.event.EventDispatcher;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventSendChatMessage;
-import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.command.impl.AI;
 import top.fpsmaster.features.command.impl.Dev;
 import top.fpsmaster.features.command.impl.IRCChat;

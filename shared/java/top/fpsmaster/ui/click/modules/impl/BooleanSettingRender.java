@@ -4,12 +4,11 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.ui.click.modules.SettingRender;
-import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.math.animation.ColorAnimation;
 import top.fpsmaster.utils.math.animation.Type;
 import top.fpsmaster.utils.render.Render2DUtils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Locale;
 
 public class BooleanSettingRender extends SettingRender<BooleanSetting> {

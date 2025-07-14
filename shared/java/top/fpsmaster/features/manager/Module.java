@@ -4,12 +4,7 @@ import net.minecraft.client.Minecraft;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.event.EventDispatcher;
 import top.fpsmaster.features.settings.Setting;
-import top.fpsmaster.features.settings.impl.BooleanSetting;
-import top.fpsmaster.features.settings.impl.BindSetting;
-import top.fpsmaster.features.settings.impl.ModeSetting;
-import top.fpsmaster.features.settings.impl.NumberSetting;
-import top.fpsmaster.features.settings.impl.TextSetting;
-import top.fpsmaster.features.settings.impl.ColorSetting;
+import top.fpsmaster.features.settings.impl.*;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.ui.notification.NotificationManager;
 

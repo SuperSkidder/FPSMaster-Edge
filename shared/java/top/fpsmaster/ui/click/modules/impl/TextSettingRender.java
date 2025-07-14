@@ -3,11 +3,11 @@ package top.fpsmaster.ui.click.modules.impl;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.TextSetting;
-import top.fpsmaster.ui.common.TextField;
 import top.fpsmaster.ui.click.modules.SettingRender;
+import top.fpsmaster.ui.common.TextField;
 import top.fpsmaster.utils.render.Render2DUtils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Locale;
 
 public class TextSettingRender extends SettingRender<TextSetting> {

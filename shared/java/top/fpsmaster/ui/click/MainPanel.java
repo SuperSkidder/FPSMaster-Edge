@@ -10,18 +10,17 @@ import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.ui.ai.AIChatPanel;
 import top.fpsmaster.ui.click.component.ScrollContainer;
-import top.fpsmaster.ui.click.music.MusicPanel;
 import top.fpsmaster.ui.click.modules.ModuleRenderer;
+import top.fpsmaster.ui.click.music.MusicPanel;
 import top.fpsmaster.utils.math.animation.Animation;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.math.animation.Type;
 import top.fpsmaster.utils.render.Render2DUtils;
 import top.fpsmaster.utils.render.ScaledGuiScreen;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Locale;
 
 public class MainPanel extends ScaledGuiScreen {
     boolean drag = false;

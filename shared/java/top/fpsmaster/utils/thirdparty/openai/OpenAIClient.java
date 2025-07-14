@@ -1,16 +1,16 @@
 package top.fpsmaster.utils.thirdparty.openai;
 
+import com.google.gson.*;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.entity.StringEntity;
-import com.google.gson.*;
+import org.apache.http.impl.client.HttpClients;
 import top.fpsmaster.exception.FileException;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;

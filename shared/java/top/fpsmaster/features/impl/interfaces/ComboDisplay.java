@@ -9,7 +9,7 @@ import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.settings.impl.ColorSetting;
 import top.fpsmaster.interfaces.ProviderManager;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class ComboDisplay extends InterfaceModule {
 

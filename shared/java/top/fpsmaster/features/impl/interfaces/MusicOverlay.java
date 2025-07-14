@@ -11,7 +11,7 @@ import top.fpsmaster.modules.music.IngameOverlay;
 import top.fpsmaster.modules.music.JLayerHelper;
 import top.fpsmaster.utils.math.MathTimer;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class MusicOverlay extends InterfaceModule {
     public static final NumberSetting amplitude = new NumberSetting("Amplitude", 10, 0, 10, 0.1);

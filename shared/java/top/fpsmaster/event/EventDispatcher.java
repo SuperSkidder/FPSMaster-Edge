@@ -2,6 +2,7 @@ package top.fpsmaster.event;
 
 import top.fpsmaster.exception.ExceptionHandler;
 import top.fpsmaster.modules.logger.ClientLogger;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;

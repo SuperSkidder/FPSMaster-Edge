@@ -6,16 +6,15 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.event.EventDispatcher;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventKey;
-import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.features.impl.interfaces.*;
 import top.fpsmaster.features.impl.optimizes.*;
 import top.fpsmaster.features.impl.render.*;
 import top.fpsmaster.features.impl.utility.*;
 import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.ModuleRenderer;
 import top.fpsmaster.ui.devspace.DevSpace;
-import top.fpsmaster.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;

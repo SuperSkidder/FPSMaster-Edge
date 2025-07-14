@@ -1,7 +1,8 @@
 package top.fpsmaster.utils.math.animation;
 
 import top.fpsmaster.utils.render.Render2DUtils;
-import java.awt.Color;
+
+import java.awt.*;
 
 public class ColorAnimation {
     private Animation r = new Animation();

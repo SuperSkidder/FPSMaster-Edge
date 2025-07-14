@@ -6,7 +6,7 @@ import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.features.settings.impl.ColorSetting;
 import top.fpsmaster.features.settings.impl.NumberSetting;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class InterfaceModule extends Module {
 

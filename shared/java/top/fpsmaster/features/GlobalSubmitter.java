@@ -11,12 +11,10 @@ import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.ui.notification.NotificationManager;
-import top.fpsmaster.utils.OptifineUtil;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.math.MathTimer;
 import top.fpsmaster.utils.render.StencilUtil;
 import top.fpsmaster.utils.render.shader.KawaseBlur;
-import top.fpsmaster.utils.render.shader.RoundedUtil;
 import top.fpsmaster.websocket.client.WsClient;
 
 import java.net.URISyntaxException;

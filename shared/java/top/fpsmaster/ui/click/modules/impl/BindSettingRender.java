@@ -7,7 +7,6 @@ import top.fpsmaster.features.settings.impl.BindSetting;
 import top.fpsmaster.font.impl.UFontRenderer;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.SettingRender;
-import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.math.animation.ColorAnimation;
 import top.fpsmaster.utils.render.Render2DUtils;
 

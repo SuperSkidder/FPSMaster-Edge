@@ -9,7 +9,6 @@ import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.render.Render2DUtils;
 
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 public class ComponentsManager {
     // List to hold all components

@@ -8,17 +8,16 @@ import top.fpsmaster.exception.ExceptionHandler;
 import top.fpsmaster.exception.FileException;
 import top.fpsmaster.exception.NetworkException;
 import top.fpsmaster.modules.account.AccountManager;
-import top.fpsmaster.ui.common.TextField;
-import top.fpsmaster.ui.screens.oobe.Scene;
 import top.fpsmaster.ui.common.GuiButton;
+import top.fpsmaster.ui.common.TextField;
 import top.fpsmaster.ui.screens.mainmenu.MainMenu;
+import top.fpsmaster.ui.screens.oobe.Scene;
 import top.fpsmaster.utils.math.animation.ColorAnimation;
 import top.fpsmaster.utils.math.animation.Type;
 import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
-import java.awt.Color;
-import java.awt.Desktop;
+import java.awt.*;
 import java.net.URI;
 
 public class Login extends Scene {

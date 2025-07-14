@@ -4,7 +4,7 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.utils.math.animation.ColorAnimation;
 import top.fpsmaster.utils.render.Render2DUtils;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class GuiButton {
 

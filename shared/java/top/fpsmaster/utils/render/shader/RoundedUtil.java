@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Color;
+import java.awt.*;
 
 import static top.fpsmaster.utils.Utility.mc;
 import static top.fpsmaster.utils.render.shader.GradientUtils.interpolateColorC;

@@ -1,11 +1,10 @@
 package top.fpsmaster.ui.custom.impl;
 
 import org.jetbrains.annotations.NotNull;
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.CoordsDisplay;
 import top.fpsmaster.features.impl.interfaces.FPSDisplay;
-import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.wrapper.TextFormattingProvider;
 
 public class CoordsDisplayComponent extends Component {

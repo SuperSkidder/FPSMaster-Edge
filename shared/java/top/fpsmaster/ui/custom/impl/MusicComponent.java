@@ -1,7 +1,6 @@
 package top.fpsmaster.ui.custom.impl;
 
 import net.minecraft.util.ResourceLocation;
-import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.MusicOverlay;
 import top.fpsmaster.modules.music.AbstractMusic;
 import top.fpsmaster.modules.music.MusicPlayer;
@@ -11,7 +10,7 @@ import top.fpsmaster.ui.custom.Position;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class MusicComponent extends Component {
 

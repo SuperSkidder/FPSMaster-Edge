@@ -5,8 +5,8 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import top.fpsmaster.FPSMaster;
-import top.fpsmaster.utils.thirdparty.microsoft.MicrosoftLogin;
 import top.fpsmaster.utils.render.Render2DUtils;
+import top.fpsmaster.utils.thirdparty.microsoft.MicrosoftLogin;
 
 import java.awt.*;
 import java.io.IOException;

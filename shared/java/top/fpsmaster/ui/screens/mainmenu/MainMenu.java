@@ -16,8 +16,7 @@ import top.fpsmaster.utils.render.Render2DUtils;
 import top.fpsmaster.utils.render.ScaledGuiScreen;
 import top.fpsmaster.wrapper.TextFormattingProvider;
 
-import java.awt.Color;
-import java.awt.Desktop;
+import java.awt.*;
 import java.net.URI;
 
 public class MainMenu extends ScaledGuiScreen {

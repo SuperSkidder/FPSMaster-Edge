@@ -7,6 +7,7 @@ import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Session;
 import top.fpsmaster.interfaces.IProvider;
+
 import java.io.File;
 import java.util.Collection;
 

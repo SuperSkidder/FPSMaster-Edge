@@ -12,7 +12,6 @@ import top.fpsmaster.modules.music.Word;
 import top.fpsmaster.modules.music.netease.Music;
 import top.fpsmaster.modules.music.netease.NeteaseApi;
 
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Iterator;
 

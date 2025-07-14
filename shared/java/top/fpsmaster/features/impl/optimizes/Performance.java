@@ -1,10 +1,7 @@
 package top.fpsmaster.features.impl.optimizes;
 
-import jdk.jfr.events.ActiveSettingEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
@@ -12,7 +9,6 @@ import top.fpsmaster.features.settings.impl.NumberSetting;
 import top.fpsmaster.wrapper.mods.WrapperPerformance;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Performance extends Module {
 

@@ -9,22 +9,15 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.exception.FileException;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.interfaces.ProviderManager;
-import top.fpsmaster.modules.dev.DevMode;
-import top.fpsmaster.modules.i18n.Language;
 import top.fpsmaster.modules.lua.parser.LuaParser;
-import top.fpsmaster.modules.lua.parser.ParseError;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
-import top.fpsmaster.wrapper.MinecraftProvider;
-import top.fpsmaster.wrapper.blockpos.WrapperBlockPos;
 
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class LuaManager {

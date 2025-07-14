@@ -5,7 +5,7 @@ import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class ScrollContainer {
     private float wheel = 0f;

@@ -1,7 +1,6 @@
 package top.fpsmaster.ui.custom.impl;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import top.fpsmaster.features.impl.interfaces.MiniMap;

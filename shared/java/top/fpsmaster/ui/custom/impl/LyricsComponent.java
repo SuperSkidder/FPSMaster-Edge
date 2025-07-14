@@ -1,8 +1,5 @@
 package top.fpsmaster.ui.custom.impl;
 
-import org.jetbrains.annotations.Nullable;
-import top.fpsmaster.FPSMaster;
-import top.fpsmaster.font.impl.UFontRenderer;
 import top.fpsmaster.features.impl.interfaces.LyricsDisplay;
 import top.fpsmaster.modules.music.*;
 import top.fpsmaster.ui.custom.Component;
@@ -10,7 +7,6 @@ import top.fpsmaster.ui.custom.Position;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
-import java.awt.*;
 import java.util.List;
 
 public class LyricsComponent extends Component {
