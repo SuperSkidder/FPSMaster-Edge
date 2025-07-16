@@ -6,11 +6,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.utils.render.Render2DUtils;
 
 import static top.fpsmaster.utils.Utility.mc;
 
@@ -83,7 +85,13 @@ public class LevelTag extends Module {
                 i = -10;
             }
 
+            boolean isMate = entityIn == mc.thePlayer;
             int j = fontRenderer.getStringWidth(str) / 2;
+
+            if (isMate) {
+                j += 6;
+            }
+
             GlStateManager.disableTexture2D();
             worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
             worldRenderer.pos(-j - 1, -1 + i, 0.0F).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
@@ -92,10 +100,19 @@ public class LevelTag extends Module {
             worldRenderer.pos(j + 1, -1 + i, 0.0F).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
             tessellator.draw();
             GlStateManager.enableTexture2D();
-            fontRenderer.drawString(str, -fontRenderer.getStringWidth(str) / 2, i, 553648127);
+            if (isMate) {
+                Render2DUtils.drawImage(new ResourceLocation("client/textures/mate.png"), -fontRenderer.getStringWidth(str) / 2f - 4f, i - 1, 8, 8, -1, true);
+                fontRenderer.drawString(str, -fontRenderer.getStringWidth(str) / 2 + 6, i, 553648127);
+            }else{
+                fontRenderer.drawString(str, -fontRenderer.getStringWidth(str) / 2, i, 553648127);
+            }
             GlStateManager.enableDepth();
             GlStateManager.depthMask(true);
-            fontRenderer.drawString(str, -fontRenderer.getStringWidth(str) / 2, i, -1);
+            if (isMate) {
+                fontRenderer.drawString(str, -fontRenderer.getStringWidth(str) / 2 + 6, i, -1);
+            }else{
+                fontRenderer.drawString(str, -fontRenderer.getStringWidth(str) / 2, i, -1);
+            }
             GlStateManager.enableLighting();
             GlStateManager.disableBlend();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
