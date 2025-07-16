@@ -48,7 +48,7 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
         );
 
         if (aHeight > 1) {
-            if (OSUtil.supportShader()) {
+            if (!OSUtil.supportShader()) {
                 GradientUtils.applyGradient(
                         x + tW + 26, y + 15, 80f, aHeight, 1f,
                         Color.getHSBColor(customColor.hue, 0.0f, 0f),
@@ -61,6 +61,14 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
                                 new Color(255, 255, 255)
                         )
                 );
+            }else {
+                for (int i = 0; i < aHeight; i++) {
+                    for (int j = 0; j < 80; j++) {
+                        float brightness = 1 - (float) i / aHeight;
+                        float saturation = (float) j / 80;
+                        Render2DUtils.drawRect(x + tW + 26 + j, y + 16 + i, 1, 1, Color.getHSBColor(customColor.hue, saturation, brightness).getRGB());
+                    }
+                }
             }
 
             float saturation = customColor.saturation;
