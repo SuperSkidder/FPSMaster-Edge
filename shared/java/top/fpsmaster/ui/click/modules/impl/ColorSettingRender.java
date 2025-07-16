@@ -48,7 +48,7 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
         );
 
         if (aHeight > 1) {
-            if (!OSUtil.supportShader()) {
+            if (OSUtil.supportShader()) {
                 GradientUtils.applyGradient(
                         x + tW + 26, y + 15, 80f, aHeight, 1f,
                         Color.getHSBColor(customColor.hue, 0.0f, 0f),
