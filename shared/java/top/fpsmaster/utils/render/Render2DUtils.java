@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
+import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.ui.screens.mainmenu.MainMenu;
@@ -270,7 +271,7 @@ public class Render2DUtils extends Utility {
             Render2DUtils.drawImage(textureLocation, 0f, 0f, guiWidth, guiHeight, -1);
             Render2DUtils.drawRect(0f, 0f, guiWidth, guiHeight, new Color(22, 22, 22, 50));
         } else {
-            if (OSUtil.supportShader()) {
+            if (OSUtil.supportShader() && !FPSMaster.configManager.configure.getOrCreate("background", "new").equals("classic")) {
                 if (mc.currentScreen instanceof MainMenu) {
                     animation = (float) AnimationUtils.base(animation, 1.0f, 0.05f);
                 } else {

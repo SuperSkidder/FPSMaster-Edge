@@ -81,6 +81,12 @@ public class MainMenu extends ScaledGuiScreen {
         Render2DUtils.drawImage(new ResourceLocation("client/gui/screen/avatar.png"), 14f, 15f, 10f, 10f, -1);
         FPSMaster.fontManager.s16.drawString(mc.getSession().getUsername(), 28, 16, Color.WHITE.getRGB());
 
+
+        // background theme button
+        Render2DUtils.drawOptimizedRoundedRect(guiWidth - 22, 13, 12, 12, new Color(0, 0, 0, 60));
+        Render2DUtils.drawImage(new ResourceLocation("client/gui/screen/theme.png"), guiWidth - 20, 15f, 8f, 8f, -1);
+
+
         // Position buttons and render them
         float x = guiWidth / 2f - 50;
         float y = guiHeight / 2f - 30;
@@ -130,6 +136,14 @@ public class MainMenu extends ScaledGuiScreen {
         float nw = FPSMaster.fontManager.s16.getStringWidth(info);
 
         if (mouseButton == 0) {
+            if (Render2DUtils.isHovered(guiWidth - 22, 13, 12, 12, mouseX, mouseY)) {
+                if (FPSMaster.configManager.configure.getOrCreate("background", "new").equals("classic")) {
+                    FPSMaster.configManager.configure.set("background", "new");
+                } else {
+                    FPSMaster.configManager.configure.set("background", "classic");
+                }
+            }
+
             if (Render2DUtils.isHovered(4f, guiHeight - 52, nw, 14f, mouseX, mouseY)) {
                 Minecraft.getMinecraft().displayGuiScreen(new GuiLogin());
             }
