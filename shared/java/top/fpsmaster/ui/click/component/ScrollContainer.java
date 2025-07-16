@@ -75,11 +75,12 @@ public class ScrollContainer {
                 } else if (mouseDWheel < 0) {
                     wheel_anim -= 20f;
                 }
-                float maxUp = this.height - height;
-                wheel_anim = Math.min(Math.max(wheel_anim, -maxUp), 0f);
+
             }
-            wheel = (float) AnimationUtils.base(wheel, wheel_anim, 0.2);
         }
+        float maxUp = this.height - height;
+        wheel_anim = Math.min(Math.max(wheel_anim, -maxUp), 0f);
+        wheel = (float) AnimationUtils.base(wheel, wheel_anim, 0.2);
     }
 
     public void setHeight(float height) {
