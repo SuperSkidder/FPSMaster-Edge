@@ -1,5 +1,6 @@
 package top.fpsmaster.ui.click;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -237,6 +238,13 @@ public class MainPanel extends ScaledGuiScreen {
         }
 
         selection = y + 70f;
+    }
+
+    @Override
+    public void onResize(Minecraft mcIn, int w, int h) {
+        super.onResize(mcIn, w, h);
+        x = (int) ((guiWidth - width) / 2);
+        y = (int) ((guiHeight - height) / 2);
     }
 
     @Override
