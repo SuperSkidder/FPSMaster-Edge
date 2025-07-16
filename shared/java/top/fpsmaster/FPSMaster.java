@@ -2,7 +2,7 @@ package top.fpsmaster;
 
 import top.fpsmaster.exception.ExceptionHandler;
 import top.fpsmaster.exception.FileException;
-import top.fpsmaster.features.GlobalSubmitter;
+import top.fpsmaster.features.GlobalListener;
 import top.fpsmaster.features.command.CommandManager;
 import top.fpsmaster.features.manager.ModuleManager;
 import top.fpsmaster.font.FontManager;
@@ -50,7 +50,7 @@ public class FPSMaster {
     public static OOBEScreen oobeScreen = new OOBEScreen();
     public static AccountManager accountManager = new AccountManager();
     public static ClientUsersManager clientUsersManager = new ClientUsersManager();
-    public static GlobalSubmitter submitter = new GlobalSubmitter();
+    public static GlobalListener submitter = new GlobalListener();
     public static CommandManager commandManager = new CommandManager();
     public static ComponentsManager componentsManager = new ComponentsManager();
     public static LuaManager luaManager = new LuaManager();

@@ -100,6 +100,7 @@ public class ModuleManager {
         modules.add(new LevelTag());
         modules.add(new Keystrokes());
         modules.add(new Crosshair());
+        modules.add(new CustomTitles());
         modules.add(new CustomFOV());
         modules.add(new InventoryDisplay());
         modules.add(new PlayerDisplay());

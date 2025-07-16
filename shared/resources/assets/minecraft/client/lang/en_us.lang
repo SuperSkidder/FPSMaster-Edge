@@ -472,6 +472,12 @@ directiondisplay.desc=Display a compass
 damageindicator=Damage Indicator
 damageindicator.desc=Show damage numbers on hit
 
+customtitles=Custom Titles
+customtitles.desc=Change the position of the title
+customtitles.x=xOffset
+customtitles.y=yOffset
+customtitles.scale=Scale
+
 # Categories
 category.optimize=Performance
 category.render=Visual

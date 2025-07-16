@@ -478,6 +478,12 @@ directiondisplay.desc=显示一个指南针
 damageindicator=伤害指示器
 damageindicator.desc=在生物受到伤害时显示伤害数字
 
+customtitles=自定义标题
+customtitles.desc=修改屏幕中间的标题文字的位置
+customtitles.x=横坐标偏移
+customtitles.y=纵坐标偏移
+customtitles.scale=缩放
+
 # 类别
 category.optimize=优化
 category.render=视觉

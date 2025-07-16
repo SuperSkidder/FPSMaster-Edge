@@ -19,7 +19,7 @@ import top.fpsmaster.websocket.client.WsClient;
 
 import java.net.URISyntaxException;
 
-public class GlobalSubmitter {
+public class GlobalListener {
 
     MathTimer musicSwitchTimer = new MathTimer();
 
@@ -41,9 +41,21 @@ public class GlobalSubmitter {
         String msg = e.msg;
     }
 
+
+    PlayerInformation playerInformation = null;
+
+
     @Subscribe
     public void onTick(EventTick e) throws URISyntaxException {
         if (musicSwitchTimer.delay(500)) {
+//            if (playerInformation == null) {
+//                playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
+//                FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
+//            } else if (!playerInformation.serverAddress.equals(ProviderManager.mcProvider.getServerAddress()) || !playerInformation.name.equals(ProviderManager.mcProvider.getPlayer().getName()) || !playerInformation.skin.equals(AccountManager.skin) || !playerInformation.uuid.equals(ProviderManager.mcProvider.getPlayer().getUniqueID().toString())) {
+//                playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
+//                FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
+//            }
+
             FPSMaster.async.runnable(() -> {
                 if (MusicPlayer.isPlaying && MusicPlayer.getPlayProgress() > 0.999) {
                     MusicPlayer.curPlayProgress = 0f;
@@ -86,5 +98,21 @@ public class GlobalSubmitter {
         }
         FPSMaster.componentsManager.draw((int) mouseX, (int) mouseY);
         NotificationManager.drawNotifications();
+    }
+
+    class PlayerInformation{
+        String name;
+        String uuid;
+        String serverAddress;
+        String cosmetics;
+        String skin;
+
+        public PlayerInformation(String name, String uuid, String serverAddress, String cosmetics, String skin) {
+            this.name = name;
+            this.uuid = uuid;
+            this.serverAddress = serverAddress;
+            this.cosmetics = cosmetics;
+            this.skin = skin;
+        }
     }
 }
