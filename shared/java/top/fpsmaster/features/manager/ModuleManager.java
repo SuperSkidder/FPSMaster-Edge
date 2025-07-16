@@ -11,6 +11,7 @@ import top.fpsmaster.features.impl.optimizes.*;
 import top.fpsmaster.features.impl.render.*;
 import top.fpsmaster.features.impl.utility.*;
 import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.modules.dev.DevMode;
 import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.ModuleRenderer;
@@ -47,7 +48,7 @@ public class ModuleManager {
             }
         }
 
-        if (e.key == Keyboard.KEY_INSERT) {
+        if (e.key == Keyboard.KEY_INSERT && DevMode.INSTACE.dev) {
             Minecraft.getMinecraft().displayGuiScreen(new DevSpace());
         }
     }
