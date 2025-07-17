@@ -4,7 +4,9 @@ import top.fpsmaster.features.impl.interfaces.LyricsDisplay;
 import top.fpsmaster.modules.music.*;
 import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.ui.custom.Position;
+import top.fpsmaster.utils.math.animation.Animation;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.animation.Type;
 import top.fpsmaster.utils.render.Render2DUtils;
 
 import java.util.List;
@@ -12,7 +14,6 @@ import java.util.List;
 public class LyricsComponent extends Component {
 
     private long duration = 0;
-
     public LyricsComponent() {
         super(LyricsDisplay.class);
         x = 0.5f;
@@ -69,15 +70,20 @@ public class LyricsComponent extends Component {
                         float xOffset = x + (width - getStringWidth(20, content)) / 2;
                         if (i == curLine) {
                             line.animation = (float) AnimationUtils.base(line.animation, 0.0, 0.1f);
+                            line.scaleAnimation.start(1.0,1.3,0.3f,Type.LINEAR);
+                            line.scaleAnimation.update();
                             line.alpha = (float) AnimationUtils.base(line.alpha, 1.0, 0.1f);
                         } else {
                             line.animation = (float) AnimationUtils.base(line.animation, i - curLine, 0.1f);
                             line.alpha = (float) (Math.abs(i - curLine) == 1 ?
                                     AnimationUtils.base(line.alpha, 1.0, 0.1f) :
                                     AnimationUtils.base(line.alpha, 0.0, 0.1f));
+                            line.scaleAnimation.start(1.3,1.0,0.2f,Type.EASE_OUT_QUAD);
+                            line.scaleAnimation.update();
                         }
                         if (Math.abs(i - curLine) <= 1) {
-                            drawLine(line, xOffset, y + line.animation * 20 + 20, 20, i == curLine);
+                            drawLine(line, xOffset, y + line.animation * 20 + 20, 20,i == curLine);
+
                         }
                     }
                 }
@@ -85,9 +91,22 @@ public class LyricsComponent extends Component {
         }
     }
 
-    private void drawLine(Line line, float xOffset, float y, int lfont, boolean current) {
-        for (Word word : line.words) {
-            xOffset += current ? drawWord(word, xOffset, y, line) : drawWordBG(word, xOffset, y, line);
+    private void drawLine(Line line, float xOffset, float y, int font, boolean current) {
+        LyricsDisplay lyrics = (LyricsDisplay) mod;
+        if(current) {
+            if (lyrics.scale.getValue()) {
+                Render2DUtils.scaleStart(xOffset + (getStringWidth(20,line.getContent()) / 2.0f), y + (getStringHeight(20) / 2.0f), (float) line.scaleAnimation.value);
+            }
+            for (Word word : line.words) {
+                xOffset += drawWord(word, xOffset, y, line);
+            }
+            if (lyrics.scale.getValue()) {
+                Render2DUtils.scaleEnd();
+            }
+        } else {
+            for (Word word : line.words) {
+                xOffset += drawWordBG(word, xOffset, y, line);
+            }
         }
     }
 
@@ -97,12 +116,11 @@ public class LyricsComponent extends Component {
             float animation2 = (float) (duration - word.time) / word.duration;
             drawString(20, word.content, xOffset, y + 7 - Math.min(animation2, 1f) * 3,
                     Render2DUtils.reAlpha(LyricsDisplay.textColor.getColor(), (int) Math.min(animation * 255, 255)).getRGB());
-            return getStringWidth(20, word.content);
-        }else{
+        }else {
             drawString(20, word.content, xOffset, y + 7,
                     Render2DUtils.reAlpha(LyricsDisplay.textColor.getColor(), (int) Math.min(line.alpha * 120, 255)).getRGB());
-            return getStringWidth(20, word.content);
         }
+        return getStringWidth(20, word.content);
     }
 
     private float drawWordBG(Word word, float xOffset, float y, Line line) {
