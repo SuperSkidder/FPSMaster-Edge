@@ -1,5 +1,6 @@
 package top.fpsmaster.modules.client;
 
+import net.minecraft.entity.Entity;
 import top.fpsmaster.websocket.data.message.server.SFetchPlayerPacket;
 
 import java.util.ArrayList;
@@ -14,5 +15,12 @@ public class ClientUsersManager {
                 return;
         }
         users.add(clientUser);
+    }
+
+    public boolean isClientUser(Entity entityIn) {
+        for (ClientUser user : users)
+            if (user.uuid.equals(entityIn.getUniqueID().toString()))
+                return true;
+        return false;
     }
 }

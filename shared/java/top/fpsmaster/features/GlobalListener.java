@@ -2,6 +2,7 @@ package top.fpsmaster.features;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import org.lwjgl.input.Mouse;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.event.EventDispatcher;
@@ -9,6 +10,7 @@ import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.*;
 import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.interfaces.ProviderManager;
+import top.fpsmaster.modules.account.AccountManager;
 import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.ui.notification.NotificationManager;
 import top.fpsmaster.utils.Utility;
@@ -18,6 +20,9 @@ import top.fpsmaster.utils.render.shader.KawaseBlur;
 import top.fpsmaster.websocket.client.WsClient;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+
+import static top.fpsmaster.utils.Utility.mc;
 
 public class GlobalListener {
 
@@ -45,16 +50,24 @@ public class GlobalListener {
     PlayerInformation playerInformation = null;
 
 
+    ArrayList<NetworkPlayerInfo> playerInfos = new ArrayList<>();
+
     @Subscribe
     public void onTick(EventTick e) throws URISyntaxException {
         if (musicSwitchTimer.delay(500)) {
-//            if (playerInformation == null) {
-//                playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
-//                FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
-//            } else if (!playerInformation.serverAddress.equals(ProviderManager.mcProvider.getServerAddress()) || !playerInformation.name.equals(ProviderManager.mcProvider.getPlayer().getName()) || !playerInformation.skin.equals(AccountManager.skin) || !playerInformation.uuid.equals(ProviderManager.mcProvider.getPlayer().getUniqueID().toString())) {
-//                playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
-//                FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
-//            }
+            for (NetworkPlayerInfo networkPlayerInfo : mc.getNetHandler().getPlayerInfoMap()) {
+                if (!playerInfos.contains(networkPlayerInfo)){
+                    FPSMaster.INSTANCE.wsClient.fetchPlayer(networkPlayerInfo.getGameProfile().getId().toString(), networkPlayerInfo.getGameProfile().getName());
+                    playerInfos.add(networkPlayerInfo);
+                }
+            }
+            if (playerInformation == null) {
+                playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
+                FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
+            } else if (!playerInformation.serverAddress.equals(ProviderManager.mcProvider.getServerAddress()) || !playerInformation.name.equals(ProviderManager.mcProvider.getPlayer().getName()) || !playerInformation.skin.equals(AccountManager.skin) || !playerInformation.uuid.equals(ProviderManager.mcProvider.getPlayer().getUniqueID().toString())) {
+                playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
+                FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
+            }
 
             FPSMaster.async.runnable(() -> {
                 if (MusicPlayer.isPlaying && MusicPlayer.getPlayProgress() > 0.999) {
