@@ -34,11 +34,14 @@ public class MusicPanel {
     private static Thread searchThread = null;
 
     private static float playProgress = 0f;
-//    private static final SearchBox inputBox = new SearchBox(FPSMaster.i18n.get("music.search"), () -> {
+    //    private static final SearchBox inputBox = new SearchBox(FPSMaster.i18n.get("music.search"), () -> {
 //        searchThread = new Thread(MusicPanel::run);
 //        searchThread.start();
 //    });
-    private static final TextField inputBox = new TextField(FPSMaster.fontManager.s16, FPSMaster.i18n.get("music.search"), new Color(40,40,40, 180).getRGB(), -1, 100);
+    private static final TextField inputBox = new TextField(FPSMaster.fontManager.s16, FPSMaster.i18n.get("music.search"), new Color(40, 40, 40, 180).getRGB(), -1, 100, () -> {
+        searchThread = new Thread(MusicPanel::run);
+        searchThread.start();
+    });
 
     private static final String[] pages = {"music.name", "music.list", "music.daily"};
     private static int curSearch = 0;
@@ -247,7 +250,7 @@ public class MusicPanel {
         for (String page : pages) {
             pagesWidth += FPSMaster.fontManager.s16.getStringWidth(FPSMaster.i18n.get(page)) + 10;
         }
-        Render2DUtils.drawOptimizedRoundedRect(x + 90, y + 8, pagesWidth, 16f, new Color(50, 50, 50,100).getRGB());
+        Render2DUtils.drawOptimizedRoundedRect(x + 90, y + 8, pagesWidth, 16f, new Color(50, 50, 50, 100).getRGB());
         for (String page : pages) {
             int stringWidth = FPSMaster.fontManager.s16.getStringWidth(FPSMaster.i18n.get(page));
             if (page.equals(pages[curSearch])) {
