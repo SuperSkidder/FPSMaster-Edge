@@ -298,7 +298,8 @@ public class MainPanel extends ScaledGuiScreen {
 //            sizeDragX = x + width - mouseX;
 //            sizeDragY = y + height - mouseY;
 //        }
-
+        if (!dragLock.equals("null"))
+            return;
         float my = y + 60f;
         for (Category c : Category.values()) {
             if (Render2DUtils.isHoveredWithoutScale(x, my - 8, leftWidth, 24f, mouseX, mouseY)) {
