@@ -55,26 +55,12 @@ public class GlobalListener {
     @Subscribe
     public void onTick(EventTick e) throws URISyntaxException {
         if (musicSwitchTimer.delay(500)) {
-            for (NetworkPlayerInfo networkPlayerInfo : mc.getNetHandler().getPlayerInfoMap()) {
-                if (!playerInfos.contains(networkPlayerInfo)){
-                    FPSMaster.INSTANCE.wsClient.fetchPlayer(networkPlayerInfo.getGameProfile().getId().toString(), networkPlayerInfo.getGameProfile().getName());
-                    playerInfos.add(networkPlayerInfo);
-                }
-            }
-            if (playerInformation == null) {
-                playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
-                FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
-            } else if (!playerInformation.serverAddress.equals(ProviderManager.mcProvider.getServerAddress()) || !playerInformation.name.equals(ProviderManager.mcProvider.getPlayer().getName()) || !playerInformation.skin.equals(AccountManager.skin) || !playerInformation.uuid.equals(ProviderManager.mcProvider.getPlayer().getUniqueID().toString())) {
-                playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
-                FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
-            }
-
             FPSMaster.async.runnable(() -> {
                 if (MusicPlayer.isPlaying && MusicPlayer.getPlayProgress() > 0.999) {
                     MusicPlayer.curPlayProgress = 0f;
                     MusicPlayer.playList.next();
                 }
-                if (ProviderManager.mcProvider.getWorld() != null){
+                if (ProviderManager.mcProvider.getWorld() != null) {
                     Utility.flush();
                 }
                 if (FPSMaster.INSTANCE.loggedIn) {
@@ -89,7 +75,22 @@ public class GlobalListener {
                         FPSMaster.INSTANCE.wsClient.close();
                         FPSMaster.INSTANCE.wsClient.connect();
                         Utility.sendClientDebug("尝试重连");
+                    } else {
+                        FPSMaster.INSTANCE.wsClient.sendPing();
                     }
+                }
+                for (NetworkPlayerInfo networkPlayerInfo : mc.getNetHandler().getPlayerInfoMap()) {
+                    if (!playerInfos.contains(networkPlayerInfo)) {
+                        FPSMaster.INSTANCE.wsClient.fetchPlayer(networkPlayerInfo.getGameProfile().getId().toString(), networkPlayerInfo.getGameProfile().getName());
+                        playerInfos.add(networkPlayerInfo);
+                    }
+                }
+                if (playerInformation == null) {
+                    playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
+                    FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
+                } else if (!playerInformation.serverAddress.equals(ProviderManager.mcProvider.getServerAddress()) || !playerInformation.name.equals(ProviderManager.mcProvider.getPlayer().getName()) || !playerInformation.skin.equals(AccountManager.skin) || !playerInformation.uuid.equals(ProviderManager.mcProvider.getPlayer().getUniqueID().toString())) {
+                    playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
+                    FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
                 }
             });
         }
@@ -113,7 +114,7 @@ public class GlobalListener {
         NotificationManager.drawNotifications();
     }
 
-    class PlayerInformation{
+    class PlayerInformation {
         String name;
         String uuid;
         String serverAddress;
