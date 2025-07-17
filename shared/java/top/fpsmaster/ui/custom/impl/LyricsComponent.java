@@ -4,7 +4,9 @@ import top.fpsmaster.features.impl.interfaces.LyricsDisplay;
 import top.fpsmaster.modules.music.*;
 import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.ui.custom.Position;
+import top.fpsmaster.utils.math.animation.Animation;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.animation.Type;
 import top.fpsmaster.utils.render.Render2DUtils;
 
 import java.util.List;
@@ -12,7 +14,6 @@ import java.util.List;
 public class LyricsComponent extends Component {
 
     private long duration = 0;
-
     public LyricsComponent() {
         super(LyricsDisplay.class);
         x = 0.5f;
@@ -42,6 +43,7 @@ public class LyricsComponent extends Component {
             List<Line> lines = current.lyrics.lines;
             for (int i = 0; i < lines.size(); i++) {
                 Line line = lines.get(i);
+                line.finished = false;
                 if (MusicPlayer.isPlaying && JLayerHelper.clip != null) {
                     duration = (long) (JLayerHelper.getDuration() * 60 * 1000 * JLayerHelper.getProgress());
                 }
@@ -58,26 +60,28 @@ public class LyricsComponent extends Component {
                 }
                 if ((duration >= time && duration < nextTime) || duration > time) {
                     curLine = i;
+                    //get previous line and set finished
+                    if(i != 0) lines.get(i - 1).finished = true;
                 }
             }
 
             if (curLine != -1) {
-                for (int i = curLine - 2; i <= curLine + 2; i++) {
-                    if (i >= 0 && i < lines.size()) {
-                        Line line = lines.get(i);
+                for (int j = curLine - 2; j <= curLine + 2; j++) {
+                    if (j >= 0 && j < lines.size()) {
+                        Line line = lines.get(j);
                         String content = line.getContent();
                         float xOffset = x + (width - getStringWidth(20, content)) / 2;
-                        if (i == curLine) {
+                        if (j == curLine) {
                             line.animation = (float) AnimationUtils.base(line.animation, 0.0, 0.1f);
                             line.alpha = (float) AnimationUtils.base(line.alpha, 1.0, 0.1f);
                         } else {
-                            line.animation = (float) AnimationUtils.base(line.animation, i - curLine, 0.1f);
-                            line.alpha = (float) (Math.abs(i - curLine) == 1 ?
+                            line.animation = (float) AnimationUtils.base(line.animation, j - curLine, 0.1f);
+                            line.alpha = (float) (Math.abs(j - curLine) == 1 ?
                                     AnimationUtils.base(line.alpha, 1.0, 0.1f) :
                                     AnimationUtils.base(line.alpha, 0.0, 0.1f));
                         }
-                        if (Math.abs(i - curLine) <= 1) {
-                            drawLine(line, xOffset, y + line.animation * 20 + 20, 20, i == curLine);
+                        if (Math.abs(j - curLine) <= 1) {
+                            drawLine(line, xOffset, y + line.animation * 20 + 20, 20,j == curLine);
                         }
                     }
                 }
@@ -85,11 +89,27 @@ public class LyricsComponent extends Component {
         }
     }
 
-    private void drawLine(Line line, float xOffset, float y, int lfont, boolean current) {
+    private void drawLine(Line line, float xOffset, float y, int font, boolean current) {
+        LyricsDisplay lyrics = (LyricsDisplay) mod;
+        //lyric line has been play finished or is playing
+        if (lyrics.scale.getValue()) {
+            //default scale ratio
+            float scaleRatio = 1.0f;
+            if(line.finished || current) {
+                line.scaleAnimation.start(1.0,1.3,0.3f,Type.LINEAR);
+                line.scaleAnimation.update();
+                scaleRatio = (float) line.scaleAnimation.value;
+            }
+            Render2DUtils.scaleStart(xOffset + (getStringWidth(20, line.getContent()) / 2.0f), y + (getStringHeight(20) / 2.0f), scaleRatio);
+        }
         for (Word word : line.words) {
             xOffset += current ? drawWord(word, xOffset, y, line) : drawWordBG(word, xOffset, y, line);
         }
+        if (lyrics.scale.getValue()) {
+            Render2DUtils.scaleEnd();
+        }
     }
+
 
     private float drawWord(Word word, float xOffset, float y, Line line) {
         if (duration >= word.time) {
@@ -97,12 +117,11 @@ public class LyricsComponent extends Component {
             float animation2 = (float) (duration - word.time) / word.duration;
             drawString(20, word.content, xOffset, y + 7 - Math.min(animation2, 1f) * 3,
                     Render2DUtils.reAlpha(LyricsDisplay.textColor.getColor(), (int) Math.min(animation * 255, 255)).getRGB());
-            return getStringWidth(20, word.content);
-        }else{
+        }else {
             drawString(20, word.content, xOffset, y + 7,
                     Render2DUtils.reAlpha(LyricsDisplay.textColor.getColor(), (int) Math.min(line.alpha * 120, 255)).getRGB());
-            return getStringWidth(20, word.content);
         }
+        return getStringWidth(20, word.content);
     }
 
     private float drawWordBG(Word word, float xOffset, float y, Line line) {

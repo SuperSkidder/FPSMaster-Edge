@@ -17,7 +17,8 @@ import java.util.stream.Collectors;
 public class ModsListComponent extends Component {
 
     List<Module> modules = new ArrayList<>();
-    
+    //default background rectangle height
+    public static final float MODULE_HEIGHT = 14f;
     public ModsListComponent() {
         super(ModsList.class);
         this.x = 1f;
@@ -38,9 +39,8 @@ public class ModsListComponent extends Component {
             modY = 20f;
         }
 
-        float width2 = 40f;
+        float maxWidth = 40f;
         x += this.width;
-
         if (ProviderManager.mcProvider.getPlayer().ticksExisted % 20 == 0)
             modules = FPSMaster.moduleManager.modules.stream()
                     .sorted((m1, m2) -> {
@@ -53,10 +53,10 @@ public class ModsListComponent extends Component {
                         return Float.compare(w2, w1);
                     }).collect(Collectors.toList());
 
-        int ls = 0;
+        int index = 0;
         for (Module module : modules) {
-            Color col = Color.getHSBColor(
-                    ls / (float) modules.size() - ProviderManager.mcProvider.getPlayer().ticksExisted % 50 / 50f,
+            Color textColor = Color.getHSBColor(
+                    index / (float) modules.size() - ProviderManager.mcProvider.getPlayer().ticksExisted % 50 / 50f,
                     0.7f,
                     1f
             );
@@ -69,30 +69,36 @@ public class ModsListComponent extends Component {
                 name = module.name;
             }
 
-            float width = mod.betterFont.getValue()
+            float textWidth = mod.betterFont.getValue()
                     ? font.getStringWidth(name)
                     : ProviderManager.mcProvider.getFontRenderer().getStringWidth(name);
 
-            if (width2 < width) {
-                width2 = width + 5;
+            if (maxWidth < textWidth) {
+                maxWidth = textWidth + 5;
             }
-
-            Render2DUtils.drawRect(x - width - 4, y + modY, width + 4, 14f, modlist.backgroundColor.getColor());
+            if(modlist.bg.getValue()) {
+                Render2DUtils.drawRect(x - textWidth - 4, y + modY, textWidth + 4, MODULE_HEIGHT + modlist.spacing.getValue().intValue() , modlist.backgroundColor.getColor());
+            }
             Color color = modlist.color.getColor();
             if (modlist.rainbow.getValue()) {
-                color = col;
+                color = textColor;
             }
-
+            //text y position centered offset
+            int yOffset;
             if (mod.betterFont.getValue()) {
-                font.drawStringWithShadow(name, x - width - 2, y + modY + 2, color.getRGB());
+                yOffset = (int) ((MODULE_HEIGHT - font.getHeight()) / 2);
+                font.drawStringWithShadow(name, x - textWidth - 2, y + modY + yOffset, color.getRGB());
             } else {
-                ProviderManager.mcProvider.getFontRenderer().drawStringWithShadow(name, x - width - 2, y + modY, color.getRGB());
+                // Problem: yOffset = (BG_HEIGHT - ProviderManager.mcProvider.getFontRenderer().FONT_HEIGHT) / 2;
+                // this is the only way to center the text y position
+                yOffset = ProviderManager.mcProvider.getFontRenderer().FONT_HEIGHT / 2;
+                ProviderManager.mcProvider.getFontRenderer().drawStringWithShadow(name, x - textWidth - 2, y + modY + yOffset, color.getRGB());
             }
-            ls++;
-            modY += 14f;
+            index++;
+            modY += MODULE_HEIGHT + modlist.spacing.getValue().intValue();
         }
 
-        this.width = width2;
+        this.width = maxWidth;
         height = modY;
     }
 }

@@ -1,6 +1,5 @@
 package top.fpsmaster.ui.custom.impl;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.TargetDisplay;

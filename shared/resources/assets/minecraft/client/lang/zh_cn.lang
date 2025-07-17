@@ -57,6 +57,7 @@ armordisplay.mode.simplevertical=垂直简单
 armordisplay.mode.vertical=垂直详细
 armordisplay.roundradius=圆角半径
 armordisplay.background=背景
+armordisplay.spacing=间距
 
 betterchat=聊天框
 betterchat.desc=修改聊天框的背景、字体，以及添加动画等
@@ -124,6 +125,7 @@ potiondisplay.fontshadow=字体阴影
 potiondisplay.betterfont=更好的字体
 potiondisplay.roundradius=圆角半径
 potiondisplay.background=背景
+potiondisplay.spacing=间距
 
 pingdisplay=延迟显示
 pingdisplay.desc=显示玩家到服务器的延迟(Ping)
@@ -145,7 +147,6 @@ reachdisplay.roundradius=圆角半径
 reachdisplay.textcolor=文字颜色
 reachdisplay.background=背景
 
-
 scoreboard=计分板
 scoreboard.desc=自定义计分板的样式
 scoreboard.textcolor=文字颜色
@@ -156,7 +157,6 @@ scoreboard.fontshadow=字体阴影
 scoreboard.betterfont=更好的字体
 scoreboard.roundradius=圆角半径
 scoreboard.background=背景
-
 
 performance=性能
 performance.desc=优化MC帧数
@@ -258,7 +258,6 @@ oldanimations.animationmode.jigsaw=Jigsaw
 oldanimations.animationmode.jello=Jello
 oldanimations.animationmode.push=Push
 
-
 irc=客户端聊天
 irc.desc=与相同客户端的用户聊天
 irc.enable=IRC功能已启用，输入%sirc <消息>发送消息
@@ -281,6 +280,7 @@ lyricsdisplay.fontshadow=字体阴影
 lyricsdisplay.betterfont=更好的字体
 lyricsdisplay.roundradius=圆角半径
 lyricsdisplay.background=背景
+lyricsdisplay.scale=播放文字缩放
 
 crosshair=自定义准心
 crosshair.desc=使用一个自定义的准星替代原版的准星
@@ -444,6 +444,7 @@ modslist.backgroundcolor=功能列表背景颜色
 modslist.betterfont=更好的字体
 modslist.roundradius=圆角半径
 modslist.background=背景
+modslist.spacing=间距
 
 betterscreen=更好的界面
 betterscreen.desc=让原版的部分界面看起来更好

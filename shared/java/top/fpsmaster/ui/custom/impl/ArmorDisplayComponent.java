@@ -26,7 +26,7 @@ public class ArmorDisplayComponent extends Component {
 
         for (int i = 0; i < armorInventory.size(); i++) {
             ItemStack itemStack = armorInventory.get(i);
-            int x1 = (int) (x + i * 18);
+            int x1 = (int) (x + i * (mod.spacing.getValue().intValue() + 18)) - mod.spacing.getValue().intValue();
             int y1 = (int) y;
 
             switch (ArmorDisplay.mode.getValue()) {
@@ -37,7 +37,7 @@ public class ArmorDisplayComponent extends Component {
                 case 2:
                     itemStack = armorInventory.get(armorInventory.size() - 1 - i);
                     x1 = (int) x;
-                    y1 = (int) y + i * 18;
+                    y1 = (int) (y + i * (mod.spacing.getValue().intValue() + 18)) - mod.spacing.getValue().intValue();
                     break;
             }
 
@@ -89,13 +89,13 @@ public class ArmorDisplayComponent extends Component {
 
         switch (ArmorDisplay.mode.getValue()) {
             case 0:
-                width = 70f;
+                width = 70f + mod.spacing.getValue().intValue();
                 height = 18f;
                 break;
             case 1:
             case 2:
                 width = 70f;
-                height = 4 + armorInventory.size() * 16;
+                height = 4 + mod.spacing.getValue().intValue() + armorInventory.size() * 16;
                 break;
         }
     }

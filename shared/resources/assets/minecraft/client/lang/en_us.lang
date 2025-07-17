@@ -57,6 +57,7 @@ armordisplay.mode.simplevertical=Simple Vertical
 armordisplay.mode.vertical=Detailed Vertical
 armordisplay.roundradius=Corner Radius
 armordisplay.background=Show Background
+armordisplay.spacing=Spacing
 
 betterchat=Chat Customizer
 betterchat.desc=Customize the chat background, font, and animations
@@ -124,6 +125,7 @@ potiondisplay.fontshadow=Font Shadow
 potiondisplay.betterfont=Clean Font
 potiondisplay.roundradius=Corner Radius
 potiondisplay.background=Show Background
+potiondisplay.spacing=Spacing
 
 pingdisplay=Ping Display
 pingdisplay.desc=Shows your ping to the server
@@ -276,7 +278,7 @@ lyricsdisplay.fontshadow=Font Shadow
 lyricsdisplay.betterfont=Clean Font
 lyricsdisplay.roundradius=Corner Radius
 lyricsdisplay.background=Show Background
-
+lyricsdisplay.scale=Play Text Scale
 crosshair=Custom Crosshair
 crosshair.desc=Replaces the default crosshair
 crosshair.dynamic=Dynamic
@@ -437,6 +439,7 @@ modslist.backgroundcolor=Background Color
 modslist.betterfont=Clean Font
 modslist.roundradius=Corner Radius
 modslist.background=Show Background
+modslist.spacing=Spacing
 
 betterscreen=Enhanced UI
 betterscreen.desc=Improves vanilla UI visuals

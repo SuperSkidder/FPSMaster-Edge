@@ -3,7 +3,6 @@ package top.fpsmaster.ui.custom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import top.fpsmaster.FPSMaster;
@@ -17,9 +16,6 @@ import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
 import java.awt.*;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
 
 public class Component {
     private float dragX = 0f;
@@ -235,5 +231,9 @@ public class Component {
     public float getStringWidth(int fontSize, String name) {
         UFontRenderer font = FPSMaster.fontManager.getFont(fontSize);
         return mod.betterFont.getValue() ? font.getStringWidth(name) : ProviderManager.mcProvider.getFontRenderer().getStringWidth(name);
+    }
+    public float getStringHeight(int fontSize) {
+        UFontRenderer font = FPSMaster.fontManager.getFont(fontSize);
+        return mod.betterFont.getValue() ? font.getHeight() : ProviderManager.mcProvider.getFontRenderer().FONT_HEIGHT;
     }
 }

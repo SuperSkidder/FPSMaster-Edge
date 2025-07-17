@@ -9,6 +9,6 @@ public class ArmorDisplay extends InterfaceModule {
 
     public ArmorDisplay() {
         super("ArmorDisplay", Category.Interface);
-        addSettings(rounded, backgroundColor, fontShadow, betterFont, mode, bg, rounded, roundRadius);
+        addSettings(rounded, backgroundColor, fontShadow, betterFont, spacing, mode, bg, rounded, roundRadius);
     }
 }
