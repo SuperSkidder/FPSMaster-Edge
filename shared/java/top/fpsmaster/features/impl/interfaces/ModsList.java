@@ -18,6 +18,6 @@ public class ModsList extends InterfaceModule {
 
     public ModsList() {
         super("ModsList", Category.Interface);
-        addSettings(showLogo, text, english, color, rainbow, betterFont, backgroundColor, bg);
+        addSettings(showLogo, text, english, color, rainbow, betterFont, spacing, backgroundColor, bg);
     }
 }

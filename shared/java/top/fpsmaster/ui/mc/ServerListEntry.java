@@ -134,7 +134,7 @@ public class ServerListEntry {
             }
         } else {
             k = 1;
-            l = (int) (Minecraft.getSystemTime() / 100L + (long) (slotIndex * 2L) & 7L);
+            l = (int) (Minecraft.getSystemTime() / 100L + (slotIndex * 2L) & 7L);
             if (l > 4) {
                 l = 8 - l;
             }
@@ -168,7 +168,7 @@ public class ServerListEntry {
 //            this.owner.setHoveringText(s);
 //        }
 
-        if (Render2DUtils.isHovered(x + listWidth - text.getStringWidth(s1), y + 4,10,10,mouseX,mouseY)) {
+        if (Render2DUtils.isHovered(x + listWidth - text.getStringWidth(s1), y + 4, 10, 10, mouseX, mouseY)) {
             text.drawString(s1, x + listWidth - text.getStringWidth(s1) + 12, y + 4, -1);
         }
 
