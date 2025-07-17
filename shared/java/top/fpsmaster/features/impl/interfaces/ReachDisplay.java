@@ -41,8 +41,10 @@ public class ReachDisplay extends InterfaceModule {
                 d1 = 6.0;
                 d0 = d1;
             }
-            if (rayTrace != null) {
+            if (rayTrace != null && rayTrace.hitVec != null) {
                 d1 = rayTrace.hitVec.distanceTo(vec3d);
+            } else {
+                return;
             }
             WrapperVec3 vec3d1 = new WrapperVec3(entity.getLook(1.0f));
             Vec3 vec3d2 = new WrapperVec3(vec3d).addVector(vec3d1.x() * d0, vec3d1.y() * d0, vec3d1.z() * d0);
