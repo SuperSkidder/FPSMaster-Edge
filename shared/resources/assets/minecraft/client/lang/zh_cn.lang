@@ -176,6 +176,8 @@ performance.fontoptimize=字体优化
 performance.staticparticlecolor=静态粒子颜色
 performance.limitchunks=限制区块加载
 performance.chunkupdatelimit=区块更新限制
+performance.batchmodelrendering=渲染批处理
+performance.lowanimationtick=低动画帧率
 
 fullbright=保持亮度
 fullbright.desc=保持视野明亮

@@ -106,6 +106,8 @@ public class Component {
             FPSMaster.componentsManager.dragLock = "";
         }
         if (Render2DUtils.isHovered(rX, rY, scaledWidth, scaledHeight, mouseX, mouseY) || drag) {
+            if (!MainPanel.dragLock.equals("null"))
+                return;
             if (allowScale) {
                 int dWheel = Mouse.getDWheel();
                 if (dWheel > 0) scaleUp();

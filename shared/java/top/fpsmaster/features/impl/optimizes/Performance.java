@@ -30,7 +30,7 @@ public class Performance extends Module {
 
     public Performance() {
         super("Performance", Category.OPTIMIZE);
-        addSettings(ignoreStands, entitiesOptimize, fastLoad, entityLimit, fpsLimit, particlesLimit, fontOptimize, staticParticleColor,limitChunks,chunkUpdateLimit);
+        addSettings(ignoreStands, entitiesOptimize, fastLoad, batchModelRendering, lowAnimationTick, entityLimit, fpsLimit, particlesLimit, fontOptimize, staticParticleColor,limitChunks,chunkUpdateLimit);
     }
 
 
