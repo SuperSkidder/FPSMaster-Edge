@@ -1,13 +1,20 @@
 package top.fpsmaster.features.impl.utility;
 
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.network.login.server.S02PacketLoginSuccess;
+import net.minecraft.network.play.server.S0CPacketSpawnPlayer;
+import net.minecraft.world.World;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.event.Subscribe;
+import top.fpsmaster.event.events.EventPacket;
 import top.fpsmaster.event.events.EventTick;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.TextSetting;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.account.AccountManager;
+
+import static top.fpsmaster.utils.Utility.mc;
 
 public class SkinChanger extends Module {
 
@@ -24,6 +31,7 @@ public class SkinChanger extends Module {
     });
 
     public static boolean using = false;
+    private WorldClient world;
 
     public SkinChanger() {
         super("SkinChanger", Category.Utility);
@@ -42,14 +50,15 @@ public class SkinChanger extends Module {
         }
     }
 
+
     @Subscribe
     public void onTick(EventTick e) {
         if (ProviderManager.mcProvider.getPlayer() != null && ProviderManager.mcProvider.getPlayer().ticksExisted % 30 == 0) {
-            if (AccountManager.skin.equals(skinName.getValue()))
+            if (AccountManager.skin.equals(skinName.getValue()) && world == mc.theWorld)
                 return;
-            FPSMaster.async.runnable(this::update);
+            world = mc.theWorld;
             AccountManager.skin = skinName.getValue();
-
+            FPSMaster.async.runnable(this::update);
         }
     }
 
