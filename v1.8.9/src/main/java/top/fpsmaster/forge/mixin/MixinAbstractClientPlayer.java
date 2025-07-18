@@ -18,7 +18,6 @@ import top.fpsmaster.features.impl.utility.CustomFOV;
 @Mixin(AbstractClientPlayer.class)
 public abstract class MixinAbstractClientPlayer extends MixinEntityPlayer {
 
-    private ResourceLocation fpsmasterCape;
 
     @Inject(method = "getFovModifier", at = @At("HEAD"), cancellable = true)
     public void customFov(CallbackInfoReturnable<Float> cir) {
@@ -65,7 +64,8 @@ public abstract class MixinAbstractClientPlayer extends MixinEntityPlayer {
     public void getLocationCape(CallbackInfoReturnable<ResourceLocation> cir) {
         EventCapeLoading event = new EventCapeLoading(playerInfo.getGameProfile().getName(), (AbstractClientPlayer) (Object) this);
         EventDispatcher.dispatchEvent(event);
-        fpsmasterCape = event.cape;
-        cir.setReturnValue(fpsmasterCape);
+        if (event.cape != null) {
+            cir.setReturnValue(event.cape);
+        }
     }
 }
