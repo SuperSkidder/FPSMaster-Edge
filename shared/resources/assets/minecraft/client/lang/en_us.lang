@@ -235,6 +235,7 @@ oldanimations.oldblock=Old Blocking
 oldanimations.olddamage=Old Damage Anim
 oldanimations.oldusing=Old Use Anim
 oldanimations.blockhit=Block Hit
+oldanimations.oldthirdperson=Old Third Person Animation
 oldanimations.x=X
 oldanimations.y=Y
 oldanimations.z=Z

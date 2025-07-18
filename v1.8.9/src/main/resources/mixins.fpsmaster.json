@@ -33,6 +33,7 @@
     "MixinItemRenderer",
     "MixinKeybinding",
     "MixinLayerArmorBase",
+    "MixinLayerHeldItem",
     "MixinMainMenu",
     "MixinMinecraft",
     "MixinNetworkPlayerInfo",
