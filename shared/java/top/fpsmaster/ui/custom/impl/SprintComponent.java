@@ -8,6 +8,7 @@ import static top.fpsmaster.utils.Utility.mc;
 public class SprintComponent extends Component{
     public SprintComponent() {
         super(Sprint.class);
+        allowScale = true;
     }
 
     @Override

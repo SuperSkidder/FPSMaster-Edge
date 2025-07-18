@@ -99,7 +99,7 @@ public class Component {
                 AnimationUtils.base(alpha, 50.0, 0.1f) : AnimationUtils.base(alpha, 0.0, 0.1f));
 
         Render2DUtils.drawOptimizedRoundedRect(rX - 2, rY - 2, scaledWidth + 4, scaledHeight + 4, new Color(0, 0, 0, (int) alpha));
-        GL11.glColor4f(1,1,1,1);
+        GL11.glColor4f(1, 1, 1, 1);
 
 
         if (!Mouse.isButtonDown(0)) {
@@ -131,11 +131,11 @@ public class Component {
     }
 
     public void scaleUp() {
-        if (scale < 2.5f) scale += 0.1f;
+        if (scale < 2.5f) scale = (int) (scale * 10 + 1) / 10f;
     }
 
     public void scaleDown() {
-        if (scale > 0.5f) scale -= 0.1f;
+        if (scale > 0.5f) scale = (int) (scale * 10 - 1) / 10f;
     }
 
     private void move(int x, int y) {
@@ -221,9 +221,12 @@ public class Component {
             GL11.glPushMatrix();
             GL11.glTranslated(x, y, 0.0);
             GL11.glScaled(scaled, scaled, 1.0);
-            if (mod.fontShadow.getValue())
+            if (mod.fontShadow.getValue()) {
                 ProviderManager.mcProvider.getFontRenderer().drawStringWithShadow(text, 0f, 0f, color);
-            else ProviderManager.mcProvider.drawString(text, 0f, 0f, color);
+            } else {
+                GL11.glColor4f(1,1,1,1);
+                ProviderManager.mcProvider.drawString(text, 0f, 0f, color);
+            }
             GL11.glPopMatrix();
         }
     }
@@ -232,6 +235,7 @@ public class Component {
         UFontRenderer font = FPSMaster.fontManager.getFont(fontSize);
         return mod.betterFont.getValue() ? font.getStringWidth(name) : ProviderManager.mcProvider.getFontRenderer().getStringWidth(name);
     }
+
     public float getStringHeight(int fontSize) {
         UFontRenderer font = FPSMaster.fontManager.getFont(fontSize);
         return mod.betterFont.getValue() ? font.getHeight() : ProviderManager.mcProvider.getFontRenderer().FONT_HEIGHT;

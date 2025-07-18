@@ -7,6 +7,7 @@ public class ReachDisplayComponent extends Component {
 
     public ReachDisplayComponent() {
         super(ReachDisplay.class);
+        allowScale = true;
     }
 
     @Override

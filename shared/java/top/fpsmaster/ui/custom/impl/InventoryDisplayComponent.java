@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
 import top.fpsmaster.features.impl.interfaces.InventoryDisplay;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.ui.custom.Component;
@@ -14,6 +15,7 @@ public class InventoryDisplayComponent extends Component {
 
     public InventoryDisplayComponent() {
         super(InventoryDisplay.class);
+        allowScale = true;
     }
 
     @Override
@@ -24,7 +26,10 @@ public class InventoryDisplayComponent extends Component {
         int count = 0;
         int count2 = 0;
         int linecount = 0;
-
+        GlStateManager.pushMatrix();
+        GL11.glTranslated(x, y, 0);
+        if (scale != 1)
+            GL11.glScaled(scale, scale, 0);
         for (Slot slot : ProviderManager.mcProvider.getPlayer().inventoryContainer.inventorySlots) {
             count2++;
 
@@ -34,10 +39,11 @@ public class InventoryDisplayComponent extends Component {
 
             if (slot.getStack() != null) {
                 ItemStack itemStack = slot.getStack();
-                int x1 = (int) (x + count * 18);
-                int y1 = (int) (y + linecount * 20);
+                int x1 = count * 18;
+                int y1 = linecount * 20;
 
                 GlStateManager.disableCull();
+                GlStateManager.enableBlend();
                 GlStateManager.disableBlend();
                 RenderHelper.enableGUIStandardItemLighting();
                 mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, x1, y1);
@@ -57,6 +63,9 @@ public class InventoryDisplayComponent extends Component {
                 linecount++;
             }
         }
+        if (scale != 1)
+            GL11.glScaled(1 / scale, 1 / scale, 0);
+        GlStateManager.popMatrix();
 
         width = 164f;
         height = 64f;

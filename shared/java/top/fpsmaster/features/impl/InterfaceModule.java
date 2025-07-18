@@ -13,7 +13,7 @@ public class InterfaceModule extends Module {
     public BooleanSetting rounded = new BooleanSetting("Round", true);
     public NumberSetting roundRadius = new NumberSetting("RoundRadius", 3, 0, 30, 1, () -> rounded.getValue());
     public BooleanSetting betterFont = new BooleanSetting("BetterFont", false);
-    public BooleanSetting fontShadow = new BooleanSetting("FontShadow", true, () -> betterFont.getValue());
+    public BooleanSetting fontShadow = new BooleanSetting("FontShadow", true);
     public BooleanSetting bg = new BooleanSetting("Background", true);
     public ColorSetting backgroundColor = new ColorSetting("BackgroundColor", new Color(0, 0, 0, 0), () -> bg.getValue());
     public NumberSetting spacing = new NumberSetting("Spacing",0,0,3,1);
