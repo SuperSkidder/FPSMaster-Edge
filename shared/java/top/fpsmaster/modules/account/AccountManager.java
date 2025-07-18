@@ -11,6 +11,7 @@ import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.os.HttpRequest;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class AccountManager {
@@ -50,42 +51,44 @@ public class AccountManager {
         }
     }
 
-    private boolean attemptLogin(String username, String token) throws NetworkException {
+    private boolean attemptLogin(String username, String token) throws AccountException {
         if (username.isEmpty() || token.isEmpty()) {
             return false;
         }
         try {
             HashMap<String, String> headers = new HashMap<>();
-            headers.put("Authorization","Bearer " + token);
-            String s = HttpRequest.get(FPSMaster.SERVICE_API + "/api/auth/validate-jwt", headers);
-            JsonObject json = parser.parse(s).getAsJsonObject();
+            headers.put("Authorization", "Bearer " + token);
+            HttpRequest.HttpResponseResult s = HttpRequest.get(FPSMaster.SERVICE_API + "/api/auth/validate-jwt", headers);
+            JsonObject json = parser.parse(s.getBody()).getAsJsonObject();
+            if (!s.isSuccess()){
+                throw new AccountException("Failed to login via token " + s.getStatusCode());
+            }
             this.username = username;
             this.token = token;
             return json.get("data").getAsJsonObject().get("success").getAsBoolean();
         } catch (Exception e) {
-            throw new NetworkException("Failed to login via token", e);
+            throw new AccountException("Failed to login via token");
         }
     }
 
 
-    public static JsonObject login(String username, String password) throws NetworkException {
+    public static JsonObject login(String username, String password) throws AccountException {
+        JsonObject body = new JsonObject();
+        body.addProperty("username", username);
+        body.addProperty("password", password);
+        HttpRequest.HttpResponseResult s = null;
         try {
-            JsonObject body = new JsonObject();
-            body.addProperty("username", username);
-            body.addProperty("password", password);
-            String s = HttpRequest.post(FPSMaster.SERVICE_API + "/api/auth/login", body.toString());
-
-            JsonObject jsonObject = parser.parse(s).getAsJsonObject();
-            if (!jsonObject.get("data").getAsJsonObject().get("success").getAsBoolean()) {
-                throw new NetworkException("Login failed: " + jsonObject.get("message").getAsString());
-            }
-            return jsonObject;
-        } catch (Exception e) {
-            if (e instanceof NetworkException) {
-                throw (NetworkException) e;
-            }
-            throw new NetworkException("Login failed", e);
+            s = HttpRequest.post(FPSMaster.SERVICE_API + "/api/auth/login", body.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        JsonObject jsonObject = parser.parse(s.getBody()).getAsJsonObject();
+        if (jsonObject.get("data") == null || !jsonObject.get("data").getAsJsonObject().get("success").getAsBoolean()) {
+            throw new AccountException("登录失败： " + jsonObject.get("message").getAsString());
+        }
+        return jsonObject;
+
     }
 
     // Getter and Setter methods

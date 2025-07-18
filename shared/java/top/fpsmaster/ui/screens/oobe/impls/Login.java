@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import top.fpsmaster.FPSMaster;
+import top.fpsmaster.exception.AccountException;
 import top.fpsmaster.exception.ExceptionHandler;
 import top.fpsmaster.exception.FileException;
 import top.fpsmaster.exception.NetworkException;
@@ -57,11 +58,7 @@ public class Login extends Scene {
                 } else {
                     Minecraft.getMinecraft().displayGuiScreen(new MainMenu());
                 }
-            } catch (NetworkException e) {
-                ExceptionHandler.handleNetworkException(e, "登录失败");
-                msg = "网络错误: " + e.getMessage();
-                msgbox = true;
-            } catch (Exception e) {
+            } catch (AccountException e) {
                 ExceptionHandler.handle(e, "登录失败");
                 msg = "未知错误: " + e.getMessage();
                 msgbox = true;

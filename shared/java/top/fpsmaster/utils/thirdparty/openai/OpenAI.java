@@ -43,7 +43,7 @@ public class OpenAI {
 
         String text;
         try {
-            text = HttpRequest.postJson(baseUrl + "/chat/completions", body, hashMap);
+            text = HttpRequest.postJson(baseUrl + "/chat/completions", body, hashMap).getBody();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -74,7 +74,7 @@ public class OpenAI {
 
         String text;
         try {
-            text = HttpRequest.postJson(baseUrl + "/chat/completions", body, hashMap);
+            text = HttpRequest.postJson(baseUrl + "/chat/completions", body, hashMap).getBody();
         } catch (Exception e) {
             ClientLogger.error("Translator", e.toString());
             return "";
@@ -105,7 +105,7 @@ public class OpenAI {
                         put("model", model);
                         put("prompt", prompt);
                     }}
-            );
+            ).getBody();
 
             if (!sendPostRequest.isEmpty()) {
                 JsonObject json = new JsonParser().parse(sendPostRequest).getAsJsonObject();

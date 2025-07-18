@@ -30,6 +30,7 @@ import top.fpsmaster.utils.render.ScaledGuiScreen;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class GuiMultiplayer extends ScaledGuiScreen {
@@ -102,7 +103,12 @@ public class GuiMultiplayer extends ScaledGuiScreen {
         if (serverListRecommended.isEmpty()) {
             ClientThreadPool clientThreadPool = new ClientThreadPool(100);
             clientThreadPool.runnable(() -> {
-                String s = HttpRequest.get("https://service.fpsmaster.top/api/client/servers");
+                String s = null;
+                try {
+                    s = HttpRequest.get("https://service.fpsmaster.top/api/client/servers").getBody();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
                 jsonObject.get("data").getAsJsonArray().forEach(e -> {
                     serverListRecommended.add(new ServerListEntry(this, new ServerData(e.getAsJsonObject().get("name").getAsString() + " - " + e.getAsJsonObject().get("description").getAsString(), e.getAsJsonObject().get("address").getAsString(), false)));

@@ -4,14 +4,15 @@ package top.fpsmaster.exception;
  * Exception thrown when there is an error related to network operations.
  */
 public class NetworkException extends Exception {
-    
+    int code;
     /**
      * Constructs a new NetworkException with the specified detail message.
      * 
      * @param message the detail message
      */
-    public NetworkException(String message) {
+    public NetworkException(int code, String message) {
         super(message);
+        this.code = code;
     }
     
     /**
@@ -20,7 +21,8 @@ public class NetworkException extends Exception {
      * @param message the detail message
      * @param cause the cause
      */
-    public NetworkException(String message, Throwable cause) {
+    public NetworkException(int code, String message, Throwable cause) {
         super(message, cause);
+        this.code = code;
     }
 }

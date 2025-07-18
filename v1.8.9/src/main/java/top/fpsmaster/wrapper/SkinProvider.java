@@ -10,6 +10,7 @@ import net.minecraft.client.network.NetworkPlayerInfo;
 import top.fpsmaster.forge.api.INetworkPlayerInfo;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.interfaces.game.ISkinProvider;
+import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.utils.os.HttpRequest;
 
 import java.io.IOException;
@@ -28,8 +29,18 @@ public class SkinProvider implements ISkinProvider {
                 }
             }
 
-            String json = null;
-            json = HttpRequest.get("https://api.mojang.com/users/profiles/minecraft/" + skin);
+            HttpRequest.HttpResponseResult httpResponseResult = null;
+            try {
+                httpResponseResult = HttpRequest.get("https://api.mojang.com/users/profiles/minecraft/" + skin);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            if (!httpResponseResult.isSuccess()) {
+                ClientLogger.error("Failed to get skin " + skin + " for player " + name + " " + httpResponseResult.getStatusCode() + " " + httpResponseResult.getBody());
+                return;
+            }
+
+            String json = httpResponseResult.getBody();
             Gson gson = new GsonBuilder().create();
             JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
             if (jsonObject != null && jsonObject.has("id")) {

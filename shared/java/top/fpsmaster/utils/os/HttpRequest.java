@@ -28,46 +28,70 @@ import java.util.List;
 import java.util.Map;
 
 public final class HttpRequest {
-    // 共享线程安全的HTTP客户端
+    // Shared thread-safe HTTP client
     private static final CloseableHttpClient HTTP_CLIENT = HttpClients.createDefault();
-    // 默认超时设置(15秒)
+    // Default timeout settings (15 seconds)
     private static final int DEFAULT_TIMEOUT = 15000;
 
-    private HttpRequest() {} // 防止实例化
+    // Response wrapper class
+    public static class HttpResponseResult {
+        private final int statusCode;
+        private final String body;
+
+        public HttpResponseResult(int statusCode, String body) {
+            this.statusCode = statusCode;
+            this.body = body;
+        }
+
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        public String getBody() {
+            return body;
+        }
+
+        public boolean isSuccess() {
+            return statusCode >= 200 && statusCode < 300;
+        }
+    }
+
+    private HttpRequest() {
+    } // Prevent instantiation
 
     public static Gson gson() {
         return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     }
 
-    // ================== GET 请求 ================== //
-    public static String get(String url) {
+    // ================== GET Requests ================== //
+    public static HttpResponseResult get(String url) throws IOException {
         return executeRequest(new HttpGet(url), null);
     }
 
-    public static String getWithCookie(String url, String cookie) {
+    public static HttpResponseResult getWithCookie(String url, String cookie) throws IOException {
         HttpGet request = new HttpGet(url);
         request.setHeader("Cookie", cookie.replace("\n", ""));
         return executeRequest(request, null);
     }
 
-    public static String get(String url, Map<String, String> headers) {
+    public static HttpResponseResult get(String url, Map<String, String> headers) throws IOException {
         return executeRequest(new HttpGet(url), headers);
     }
 
-    // ================== POST 请求 ================== //
-    public static String post(String url, String body) {
+    // ================== POST Requests ================== //
+    public static HttpResponseResult post(String url, String body) throws IOException {
         return post(url, body, "application/json");
     }
 
-    public static String postJson(String url, JsonObject json) {
+    public static HttpResponseResult postJson(String url, JsonObject json) throws IOException {
         return post(url, json.toString(), "application/json");
     }
 
-    public static String postJson(String url, JsonObject json, Map<String, String> headers) {
+    public static HttpResponseResult postJson(String url, JsonObject json, Map<String, String> headers) throws IOException {
         return post(url, json.toString(), "application/json", headers);
     }
 
-    public static String postForm(String url, Map<String, String> params) {
+    public static HttpResponseResult postForm(String url, Map<String, String> params) throws IOException {
         HttpPost request = new HttpPost(url);
         if (params != null && !params.isEmpty()) {
             List<NameValuePair> formData = new ArrayList<>();
@@ -77,10 +101,11 @@ public final class HttpRequest {
         return executeRequest(request, null);
     }
 
-    private static String post(String url, String body, String contentType) {
+    private static HttpResponseResult post(String url, String body, String contentType) throws IOException {
         return post(url, body, contentType, null);
     }
-    private static String post(String url, String body, String contentType, Map<String, String> headers) {
+
+    private static HttpResponseResult post(String url, String body, String contentType, Map<String, String> headers) throws IOException {
         HttpPost request = new HttpPost(url);
         if (headers != null) {
             headers.forEach(request::setHeader);
@@ -93,8 +118,8 @@ public final class HttpRequest {
         return executeRequest(request, null);
     }
 
-    // ================== 文件下载 ================== //
-    public static void downloadFile(String url, String filepath) {
+    // ================== File Download ================== //
+    public static boolean downloadFile(String url, String filepath) {
         try (InputStream is = HTTP_CLIENT.execute(new HttpGet(url)).getEntity().getContent();
              FileOutputStream fos = new FileOutputStream(filepath)) {
 
@@ -103,41 +128,37 @@ public final class HttpRequest {
             while ((bytesRead = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, bytesRead);
             }
+            return true;
         } catch (Exception e) {
             ClientLogger.error("Download failed: " + e.getMessage());
+            return false;
         }
     }
 
     public static void downloadAsync(String url, String filepath, Runnable callback) {
         new Thread(() -> {
-            downloadFile(url, filepath);
-            callback.run();
+            boolean success = downloadFile(url, filepath);
+            if (success && callback != null) {
+                callback.run();
+            }
         }).start();
     }
 
-    // ================== 核心执行方法 ================== //
-    private static String executeRequest(HttpRequestBase request, Map<String, String> headers) {
-        try {
-            // 设置请求配置和默认头
-            request.setConfig(buildRequestConfig());
-            addDefaultHeaders(request);
+    // ================== Core Execution Method ================== //
+    private static HttpResponseResult executeRequest(HttpRequestBase request, Map<String, String> headers) throws IOException {
+        // Set request configuration and default headers
+        request.setConfig(buildRequestConfig());
+        addDefaultHeaders(request);
 
-            // 添加自定义头部
-            if (headers != null) {
-                headers.forEach(request::addHeader);
-            }
-
-            // 执行请求并处理响应
-            try (CloseableHttpResponse response = HTTP_CLIENT.execute(request)) {
-                return handleResponse(response, request.getURI().toString());
-            }
-        } catch (Exception e) {
-            ClientLogger.error("Request failed: " + e.getMessage());
-            return "";
+        // Add custom headers
+        if (headers != null) {
+            headers.forEach(request::addHeader);
         }
+        CloseableHttpResponse response = HTTP_CLIENT.execute(request);
+        return handleResponse(response, request.getURI().toString());
     }
 
-    // ================== 工具方法 ================== //
+    // ================== Utility Methods ================== //
     private static RequestConfig buildRequestConfig() {
         return RequestConfig.custom()
                 .setConnectTimeout(DEFAULT_TIMEOUT)
@@ -152,14 +173,11 @@ public final class HttpRequest {
         request.setHeader("Accept-Language", "en-US,en;q=0.9");
     }
 
-    private static String handleResponse(HttpResponse response, String url) throws IOException {
+    private static HttpResponseResult handleResponse(HttpResponse response, String url) throws IOException {
         int statusCode = response.getStatusLine().getStatusCode();
         HttpEntity entity = response.getEntity();
 
-        if (statusCode < 200 || statusCode >= 300) {
-            throw new IOException("HTTP Error: " + statusCode + " for URL: " + url);
-        }
-
-        return entity != null ? EntityUtils.toString(entity, StandardCharsets.UTF_8) : "";
+        String body = entity != null ? EntityUtils.toString(entity, StandardCharsets.UTF_8) : "";
+        return new HttpResponseResult(statusCode, body);
     }
 }
