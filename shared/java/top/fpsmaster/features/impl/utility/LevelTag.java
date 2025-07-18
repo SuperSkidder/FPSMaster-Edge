@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import top.fpsmaster.FPSMaster;
@@ -30,7 +31,9 @@ public class LevelTag extends Module {
     }
 
     public static void renderHealth(Entity entityIn, String str, double x, double y, double z, int maxDistance) {
-        if(!str.contains(entityIn.getName()))
+        if(!str.contains(entityIn.getName()) || !(entityIn instanceof EntityPlayer))
+            return;
+        if (str.contains("[NPC]"))
             return;
         double d = entityIn.getDistanceSqToEntity(mc.getRenderManager().livingPlayer);
         if (d < 100) {
