@@ -30,6 +30,8 @@ public class LevelTag extends Module {
     }
 
     public static void renderHealth(Entity entityIn, String str, double x, double y, double z, int maxDistance) {
+        if(!str.contains(entityIn.getName()))
+            return;
         double d = entityIn.getDistanceSqToEntity(mc.getRenderManager().livingPlayer);
         if (d < 100) {
             float f = 1.6F;
