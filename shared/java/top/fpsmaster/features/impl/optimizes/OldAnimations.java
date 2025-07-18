@@ -28,6 +28,8 @@ public class OldAnimations extends Module {
     public static BooleanSetting oldUsing = new BooleanSetting("OldUsing", true);
     public static BooleanSetting blockSwing = new BooleanSetting("BlockSwing", true);
     public static BooleanSetting oldDamage = new BooleanSetting("OldDamage", true);
+    public static BooleanSetting oldThirdPerson = new BooleanSetting("OldThirdPerson", true);
+    ;
     public static NumberSetting x = new NumberSetting("X", 0, -1, 1, 0.01);
     public static NumberSetting y = new NumberSetting("Y", 0, -1, 1, 0.01);
     public static NumberSetting z = new NumberSetting("Z", 0, -1, 1, 0.01);
@@ -42,7 +44,7 @@ public class OldAnimations extends Module {
 
     public OldAnimations() {
         super("OldAnimations", Category.OPTIMIZE);
-        addSettings(noShield, animationSneak, oldRod, oldBow, oldSwing, blockSwing, oldDamage, oldUsing, oldBlock, animationMode, x, y, z);
+        addSettings(noShield, animationSneak, oldRod, oldBow, oldSwing, oldThirdPerson, blockSwing, oldDamage, oldUsing, oldBlock, animationMode, x, y, z);
     }
 
     @Override
@@ -103,7 +105,7 @@ public class OldAnimations extends Module {
                 mc.thePlayer.swingProgressInt = -1;
                 mc.thePlayer.isSwingInProgress = true;
                 if (mc.thePlayer.worldObj instanceof WorldServer) {
-                    ((WorldServer)mc.thePlayer.worldObj).getEntityTracker().sendToAllTrackingEntity(mc.thePlayer, new S0BPacketAnimation(mc.thePlayer, 0));
+                    ((WorldServer) mc.thePlayer.worldObj).getEntityTracker().sendToAllTrackingEntity(mc.thePlayer, new S0BPacketAnimation(mc.thePlayer, 0));
                 }
             }
         }
