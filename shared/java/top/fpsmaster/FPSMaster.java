@@ -198,6 +198,7 @@ public class FPSMaster {
         try {
             ClientLogger.info("Saving configs");
             configManager.saveConfig("default");
+            wsClient.close(200, "Shutdown");
         } catch (FileException e) {
             throw new RuntimeException(e);
         }
