@@ -16,6 +16,8 @@ public class MusicPlayer {
     public static float volume = 1f;
     public static float curPlayProgress = 0f;
 
+    private static Thread playThread;
+
     public static float getPlayProgress() {
         if (isPlaying && JLayerHelper.clip != null) {
             curPlayProgress = JLayerHelper.getProgress();
@@ -34,9 +36,7 @@ public class MusicPlayer {
     }
 
     public static void pause() {
-        isPlaying = false;
-        if (JLayerHelper.clip == null) return;
-        JLayerHelper.stop();
+        stop();
     }
 
     public static void stop() {
@@ -54,7 +54,9 @@ public class MusicPlayer {
                 JLayerHelper.clip.close();
             }
             float v = Float.parseFloat(FPSMaster.configManager.configure.getOrCreate("volume", "1"));
-            FPSMaster.async.runnable(() -> {
+            if (playThread != null && playThread.isAlive())
+                playThread.interrupt();
+            playThread = new Thread(() -> {
                 try {
                     JLayerHelper.playWAV(path.replace(".mp3", ".wav"));
                 } catch (IOException e) {
@@ -64,6 +66,7 @@ public class MusicPlayer {
                 }
                 setVolume(v);
             });
+            playThread.start();
         }
     }
 
