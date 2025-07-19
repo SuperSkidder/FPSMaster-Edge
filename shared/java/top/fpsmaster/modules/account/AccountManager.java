@@ -1,5 +1,6 @@
 package top.fpsmaster.modules.account;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import top.fpsmaster.FPSMaster;
@@ -12,13 +13,17 @@ import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.os.HttpRequest;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AccountManager {
     private String token = "";
     private String username = "";
-    public static JsonParser parser = new JsonParser();
     public static String skin = "";
+    public static JsonParser parser = new JsonParser();
+    public static String cosmeticsHeld = "";
+    public static String cosmeticsUsing = "";
+    public static HashMap<Integer, Cosmetic> cosmetics = new HashMap<>();
 
     public void autoLogin() {
         FPSMaster.async.runnable(() -> {
@@ -60,7 +65,7 @@ public class AccountManager {
             headers.put("Authorization", "Bearer " + token);
             HttpRequest.HttpResponseResult s = HttpRequest.get(FPSMaster.SERVICE_API + "/api/auth/validate-jwt", headers);
             JsonObject json = parser.parse(s.getBody()).getAsJsonObject();
-            if (!s.isSuccess()){
+            if (!s.isSuccess()) {
                 throw new AccountException("Failed to login via token " + s.getStatusCode());
             }
             this.username = username;
@@ -88,7 +93,50 @@ public class AccountManager {
             throw new AccountException("登录失败： " + jsonObject.get("message").getAsString());
         }
         return jsonObject;
+    }
 
+    public void refreshUserData() throws AccountException {
+        try {
+            String token = FileUtils.readTempValue("token").trim();
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "Bearer " + token);
+            HttpRequest.HttpResponseResult s = HttpRequest.post(FPSMaster.SERVICE_API + "/api/users", null, headers);
+            JsonObject json = parser.parse(s.getBody()).getAsJsonObject();
+            if (!s.isSuccess()) {
+                throw new AccountException("Failed to login via token " + s.getStatusCode());
+            }
+            cosmeticsHeld = json.get("data").getAsJsonObject().get("items").getAsString();
+        } catch (Exception e) {
+            throw new AccountException("Failed to login via token");
+        }
+    }
+
+    public void refreshCosmetics() throws AccountException {
+        try {
+            String token = FileUtils.readTempValue("token").trim();
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "Bearer " + token);
+            HttpRequest.HttpResponseResult s = HttpRequest.get(FPSMaster.SERVICE_API + "/api/store/items", headers);
+            JsonObject json = parser.parse(s.getBody()).getAsJsonObject();
+            if (!s.isSuccess()) {
+                throw new AccountException("Failed to login via token " + s.getStatusCode());
+            }
+            cosmetics.clear();
+            for (JsonElement data : json.get("data").getAsJsonArray()) {
+                JsonObject asJsonObject = data.getAsJsonObject();
+                Cosmetic cosmetic = new Cosmetic();
+                cosmetic.id = asJsonObject.get("id").getAsInt();
+                cosmetic.name = asJsonObject.get("name").getAsString();
+                cosmetic.img = asJsonObject.get("img").getAsString();
+                cosmetic.category = asJsonObject.get("category").getAsString();
+                cosmetic.price = asJsonObject.get("price").getAsDouble();
+                cosmetic.available = asJsonObject.get("available").getAsBoolean();
+                cosmetic.resource = asJsonObject.get("resource").getAsString();
+                cosmetics.put(cosmetic.id, cosmetic);
+            }
+        } catch (Exception e) {
+            throw new AccountException("Failed to login via token");
+        }
     }
 
     // Getter and Setter methods

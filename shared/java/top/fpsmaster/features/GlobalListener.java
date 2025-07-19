@@ -104,16 +104,22 @@ public class GlobalListener {
 //                    }
 //                }
                 if (playerInformation == null) {
-                    playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
-                    FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
+                    playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), AccountManager.cosmeticsUsing, AccountManager.skin);
+                    FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, AccountManager.cosmeticsUsing, ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
                 } else if (!playerInformation.serverAddress.equals(ProviderManager.mcProvider.getServerAddress()) || !playerInformation.name.equals(ProviderManager.mcProvider.getPlayer().getName()) || !playerInformation.skin.equals(AccountManager.skin) || !playerInformation.uuid.equals(ProviderManager.mcProvider.getPlayer().getUniqueID().toString())) {
-                    playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), "", AccountManager.skin);
-                    FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, "", ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
+                    playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), AccountManager.cosmeticsUsing, AccountManager.skin);
+                    FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, AccountManager.cosmeticsUsing, ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
                 }
             });
         }
     }
 
+    @Subscribe
+    public void onCape(EventCapeLoading e){
+        if (!AccountManager.cosmeticsUsing.isEmpty()) {
+            e.setCachedCape("ornaments/" + AccountManager.cosmeticsUsing + "_resource");
+        }
+    }
     @Subscribe
     public void onRender(EventRender2D e) {
         ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());

@@ -167,6 +167,23 @@ public class MainPanel extends ScaledGuiScreen {
                 new Color(0, 0, 0, 200).getRGB()
         );
 
+        Render2DUtils.drawRoundedRectImage(
+                x + 5,
+                y + height - 25,
+                20,
+                20,
+                20,
+                new Color(0, 0, 0, 200)
+        );
+
+        Render2DUtils.drawImage(
+                new ResourceLocation("client/gui/screen/theme.png"),
+                x + 11,
+                y + height - 19,
+                8,
+                8,
+                -1);
+
         float my = y + 60;
         Render2DUtils.drawOptimizedRoundedRect(
                 x + 4 + categoryAnimation / 50f,
@@ -279,7 +296,15 @@ public class MainPanel extends ScaledGuiScreen {
 
     @Override
     public void onClick(int mouseX, int mouseY, int mouseButton) {
-        aiChatPanel.click(mouseX, mouseY, mouseButton);
+//        aiChatPanel.click(mouseX, mouseY, mouseButton);
+        if(Render2DUtils.isHovered(x + 5,
+                y + height - 25,
+                20,
+                20, mouseX, mouseY)) {
+            if (mouseButton == 0){
+                mc.displayGuiScreen(new CosmeticScreen());
+            }
+        }
         if (!Render2DUtils.isHoveredWithoutScale(x, y, width, height, mouseX, mouseY)) return;
 
 //        if (mouseButton == 0 && Render2DUtils.isHoveredWithoutScale(
