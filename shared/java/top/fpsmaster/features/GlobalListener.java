@@ -56,60 +56,63 @@ public class GlobalListener {
 
 
     Map<UUID, NetworkPlayerInfo> playerInfos = new ConcurrentHashMap<>();
-
+    Thread tickThread;
     @Subscribe
     public void onTick(EventTick e) throws URISyntaxException {
         if (musicSwitchTimer.delay(500)) {
-            FPSMaster.async.runnable(() -> {
-                if (MusicPlayer.isPlaying && MusicPlayer.getPlayProgress() > 0.999) {
-                    MusicPlayer.playList.next();
-                }
-                if (ProviderManager.mcProvider.getWorld() != null) {
-                    Utility.flush();
-                }
-                if (FPSMaster.INSTANCE.loggedIn) {
-                    if (FPSMaster.INSTANCE.wsClient == null) {
-                        try {
-                            FPSMaster.INSTANCE.wsClient = WsClient.start("wss://service.fpsmaster.top/");
-                        } catch (URISyntaxException ex) {
-                            throw new RuntimeException(ex);
+            if (tickThread == null || !tickThread.isAlive()) {
+                tickThread = new Thread(() -> {
+                    if (MusicPlayer.isPlaying && MusicPlayer.getPlayProgress() > 0.999) {
+                        MusicPlayer.playList.next();
+                    }
+                    if (ProviderManager.mcProvider.getWorld() != null) {
+                        Utility.flush();
+                    }
+                    if (FPSMaster.INSTANCE.loggedIn) {
+                        if (FPSMaster.INSTANCE.wsClient == null) {
+                            try {
+                                FPSMaster.INSTANCE.wsClient = WsClient.start("wss://service.fpsmaster.top/");
+                            } catch (URISyntaxException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            Utility.sendClientDebug("尝试连接");
+                        } else if (FPSMaster.INSTANCE.wsClient.isClosed() && !FPSMaster.INSTANCE.wsClient.isOpen()) {
+                            FPSMaster.INSTANCE.wsClient.close();
+                            FPSMaster.INSTANCE.wsClient.connect();
+                            Utility.sendClientDebug("尝试重连");
+                        } else {
+                            FPSMaster.INSTANCE.wsClient.sendPing();
                         }
-                        Utility.sendClientDebug("尝试连接");
-                    } else if (FPSMaster.INSTANCE.wsClient.isClosed() && !FPSMaster.INSTANCE.wsClient.isOpen()) {
-                        FPSMaster.INSTANCE.wsClient.close();
-                        FPSMaster.INSTANCE.wsClient.connect();
-                        Utility.sendClientDebug("尝试重连");
-                    } else {
-                        FPSMaster.INSTANCE.wsClient.sendPing();
                     }
-                }
-                Set<UUID> currentPlayers = mc.getNetHandler().getPlayerInfoMap().stream()
-                        .map(info -> info.getGameProfile().getId())
-                        .collect(Collectors.toSet());
+                    Set<UUID> currentPlayers = mc.getNetHandler().getPlayerInfoMap().stream()
+                            .map(info -> info.getGameProfile().getId())
+                            .collect(Collectors.toSet());
 
-                playerInfos.keySet().retainAll(currentPlayers);
+                    playerInfos.keySet().retainAll(currentPlayers);
 
-                for (NetworkPlayerInfo info : mc.getNetHandler().getPlayerInfoMap()) {
-                    UUID uuid = info.getGameProfile().getId();
-                    if (!playerInfos.containsKey(uuid)) {
-                        playerInfos.put(uuid, info);
-                        FPSMaster.INSTANCE.wsClient.fetchPlayer(uuid.toString(), info.getGameProfile().getName());
+                    for (NetworkPlayerInfo info : mc.getNetHandler().getPlayerInfoMap()) {
+                        UUID uuid = info.getGameProfile().getId();
+                        if (!playerInfos.containsKey(uuid)) {
+                            playerInfos.put(uuid, info);
+                            FPSMaster.INSTANCE.wsClient.fetchPlayer(uuid.toString(), info.getGameProfile().getName());
+                        }
                     }
-                }
 //                for (NetworkPlayerInfo networkPlayerInfo : mc.getNetHandler().getPlayerInfoMap()) {
 //                    if (!playerInfos.contains(networkPlayerInfo)) {
 //                        FPSMaster.INSTANCE.wsClient.fetchPlayer(networkPlayerInfo.getGameProfile().getId().toString(), networkPlayerInfo.getGameProfile().getName());
 //                        playerInfos.add(networkPlayerInfo);
 //                    }
 //                }
-                if (playerInformation == null) {
-                    playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), AccountManager.cosmeticsUsing, AccountManager.skin);
-                    FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, AccountManager.cosmeticsUsing, ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
-                } else if (!playerInformation.serverAddress.equals(ProviderManager.mcProvider.getServerAddress()) || !playerInformation.name.equals(ProviderManager.mcProvider.getPlayer().getName()) || !playerInformation.skin.equals(AccountManager.skin) || !playerInformation.uuid.equals(ProviderManager.mcProvider.getPlayer().getUniqueID().toString())) {
-                    playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), AccountManager.cosmeticsUsing, AccountManager.skin);
-                    FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, AccountManager.cosmeticsUsing, ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
-                }
-            });
+                    if (playerInformation == null) {
+                        playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), AccountManager.cosmeticsUsing, AccountManager.skin);
+                        FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, AccountManager.cosmeticsUsing, ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
+                    } else if (!playerInformation.serverAddress.equals(ProviderManager.mcProvider.getServerAddress()) || !playerInformation.name.equals(ProviderManager.mcProvider.getPlayer().getName()) || !playerInformation.skin.equals(AccountManager.skin) || !playerInformation.uuid.equals(ProviderManager.mcProvider.getPlayer().getUniqueID().toString())) {
+                        playerInformation = new PlayerInformation(ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getPlayer().getUniqueID().toString(), ProviderManager.mcProvider.getServerAddress(), AccountManager.cosmeticsUsing, AccountManager.skin);
+                        FPSMaster.INSTANCE.wsClient.sendInformation(AccountManager.skin, AccountManager.cosmeticsUsing, ProviderManager.mcProvider.getPlayer().getName(), ProviderManager.mcProvider.getServerAddress());
+                    }
+                });
+                tickThread.start();
+            }
         }
     }
 

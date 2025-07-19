@@ -14,10 +14,14 @@ import java.io.IOException;
 public class GuiWaiting extends GuiScreen {
     public static boolean loggedIn = false;
 
+    Thread loginThread = new Thread(MicrosoftLogin::loginViaBrowser);
+
     @Override
     public void initGui() {
         super.initGui();
-        FPSMaster.async.runnable(MicrosoftLogin::loginViaBrowser);
+        if (!loginThread.isAlive()){
+            loginThread.start();
+        }
     }
 
     @Override

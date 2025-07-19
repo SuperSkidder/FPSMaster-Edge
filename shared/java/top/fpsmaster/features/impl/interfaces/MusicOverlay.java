@@ -25,10 +25,12 @@ public class MusicOverlay extends InterfaceModule {
         addSettings(amplitude, progressColor, color, betterFont, fontShadow);
     }
 
+    Thread updateThread = new Thread(JLayerHelper::updateLoudness);
+
     @Subscribe
     public void onRender(EventRender2D e) {
-        if (timer.delay(50)) {
-            FPSMaster.async.runnable(JLayerHelper::updateLoudness);
+        if (timer.delay(50) && !updateThread.isAlive()) {
+            updateThread.start();
         }
         IngameOverlay.onRender();
     }
