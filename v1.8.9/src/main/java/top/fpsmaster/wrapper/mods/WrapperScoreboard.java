@@ -23,8 +23,6 @@ public class WrapperScoreboard {
         ScoreObjective scoreobjective = null;
         ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(ProviderManager.mcProvider.getPlayer().getName());
 
-        UFontRenderer s16 = FPSMaster.fontManager.s16;
-
         if (scoreplayerteam != null) {
             int i1 = scoreboard.getPlayersTeamColorIndex(ProviderManager.mcProvider.getPlayer().getName());
 
@@ -46,25 +44,17 @@ public class WrapperScoreboard {
                 collection = list;
             }
 
-            int i;
-            if (mod.betterFont.getValue()) {
-                i = s16.getStringWidth(objective.getDisplayName());
-            } else {
-                i = ProviderManager.mcProvider.getFontRenderer().getStringWidth(objective.getDisplayName());
-            }
+            int i = (int) scoreboardComponent.getStringWidth(16, objective.getDisplayName());
+
 
             for (Score score : collection) {
                 ScorePlayerTeam scoreteam = scoreboard.getPlayersTeam(score.getPlayerName());
                 String s = filterHypixelIllegalCharacters(ScorePlayerTeam.formatPlayerName(scoreteam, score.getPlayerName()) + ": " + TextFormattingProvider.getRed() + score.getScorePoints());
-                if (mod.betterFont.getValue()) {
-                    i = Math.max(i, s16.getStringWidth(s));
-                } else {
-                    i = Math.max(i, ProviderManager.mcProvider.getFontRenderer().getStringWidth(s));
-                }
+                i = (int) Math.max(i, scoreboardComponent.getStringWidth(16, s));
             }
             i += 6;
 
-            int height1 = 10;
+            int height1 = (int) scoreboardComponent.getStringHeight(16) + 2;
             int j = 0;
             float h = collection.size() * height1 + 10;
             scoreboardComponent.drawRect(x, y, i, h, mod.backgroundColor.getColor());
@@ -79,32 +69,19 @@ public class WrapperScoreboard {
                 if (j == collection.size()) {
                     String s3 = objective.getDisplayName();
                     scoreboardComponent.drawRect(x, y, i, height1 + 1, mod.backgroundColor.getColor());
-                    if (mod.betterFont.getValue()) {
-                        scoreboardComponent.drawString(16, s3, (int) (x + 2 + (float) i / 2 - s16.getStringWidth(s3) / 2f), y, -1);
-                    } else {
-                        ProviderManager.mcProvider.getFontRenderer().drawStringWithShadow(s3, (int) (x + 2 + (float) i / 2 - ProviderManager.mcProvider.getFontRenderer().getStringWidth(s3) / 2f), y, -1);
-                    }
+                    scoreboardComponent.drawString(16, s3, (int) (x + 2 + (float) i / 2 - scoreboardComponent.getStringWidth(16, s3) / 2f), y, -1);
                 }
-                if (mod.betterFont.getValue()) {
-                    scoreboardComponent.drawString(16, s1, ((int) x) + 2, (int) (y + h - k), -1);
-                } else {
-                    ProviderManager.mcProvider.getFontRenderer().drawStringWithShadow(s1, ((int) x) + 2, (int) (y + h - k), -1);
-                }
+                scoreboardComponent.drawString(16, s1, ((int) x) + 2, (int) (y + (h - k) * scoreboardComponent.scale), -1);
                 // 红字
                 if (Scoreboard.score.getValue()) {
                     String s2 = TextFormattingProvider.getRed() + String.valueOf(score1.getScorePoints());
-                    if (mod.betterFont.getValue()) {
-                        scoreboardComponent.drawString(16, s2, x + i - 2 - s16.getStringWidth(s2), y + k, -1);
-                    } else {
-                        ProviderManager.mcProvider.getFontRenderer().drawStringWithShadow(s2, x + i - 2 - ProviderManager.mcProvider.getFontRenderer().getStringWidth(s2), y + k, -1);
-                    }
+                    scoreboardComponent.drawString(16, s2, x + (i - 2 - scoreboardComponent.getStringWidth(16, s2)) * scoreboardComponent.scale, y + k * scoreboardComponent.scale, -1);
                 }
             }
             return new float[]{i, h};
         }
         return new float[]{100, 120};
     }
-
 
 
     public static String filterHypixelIllegalCharacters(String text) {

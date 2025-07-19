@@ -8,6 +8,7 @@ public class ScoreboardComponent extends Component {
 
     public ScoreboardComponent() {
         super(Scoreboard.class);
+        allowScale = true;
     }
 
     @Override
