@@ -19,10 +19,10 @@ public class CosmeticScreen extends ScaledGuiScreen {
     public void render(int mouseX, int mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
         String[] split = AccountManager.cosmeticsHeld.split(",");
-        Render2DUtils.drawRoundedRectImage(width / 2f - 200, height / 2f - 130, 400, 260, 4, new Color(0, 0, 0, 100));
+        Render2DUtils.drawRoundedRectImage(guiWidth / 2f - 200, guiHeight / 2f - 130, 400, 260, 4, new Color(0, 0, 0, 100));
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        Render2DUtils.doGlScissor(width / 2f - 200, height / 2f - 130, 400, 260, scaleFactor);
-        container.draw(width / 2f - 200, height / 2f - 130, 400, 260, mouseX, mouseY, () -> {
+        Render2DUtils.doGlScissor(guiWidth / 2f - 200, guiHeight / 2f - 130, 400, 260, scaleFactor);
+        container.draw(guiWidth / 2f - 200, guiHeight / 2f - 130, 400, 260, mouseX, mouseY, () -> {
             int y = 0;
             for (String id : split) {
                 if (id.isEmpty())
@@ -31,7 +31,7 @@ public class CosmeticScreen extends ScaledGuiScreen {
                 if (!cosmetic.loaded) {
                     cosmetic.load();
                 }
-                FPSMaster.fontManager.s18.drawString(cosmetic.name, width / 2f - 190, height / 2f - 120 + y + container.getScroll(), id.equals(AccountManager.cosmeticsUsing) ? Color.GREEN.getRGB() : Color.WHITE.getRGB());
+                FPSMaster.fontManager.s18.drawString(cosmetic.name, guiWidth / 2f - 190, guiHeight / 2f - 120 + y + container.getScroll(), id.equals(AccountManager.cosmeticsUsing) ? Color.GREEN.getRGB() : Color.WHITE.getRGB());
                 y += 20;
             }
             container.setHeight(y);
@@ -66,7 +66,7 @@ public class CosmeticScreen extends ScaledGuiScreen {
             Cosmetic cosmetic = AccountManager.cosmetics.get(Integer.parseInt(id));
             if (!cosmetic.loaded)
                 cosmetic.load();
-            if (Render2DUtils.isHovered(width / 2f - 200, height / 2f - 120 + y, 400, 20, mouseX, mouseY)) {
+            if (Render2DUtils.isHovered(guiWidth / 2f - 200, guiHeight / 2f - 120 + y, 400, 20, mouseX, mouseY)) {
                 String cosmeticsUsing = String.valueOf(cosmetic.id);
                 if (AccountManager.cosmeticsUsing.equals(cosmeticsUsing)) {
                     AccountManager.cosmeticsUsing = "";

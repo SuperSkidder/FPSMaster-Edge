@@ -69,7 +69,7 @@ public class WrapperScoreboard {
                 if (j == collection.size()) {
                     String s3 = objective.getDisplayName();
                     scoreboardComponent.drawRect(x, y, i, height1 + 1, mod.backgroundColor.getColor());
-                    scoreboardComponent.drawString(16, s3, (int) (x + 2 + (float) i / 2 - scoreboardComponent.getStringWidth(16, s3) / 2f), y, -1);
+                    scoreboardComponent.drawString(16, s3, (int) (x + 2 + ((float) i / 2 - scoreboardComponent.getStringWidth(16, s3) / 2f) * scoreboardComponent.scale), y, -1);
                 }
                 scoreboardComponent.drawString(16, s1, ((int) x) + 2, (int) (y + (h - k) * scoreboardComponent.scale), -1);
                 // 红字
