@@ -62,7 +62,6 @@ public class GlobalListener {
         if (musicSwitchTimer.delay(500)) {
             FPSMaster.async.runnable(() -> {
                 if (MusicPlayer.isPlaying && MusicPlayer.getPlayProgress() > 0.999) {
-                    MusicPlayer.curPlayProgress = 0f;
                     MusicPlayer.playList.next();
                 }
                 if (ProviderManager.mcProvider.getWorld() != null) {

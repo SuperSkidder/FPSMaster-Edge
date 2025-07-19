@@ -99,13 +99,12 @@ public class Render2DUtils extends Utility {
     }
 
     public static void drawRoundedRectImage(float x, float y, float width, float height, int radius, Color color) {
-        ResourceLocation res = AWTUtils.generateRoundImage((int) width, (int) height, radius);
-        Render2DUtils.drawImage(res, x, y, width, height, color);
-    }
-
-    public static void drawRoundedRectImage(float x, float y, float width, float height, int radius, Color color, int borderWidth, Color borderColor) {
-        ResourceLocation res = AWTUtils.generateRoundImage((int) width, (int) height, radius, borderColor, borderWidth);
-        Render2DUtils.drawImage(res, x, y, width, height, color);
+        try {
+            ResourceLocation res = AWTUtils.generateRoundImage((int) width, (int) height, radius);
+            Render2DUtils.drawImage(res, x, y, width, height, color);
+        }catch (IllegalArgumentException e){
+            Render2DUtils.drawRect(x, y, width, height, color);
+        }
     }
 
     public static void drawRect(float x, float y, float width, float height, Color color) {

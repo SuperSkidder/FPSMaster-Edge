@@ -194,7 +194,7 @@ public class MusicPanel {
         MusicPanel.width = width;
         MusicPanel.height = height;
         if (displayList.musics.isEmpty() && searchThread == null) {
-            searchThread = new Thread(() -> searchList = MusicWrapper.searchSongs("Minecraft"));
+            searchThread = new Thread(() -> searchList = MusicWrapper.searchSongs("C418"));
             searchThread.start();
         }
 

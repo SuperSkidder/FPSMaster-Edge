@@ -1,6 +1,7 @@
 package top.fpsmaster.modules.music;
 
 import top.fpsmaster.FPSMaster;
+import top.fpsmaster.modules.music.netease.Music;
 import top.fpsmaster.ui.notification.NotificationManager;
 
 import java.util.LinkedList;
@@ -51,6 +52,7 @@ public class PlayList {
     }
 
     public void next() {
+        JLayerHelper.clip = null;
         MusicPlayer.stop();
         if (musics.isEmpty()) return;
         shuffleList();
