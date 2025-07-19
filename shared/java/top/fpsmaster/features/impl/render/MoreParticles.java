@@ -3,6 +3,7 @@ package top.fpsmaster.features.impl.render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import top.fpsmaster.event.Subscribe;
 import top.fpsmaster.event.events.EventAttack;
@@ -15,6 +16,8 @@ import top.fpsmaster.features.settings.impl.NumberSetting;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.wrapper.WrapperEntityLightningBolt;
 import top.fpsmaster.wrapper.blockpos.WrapperBlockPos;
+
+import static top.fpsmaster.utils.Utility.mc;
 
 public class MoreParticles extends Module {
     private Entity target = null;
@@ -99,15 +102,18 @@ public class MoreParticles extends Module {
             } else if (special.getValue() == 2) {
                 Minecraft.getMinecraft().effectRenderer.emitParticleAtEntity(event.target, EnumParticleTypes.FLAME);
             } else if (special.getValue() == 3) {
-                ProviderManager.soundProvider.playRedStoneBreak(
-                        event.target.posX,
-                        event.target.posY,
-                        event.target.posZ,
-                        1f,
-                        1f,
-                        true
-                );
-                ProviderManager.effectManager.addRedStoneBreak(new WrapperBlockPos(event.target.getPosition()));
+                if (mc.objectMouseOver.hitVec != null && event.target.hurtResistantTime <= 10) {
+                    System.out.println();
+                    ProviderManager.soundProvider.playRedStoneBreak(
+                            mc.objectMouseOver.hitVec.xCoord,
+                            mc.objectMouseOver.hitVec.yCoord,
+                            mc.objectMouseOver.hitVec.zCoord,
+                            1f,
+                            1f,
+                            true
+                    );
+                    ProviderManager.effectManager.addRedStoneBreak(new WrapperBlockPos(new BlockPos(mc.objectMouseOver.hitVec)));
+                }
             }
         }
     }
