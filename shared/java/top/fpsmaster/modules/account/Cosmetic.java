@@ -37,7 +37,7 @@ public class Cosmetic {
         FPSMaster.async.runnable(() -> {
             if (resource.endsWith(".png")) {
                 ResourceLocation textureLocation = new ResourceLocation("ornaments/" + id + "_resource");
-                ThreadDownloadImageData downloadImageData = new ThreadDownloadImageData(null, "", textureLocation, null);
+                ThreadDownloadImageData downloadImageData = new ThreadDownloadImageData(null, null, textureLocation, null);
                 try {
                     downloadImageData.setBufferedImage(HttpRequest.downloadImage(resource));
                     mc.getTextureManager().loadTexture(textureLocation, downloadImageData);
@@ -51,7 +51,7 @@ public class Cosmetic {
                     frames = GifUtil.convertGifToPng(inputStream);
                     for (GifUtil.FrameData frame : frames) {
                         ResourceLocation textureLocation = new ResourceLocation("ornaments/" + id + "_resource_" + frames.indexOf(frame));
-                        ThreadDownloadImageData downloadImageData = new ThreadDownloadImageData(null, "", textureLocation, null);
+                        ThreadDownloadImageData downloadImageData = new ThreadDownloadImageData(null, null, textureLocation, null);
                         downloadImageData.setBufferedImage(frame.image);
                         mc.getTextureManager().loadTexture(textureLocation, downloadImageData);
                     }

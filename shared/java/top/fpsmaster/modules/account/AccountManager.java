@@ -133,6 +133,7 @@ public class AccountManager {
                 cosmetic.available = asJsonObject.get("available").getAsBoolean();
                 cosmetic.resource = asJsonObject.get("resource").getAsString();
                 cosmetics.put(cosmetic.id, cosmetic);
+                cosmetic.load();
             }
         } catch (Exception e) {
             throw new AccountException("Failed to login via token");

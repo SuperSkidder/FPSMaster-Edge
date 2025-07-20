@@ -63,8 +63,6 @@ public class CosmeticScreen extends ScaledGuiScreen {
             if (id.isEmpty())
                 continue;
             Cosmetic cosmetic = AccountManager.cosmetics.get(Integer.parseInt(id));
-            if (!cosmetic.loaded)
-                cosmetic.load();
             if (Render2DUtils.isHovered(guiWidth / 2f - 200, guiHeight / 2f - 120 + y, 400, 20, mouseX, mouseY)) {
                 String cosmeticsUsing = String.valueOf(cosmetic.id);
                 if (AccountManager.cosmeticsUsing.equals(cosmeticsUsing)) {

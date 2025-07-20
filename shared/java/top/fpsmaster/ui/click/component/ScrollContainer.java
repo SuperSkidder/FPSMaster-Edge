@@ -59,7 +59,7 @@ public class ScrollContainer {
                     wheel_anim = -((mouseY - scrollStart - y) / height) * this.height;
                 } else {
                     isScrolling = false;
-                    MainPanel.bindLock = "null";
+                    MainPanel.dragLock = "null";
                 }
             }
         } else {
