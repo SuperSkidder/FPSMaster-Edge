@@ -185,14 +185,9 @@ public abstract class MixinGuiNewChat {
                         m = mc.fontRendererObj.FONT_HEIGHT;
                         GlStateManager.translate(-3.0F, 0.0F, 0.0F);
                         int r = j * m + j;
-                        n = l * m + l;
-                        int s = this.scrollPos * n / j;
-                        int t = n * n / r;
-                        if (r != n) {
-                            o = s > 0 ? 170 : 96;
-                            int p = this.isScrolled ? 13382451 : 3355562;
-                            Gui.drawRect(0, -s, 2, -s - t, module.backgroundColor.getColor().getRGB());
-                            Gui.drawRect(2, -s, 1, -s - t, module.backgroundColor.getColor().getRGB());
+                        if (r != 0) {
+                            Gui.drawRect(0, 0, 2, 0, module.backgroundColor.getColor().getRGB());
+                            Gui.drawRect(2, 0, 1, 0, module.backgroundColor.getColor().getRGB());
                         }
                     }
 
@@ -231,10 +226,8 @@ public abstract class MixinGuiNewChat {
                     if (m >= 0 && m < this.drawnChatLines.size()) {
                         ChatLine chatLine = this.drawnChatLines.get(m);
                         int n = 0;
-                        Iterator var12 = chatLine.getChatComponent().iterator();
 
-                        while (var12.hasNext()) {
-                            IChatComponent iTextComponent = (IChatComponent) var12.next();
+                        for (IChatComponent iTextComponent : chatLine.getChatComponent()) {
                             if (iTextComponent instanceof ChatComponentText) {
                                 if (BetterChat.using && module.betterFont.getValue()) {
                                     n += FPSMaster.fontManager.s16.getStringWidth(GuiUtilRenderComponents.func_178909_a(((ChatComponentText) iTextComponent).getChatComponentText_TextValue(), false));

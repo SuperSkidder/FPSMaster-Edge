@@ -38,7 +38,7 @@ public class FunctionCallExpressionComponent extends ExpressionComponent {
                 } else {
                     FPSMaster.fontManager.s16.drawString(", ", x + 1 + argumentX, y + 2, -1);
                 }
-            } else {
+//            } else {
 //                arg.draw(x + 10, y + height, mouseX, mouseY);
 //                height += arg.height;
             }

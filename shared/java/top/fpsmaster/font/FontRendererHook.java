@@ -184,7 +184,7 @@ public final class FontRendererHook {
             return true;
         }
 
-        int list = 0;
+        int list;
         textureState.textureName = glTextureId;
         GlStateManager.resetColor();
         list = enhancedFontRenderer.getGlList();
@@ -324,7 +324,7 @@ public final class FontRendererHook {
         }
 
         endDrawing();
-        final boolean hasStyle = underline.size() > 0 || strikethrough.size() > 0;
+        final boolean hasStyle = !underline.isEmpty() || !strikethrough.isEmpty();
 
         if (hasStyle) {
             GlStateManager.disableTexture2D();
@@ -556,7 +556,7 @@ public final class FontRendererHook {
         }
     }
 
-    class Pair<A, B> {
+    static class Pair<A, B> {
 
         private final A first;
         private final B second;

@@ -59,9 +59,7 @@ public class MusicPlayer {
             playThread = new Thread(() -> {
                 try {
                     JLayerHelper.playWAV(path.replace(".mp3", ".wav"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (LineUnavailableException e) {
+                } catch (IOException | LineUnavailableException e) {
                     throw new RuntimeException(e);
                 }
                 setVolume(v);

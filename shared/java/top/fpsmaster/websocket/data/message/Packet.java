@@ -20,7 +20,7 @@ public class Packet {
         return (Packet) JsonUtils.parseJson(json, this.getClass());
     }
 
-    public static Packet parsePacket(String json, Class packet) {
+    public static Packet parsePacket(String json, Class<?> packet) {
         return (Packet) JsonUtils.parseJson(json, packet);
     }
 }

@@ -12,6 +12,7 @@ import top.fpsmaster.utils.render.Render2DUtils;
 import top.fpsmaster.wrapper.renderEngine.bufferbuilder.WrapperBufferBuilder;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 public class TextField extends Gui {
@@ -29,7 +30,7 @@ public class TextField extends Gui {
      * Has the current text being edited on the textbox.
      */
     public String text = "";
-    private int maxStringLength = 32;
+    private int maxStringLength;
     private int cursorCounter;
 
     /**
@@ -144,7 +145,7 @@ public class TextField extends Gui {
         int i = Math.min(this.cursorPosition, this.selectionEnd);
         int j = Math.max(this.cursorPosition, this.selectionEnd);
         int k = this.maxStringLength - this.text.length() - (i - j);
-        int l = 0;
+        int l;
 
         if (!this.text.isEmpty()) {
             s = s + this.text.substring(0, i);
@@ -441,8 +442,12 @@ public class TextField extends Gui {
             int j = this.cursorPosition - this.lineScrollOffset;
             int k = this.selectionEnd - this.lineScrollOffset;
             String s = this.fontRendererInstance.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth());
-            if (hideContent)
-                s = s.replaceAll(".", "*");
+            if (hideContent) {
+                char[] stars = new char[s.length()];
+                Arrays.fill(stars, '*');
+                s = new String(stars);
+            }
+
             boolean flag = j >= 0 && j <= s.length();
             boolean isFocus = this.isFocused && this.cursorCounter / 6 % 2 == 0 && flag;
             float l = this.xPosition + 4;

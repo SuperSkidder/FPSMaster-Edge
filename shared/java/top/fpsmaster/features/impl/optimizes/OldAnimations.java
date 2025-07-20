@@ -29,7 +29,7 @@ public class OldAnimations extends Module {
     public static BooleanSetting blockSwing = new BooleanSetting("BlockSwing", true);
     public static BooleanSetting oldDamage = new BooleanSetting("OldDamage", true);
     public static BooleanSetting oldThirdPerson = new BooleanSetting("OldThirdPerson", true);
-    ;
+
     public static NumberSetting x = new NumberSetting("X", 0, -1, 1, 0.01);
     public static NumberSetting y = new NumberSetting("Y", 0, -1, 1, 0.01);
     public static NumberSetting z = new NumberSetting("Z", 0, -1, 1, 0.01);

@@ -82,12 +82,8 @@ public class GuiMultiplayer extends ScaledGuiScreen {
             this.mc.displayGuiScreen(guiyesno);
         }
     }, new Color(0, 0, 0, 140), new Color(113, 127, 254));
-    GuiButton refresh = new GuiButton("刷新", () -> {
-        mc.displayGuiScreen(new GuiMultiplayer());
-    }, new Color(0, 0, 0, 140), new Color(113, 127, 254));
-    GuiButton back = new GuiButton("返回", () -> {
-        mc.displayGuiScreen(new MainMenu());
-    }, new Color(0, 0, 0, 140), new Color(113, 127, 254));
+    GuiButton refresh = new GuiButton("刷新", () -> mc.displayGuiScreen(new GuiMultiplayer()), new Color(0, 0, 0, 140), new Color(113, 127, 254));
+    GuiButton back = new GuiButton("返回", () -> mc.displayGuiScreen(new MainMenu()), new Color(0, 0, 0, 140), new Color(113, 127, 254));
 
 
     @Override
@@ -103,16 +99,14 @@ public class GuiMultiplayer extends ScaledGuiScreen {
         if (serverListRecommended.isEmpty()) {
             ClientThreadPool clientThreadPool = new ClientThreadPool(100);
             clientThreadPool.runnable(() -> {
-                String s = null;
+                String s;
                 try {
                     s = HttpRequest.get("https://service.fpsmaster.top/api/client/servers").getBody();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
                 JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
-                jsonObject.get("data").getAsJsonArray().forEach(e -> {
-                    serverListRecommended.add(new ServerListEntry(this, new ServerData(e.getAsJsonObject().get("name").getAsString() + " - " + e.getAsJsonObject().get("description").getAsString(), e.getAsJsonObject().get("address").getAsString(), false)));
-                });
+                jsonObject.get("data").getAsJsonArray().forEach(e -> serverListRecommended.add(new ServerListEntry(this, new ServerData(e.getAsJsonObject().get("name").getAsString() + " - " + e.getAsJsonObject().get("description").getAsString(), e.getAsJsonObject().get("address").getAsString(), false))));
             });
         }
     }

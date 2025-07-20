@@ -14,7 +14,6 @@ public final class EnhancedFontRenderer {
     private final Map<String, Integer> stringWidthCache = new HashMap<>();
     private final Queue<Integer> glRemoval = new ConcurrentLinkedQueue<>();
     private final Map<StringHash, CachedString> stringCache = new HashMap<>();
-    private final int maxCacheSize = 5000;
 
     public EnhancedFontRenderer() {
         instances.add(this);
@@ -46,6 +45,7 @@ public final class EnhancedFontRenderer {
     }
 
     public void cache(StringHash key, CachedString value) {
+        int maxCacheSize = 5000;
         if (stringCache.size() >= maxCacheSize) {
             // 如果缓存达到最大限制，进行清理
             stringCache.clear();

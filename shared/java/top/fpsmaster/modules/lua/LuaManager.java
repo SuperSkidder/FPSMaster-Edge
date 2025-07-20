@@ -219,20 +219,24 @@ public class LuaManager {
             unloadLua(script);
         }
 
-        for (File luaFile : luas) {
-            RawLua rawLua = new RawLua(luaFile.getName(), FileUtils.readAbsoluteFile(luaFile.getAbsolutePath()));
-            loadLua(rawLua);
+        if (luas != null) {
+            for (File luaFile : luas) {
+                RawLua rawLua = new RawLua(luaFile.getName(), FileUtils.readAbsoluteFile(luaFile.getAbsolutePath()));
+                loadLua(rawLua);
+            }
         }
     }
 
     public static void hotswap() throws FileException {
         ArrayList<RawLua> newRawLuaList = new ArrayList<>();
         File[] luas = FileUtils.plugins.listFiles();
-        for (File luaFile : luas) {
-            String luaName = luaFile.getName();
-            if (luaName.endsWith(".lua")) {
-                String luaContent = FileUtils.readAbsoluteFile(luaFile.getAbsolutePath());
-                newRawLuaList.add(new RawLua(luaName, luaContent));
+        if (luas != null) {
+            for (File luaFile : luas) {
+                String luaName = luaFile.getName();
+                if (luaName.endsWith(".lua")) {
+                    String luaContent = FileUtils.readAbsoluteFile(luaFile.getAbsolutePath());
+                    newRawLuaList.add(new RawLua(luaName, luaContent));
+                }
             }
         }
 

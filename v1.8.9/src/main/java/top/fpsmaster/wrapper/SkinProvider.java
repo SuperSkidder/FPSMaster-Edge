@@ -29,7 +29,7 @@ public class SkinProvider implements ISkinProvider {
                 }
             }
 
-            HttpRequest.HttpResponseResult httpResponseResult = null;
+            HttpRequest.HttpResponseResult httpResponseResult;
             try {
                 httpResponseResult = HttpRequest.get("https://api.mojang.com/users/profiles/minecraft/" + skin);
             } catch (IOException e) {

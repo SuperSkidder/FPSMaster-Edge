@@ -383,7 +383,10 @@ public class GlyphCache {
                 vectorBounds = vector.getPixelBounds(fontRenderContext, 0, 0);
 
                 /* Enlage the stringImage if it is too small to store the entire rendered string */
-                if (stringImage == null || vectorBounds.width > stringImage.getWidth() || vectorBounds.height > stringImage.getHeight()) {
+                if (stringImage == null)
+                    return;
+
+                if (vectorBounds.width > stringImage.getWidth() || vectorBounds.height > stringImage.getHeight()) {
                     int width = Math.max(vectorBounds.width, stringImage.getWidth());
                     int height = Math.max(vectorBounds.height, stringImage.getHeight());
                     allocateStringImage(width, height);

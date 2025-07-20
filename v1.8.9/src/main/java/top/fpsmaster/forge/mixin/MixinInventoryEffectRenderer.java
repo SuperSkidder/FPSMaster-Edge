@@ -24,10 +24,8 @@ public class MixinInventoryEffectRenderer extends MixinGuiContainer{
     @Inject(method = "updateActivePotionEffects", at = @At("RETURN"))
     private void renderPotionEffects(CallbackInfo ci) {
         boolean hasVisibleEffect = false;
-        Iterator var2 = mc.thePlayer.getActivePotionEffects().iterator();
 
-        while(var2.hasNext()) {
-            PotionEffect potioneffect = (PotionEffect)var2.next();
+        for (PotionEffect potioneffect : mc.thePlayer.getActivePotionEffects()) {
             Potion potion = Potion.potionTypes[potioneffect.getPotionID()];
             if (potion.shouldRender(potioneffect)) {
                 hasVisibleEffect = true;

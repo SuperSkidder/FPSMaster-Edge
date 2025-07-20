@@ -110,7 +110,6 @@ public class ServerListEntry {
         if (flag2) {
             l = 5;
             s1 = flag ? "Client out of date!" : "Server out of date!";
-            s = this.server.playerList;
         } else if (this.server.field_78841_f && this.server.pingToServer != -2L) {
             if (this.server.pingToServer < 0L) {
                 l = 5;
@@ -130,7 +129,6 @@ public class ServerListEntry {
                 s1 = "(no connection)";
             } else {
                 s1 = this.server.pingToServer + "ms";
-                s = this.server.playerList;
             }
         } else {
             k = 1;
@@ -233,7 +231,7 @@ public class ServerListEntry {
                     Validate.validState(bufferedimage.getHeight() == 64, "Must be 64 pixels high");
                     break label80;
                 } catch (Throwable throwable) {
-                    logger.error("Invalid icon for server " + this.server.serverName + " (" + this.server.serverIP + ")", throwable);
+                    logger.error("Invalid icon for server {} ({})", this.server.serverName, this.server.serverIP, throwable);
                     this.server.setBase64EncodedIconData(null);
                 } finally {
                     bytebuf.release();

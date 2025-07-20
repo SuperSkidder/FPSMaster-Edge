@@ -116,18 +116,18 @@ public class DamageIndicator extends Module {
         GL11.glNormal3f(1.0f, 1.0f, 1.0f);
         GL11.glPopMatrix();
     }
-}
 
-class Damage {
-    float damage;
-    float x, y, z;
-    float animation;
+    private static class Damage {
+        float damage;
+        float x, y, z;
+        float animation;
 
-    public Damage(float damage, float x, float y, float z, float animation) {
-        this.damage = damage;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.animation = animation;
+        public Damage(float damage, float x, float y, float z, float animation) {
+            this.damage = damage;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.animation = animation;
+        }
     }
 }

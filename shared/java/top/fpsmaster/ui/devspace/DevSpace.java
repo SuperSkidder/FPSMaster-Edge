@@ -166,9 +166,7 @@ public class DevSpace extends ScaledGuiScreen {
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             Render2DUtils.doGlScissor(x + Math.max((int) (width * 0.2), 100) + 12, y + 36, (width-leftPanelWidth) - 15, height - 42, scaleFactor);
         }
-        codeEditor.draw(x + Math.max((int) (width * 0.2), 100) + 12, y + 36, (width-leftPanelWidth) - 17, height - 42, mouseX, mouseY, () -> {
-            drawCodeEditor(mouseX, mouseY);
-        });
+        codeEditor.draw(x + Math.max((int) (width * 0.2), 100) + 12, y + 36, (width-leftPanelWidth) - 17, height - 42, mouseX, mouseY, () -> drawCodeEditor(mouseX, mouseY));
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 
@@ -437,7 +435,7 @@ public class DevSpace extends ScaledGuiScreen {
     private void drawCodeEditor(int mouseX, int mouseY) {
         int left = Math.max((int) (width * 0.2), 100);
         ensureCodesInitialized();
-        if (selectedLua == -1 || LuaManager.scripts.size() > 0)
+        if (selectedLua == -1 || !LuaManager.scripts.isEmpty())
             selectedLua = 0;
         if (getCurrentScript() != null) {
             // handle keyboard

@@ -70,7 +70,7 @@ public class TargetDisplay extends InterfaceModule {
                 GL11.glColor4f(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, 0.75f);
             }
             GL11.glVertex3d(vecX, y, vecZ);
-            i += (Math.PI * 2 / 64f);
+            i += (float) (Math.PI * 2 / 64f);
         }
         GL11.glEnd();
         if (shade) GL11.glShadeModel(GL11.GL_FLAT);

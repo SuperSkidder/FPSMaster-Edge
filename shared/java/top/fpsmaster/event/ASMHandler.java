@@ -82,15 +82,8 @@ public class ASMHandler {
 
         try {
             return (Handler) EventClassLoader.defineClass(declaringClass.getClassLoader(), className, cv.toByteArray()).getConstructor(Object.class, Method.class).newInstance(listener, method);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException |
+                 ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

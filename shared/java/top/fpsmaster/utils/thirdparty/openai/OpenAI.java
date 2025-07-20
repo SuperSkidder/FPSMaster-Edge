@@ -3,6 +3,7 @@ package top.fpsmaster.utils.thirdparty.openai;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.jetbrains.annotations.NotNull;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.modules.logger.ClientLogger;
 import top.fpsmaster.utils.os.HttpRequest;
@@ -52,6 +53,24 @@ public class OpenAI {
     }
 
     public String requestNewAnswer(String question) {
+        JsonObject body = getJsonObject(question);
+
+        Map<String, String> hashMap = new HashMap<>();
+        hashMap.put("Content-Type", "application/json");
+        hashMap.put("Authorization", "Bearer " + openAiKey);
+
+        String text;
+        try {
+            text = HttpRequest.postJson(baseUrl + "/chat/completions", body, hashMap).getBody();
+        } catch (Exception e) {
+            ClientLogger.error("Translator", e.toString());
+            return "";
+        }
+
+        return getString(text);
+    }
+
+    private @NotNull JsonObject getJsonObject(String question) {
         JsonObject systemRole = new JsonObject();
         systemRole.addProperty("role", "system");
         systemRole.addProperty("content", prompt);
@@ -67,20 +86,7 @@ public class OpenAI {
         JsonObject body = new JsonObject();
         body.addProperty("model", model);
         body.add("messages", messages);
-
-        Map<String, String> hashMap = new HashMap<>();
-        hashMap.put("Content-Type", "application/json");
-        hashMap.put("Authorization", "Bearer " + openAiKey);
-
-        String text;
-        try {
-            text = HttpRequest.postJson(baseUrl + "/chat/completions", body, hashMap).getBody();
-        } catch (Exception e) {
-            ClientLogger.error("Translator", e.toString());
-            return "";
-        }
-
-        return getString(text);
+        return body;
     }
 
     private String getString(String response) {

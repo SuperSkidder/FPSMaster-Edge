@@ -553,7 +553,7 @@ public class StringCache {
                  * color code takes effect.
                  */
                 while (colorIndex < entry.colors.length && entry.glyphs[glyphIndex].stringIndex >= entry.colors[colorIndex].stringIndex) {
-                    color = applyColorCode(entry.colors[colorIndex].colorCode, initialColor, shadowFlag);
+                    applyColorCode(entry.colors[colorIndex].colorCode, initialColor, shadowFlag);
                     renderStyle = entry.colors[colorIndex].renderStyle;
                     colorIndex++;
                 }

@@ -200,7 +200,7 @@ public class GlobalListener {
         NotificationManager.drawNotifications();
     }
 
-    class PlayerInformation {
+    static class PlayerInformation {
         String name;
         String uuid;
         String serverAddress;

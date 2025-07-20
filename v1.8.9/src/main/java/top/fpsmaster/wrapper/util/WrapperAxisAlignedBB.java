@@ -72,8 +72,8 @@ public class WrapperAxisAlignedBB {
         return axisAlignedBB.maxZ;
     }
 
-    public AxisAlignedBB expand(double x){
-        axisAlignedBB = axisAlignedBB.expand(x, x, x);
+    public AxisAlignedBB expand(double e){
+        axisAlignedBB = axisAlignedBB.expand(e, e, e);
         return axisAlignedBB;
     }
 

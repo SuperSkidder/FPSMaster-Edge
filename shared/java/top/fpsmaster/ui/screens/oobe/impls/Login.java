@@ -48,7 +48,9 @@ public class Login extends Scene {
                     FPSMaster.accountManager.setToken(login.get("data").getAsJsonObject().get("token").getAsString());
                 }
                 try {
-                    FileUtils.saveTempValue("token", FPSMaster.accountManager.getToken());
+                    if (FPSMaster.accountManager != null) {
+                        FileUtils.saveTempValue("token", FPSMaster.accountManager.getToken());
+                    }
                 } catch (FileException e) {
                     ExceptionHandler.handleFileException(e, "无法保存登录令牌");
                 }

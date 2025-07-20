@@ -15,11 +15,11 @@ public class RawInputMod {
     public static Controller[] controllers;
     public static int dx = 0;
     public static int dy = 0;
-    private String environment;
 
     public void start() {
         try {
             Minecraft.getMinecraft().mouseHelper = new RawMouseHelper();
+            String environment;
             if (checkLibrary("jinput-dx8")){
                 environment = "DirectInputEnvironmentPlugin";
             }else if (checkLibrary("jinput-raw")){

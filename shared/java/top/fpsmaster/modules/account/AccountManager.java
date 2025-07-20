@@ -81,7 +81,7 @@ public class AccountManager {
         JsonObject body = new JsonObject();
         body.addProperty("username", username);
         body.addProperty("password", password);
-        HttpRequest.HttpResponseResult s = null;
+        HttpRequest.HttpResponseResult s;
         try {
             s = HttpRequest.post(FPSMaster.SERVICE_API + "/api/auth/login", body.toString());
         } catch (IOException e) {

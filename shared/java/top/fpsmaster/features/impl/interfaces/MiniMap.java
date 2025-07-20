@@ -11,9 +11,12 @@ public class MiniMap extends InterfaceModule {
         super("MiniMap", Category.Interface);
     }
 
+    public static boolean using = false;
+
     @Override
     public void onEnable() {
         super.onEnable();
+        using = true;
         if (OptifineUtil.isFastRender()) {
             OptifineUtil.setFastRender(false);
             NotificationManager.addNotification(
@@ -22,5 +25,11 @@ public class MiniMap extends InterfaceModule {
                 5000f
             );
         }
+    }
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+        using = false;
     }
 }

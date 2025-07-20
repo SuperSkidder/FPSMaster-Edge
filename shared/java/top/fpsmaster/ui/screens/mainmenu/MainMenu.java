@@ -35,15 +35,9 @@ public class MainMenu extends ScaledGuiScreen {
 
 
     public MainMenu() {
-        singlePlayer = new MenuButton("mainmenu.single", () -> {
-            ProviderManager.mainmenuProvider.showSinglePlayer(this);
-        });
-        multiPlayer = new MenuButton("mainmenu.multi", () -> {
-            mc.displayGuiScreen(new GuiMultiplayer());
-        });
-        options = new MenuButton("mainmenu.settings", () -> {
-            mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
-        });
+        singlePlayer = new MenuButton("mainmenu.single", () -> ProviderManager.mainmenuProvider.showSinglePlayer(this));
+        multiPlayer = new MenuButton("mainmenu.multi", () -> mc.displayGuiScreen(new GuiMultiplayer()));
+        options = new MenuButton("mainmenu.settings", () -> mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings)));
         exit = new MenuButton("X", () -> mc.shutdown());
     }
 

@@ -226,15 +226,10 @@ public class MusicPanel {
                             Render2DUtils.drawOptimizedRoundedRect(x + 30, dY.get() + 10, 20f, 20f, new Color(200, 200, 200, 255));
                         }
                     }
-                    if (MusicPlayer.playList.current == i) {
-                        FPSMaster.fontManager.s16.drawString(music.name + "  " + music.author, x + 60, dY.get() + 10, new Color(234, 234, 234).getRGB());
-                        FPSMaster.fontManager.s16.drawString(music.author, x + 60, dY.get() + 20, new Color(162, 162, 162).getRGB());
-                    } else {
-                        FPSMaster.fontManager.s16.drawString(music.name + "  " + music.author, x + 60, dY.get() + 10, new Color(234, 234, 234).getRGB());
-                        FPSMaster.fontManager.s16.drawString(music.author, x + 60, dY.get() + 20, new Color(162, 162, 162).getRGB());
-                    }
-                    dY.updateAndGet(v -> new Float(v + 40f));
-                    musicHeight.updateAndGet(v -> new Float(v + 40f));
+                    FPSMaster.fontManager.s16.drawString(music.name + "  " + music.author, x + 60, dY.get() + 10, new Color(234, 234, 234).getRGB());
+                    FPSMaster.fontManager.s16.drawString(music.author, x + 60, dY.get() + 20, new Color(162, 162, 162).getRGB());
+                    dY.updateAndGet(v -> v + 40f);
+                    musicHeight.updateAndGet(v -> v + 40f);
                 }
                 container.setHeight(musicHeight.get());
             });

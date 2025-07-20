@@ -36,12 +36,7 @@ public class Utility {
 
     public static void sendClientDebug(String msg) {
         if (DevMode.INSTACE.dev) {
-            String msg1 = "§9[FPSMaster]§r " + msg;
-            if (ProviderManager.mcProvider.getWorld() != null) {
-                ProviderManager.mcProvider.printChatMessage(ProviderManager.utilityProvider.makeChatComponent(msg1));
-            } else {
-                messages.add(msg1);
-            }
+            sendClientNotify(msg);
         }
     }
 

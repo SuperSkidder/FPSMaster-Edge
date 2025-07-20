@@ -83,8 +83,7 @@ public enum ChatFormattingProvider {
         ChatFormattingProvider[] arr$ = values();
         int len$ = arr$.length;
 
-        for (int i$ = 0; i$ < len$; ++i$) {
-            ChatFormattingProvider format = arr$[i$];
+        for (ChatFormattingProvider format : arr$) {
             if ((!format.isColor() || getColors) && (!format.isFormat() || getFormats)) {
                 result.add(format.getName());
             }
@@ -95,10 +94,8 @@ public enum ChatFormattingProvider {
 
     static {
         ChatFormattingProvider[] arr$ = values();
-        int len$ = arr$.length;
 
-        for (int i$ = 0; i$ < len$; ++i$) {
-            ChatFormattingProvider format = arr$[i$];
+        for (ChatFormattingProvider format : arr$) {
             FORMATTING_BY_CHAR.put(format.getChar(), format);
             FORMATTING_BY_NAME.put(format.getName(), format);
         }

@@ -31,10 +31,10 @@ public class ClientLogger {
     }
 
     public static void info(String from, String s) {
-        logger.info(from + " -> " + s);
+        logger.info("{} -> {}", from, s);
     }
 
     public static void error(String from, String s) {
-        logger.error(from + " -> " + s);
+        logger.error("{} -> {}", from, s);
     }
 }

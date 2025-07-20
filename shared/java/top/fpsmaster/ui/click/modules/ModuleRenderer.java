@@ -5,7 +5,6 @@ import net.minecraft.util.ResourceLocation;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
-import top.fpsmaster.features.settings.Setting;
 import top.fpsmaster.features.settings.impl.*;
 import top.fpsmaster.modules.lua.LuaModule;
 import top.fpsmaster.ui.click.MainPanel;
@@ -18,7 +17,6 @@ import top.fpsmaster.utils.render.Render2DUtils;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.function.Consumer;
 
 public class ModuleRenderer extends ValueRender {
     ArrayList<SettingRender<?>> settingsRenderers = new ArrayList<>();
@@ -33,22 +31,19 @@ public class ModuleRenderer extends ValueRender {
     public ModuleRenderer(Module mod) {
         this.mod = mod;
         content = new ColorAnimation(mod.isEnabled() ? new Color(66, 66, 66) : new Color(40, 40, 40));
-        mod.settings.forEach(new Consumer<Setting<?>>() {
-            @Override
-            public void accept(Setting<?> setting) {
-                if (setting instanceof BooleanSetting) {
-                    settingsRenderers.add(new BooleanSettingRender(mod, (BooleanSetting) setting));
-                } else if (setting instanceof ModeSetting) {
-                    settingsRenderers.add(new ModeSettingRender(mod, (ModeSetting) setting));
-                } else if (setting instanceof TextSetting) {
-                    settingsRenderers.add(new TextSettingRender(mod, (TextSetting) setting));
-                } else if (setting instanceof NumberSetting) {
-                    settingsRenderers.add(new NumberSettingRender(mod, (NumberSetting) setting));
-                } else if (setting instanceof ColorSetting) {
-                    settingsRenderers.add(new ColorSettingRender(mod, (ColorSetting) setting));
-                } else if (setting instanceof BindSetting) {
-                    settingsRenderers.add(new BindSettingRender(mod, (BindSetting) setting));
-                }
+        mod.settings.forEach(setting -> {
+            if (setting instanceof BooleanSetting) {
+                settingsRenderers.add(new BooleanSettingRender(mod, (BooleanSetting) setting));
+            } else if (setting instanceof ModeSetting) {
+                settingsRenderers.add(new ModeSettingRender(mod, (ModeSetting) setting));
+            } else if (setting instanceof TextSetting) {
+                settingsRenderers.add(new TextSettingRender(mod, (TextSetting) setting));
+            } else if (setting instanceof NumberSetting) {
+                settingsRenderers.add(new NumberSettingRender(mod, (NumberSetting) setting));
+            } else if (setting instanceof ColorSetting) {
+                settingsRenderers.add(new ColorSettingRender(mod, (ColorSetting) setting));
+            } else if (setting instanceof BindSetting) {
+                settingsRenderers.add(new BindSettingRender(mod, (BindSetting) setting));
             }
         });
     }

@@ -275,15 +275,13 @@ public class Render2DUtils extends Utility {
     }
 
     public static void drawBackground(int guiWidth, int guiHeight, int mouseX, int mouseY, float partialTicks, int zLevel) {
-        ResourceLocation textureLocation = null;
+        ResourceLocation textureLocation;
         if (FileUtils.hasBackground) {
-            if (textureLocation == null) {
-                textureLocation = new ResourceLocation("fpsmaster/gui/background.png");
-                File file = FileUtils.background;
-                TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
-                ThreadDownloadImageData textureArt = new ThreadDownloadImageData(file, null, null, null);
-                textureManager.loadTexture(textureLocation, textureArt);
-            }
+            textureLocation = new ResourceLocation("fpsmaster/gui/background.png");
+            File file = FileUtils.background;
+            TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
+            ThreadDownloadImageData textureArt = new ThreadDownloadImageData(file, null, null, null);
+            textureManager.loadTexture(textureLocation, textureArt);
             Render2DUtils.drawImage(textureLocation, 0f, 0f, guiWidth, guiHeight, -1);
             Render2DUtils.drawRect(0f, 0f, guiWidth, guiHeight, new Color(22, 22, 22, 50));
         } else {

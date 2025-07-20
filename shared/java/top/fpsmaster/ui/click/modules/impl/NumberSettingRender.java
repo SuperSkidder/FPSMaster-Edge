@@ -15,7 +15,6 @@ import java.util.Locale;
 public class NumberSettingRender extends SettingRender<NumberSetting> {
     // animation
     private float aWidth = 0f;
-    private boolean dragging = false;
 
     public NumberSettingRender(Module mod, NumberSetting setting) {
         super(setting);
@@ -59,7 +58,6 @@ public class NumberSettingRender extends SettingRender<NumberSetting> {
         if (Render2DUtils.isHovered(x + 16 + fw, y, 160f, height, (int) mouseX, (int) mouseY) && Mouse.isButtonDown(0)) {
             if (btn == 0 && MainPanel.dragLock.equals("null")) {
                 MainPanel.dragLock = mod.name + setting.name + 4;
-                dragging = true;
             }
         }
     }

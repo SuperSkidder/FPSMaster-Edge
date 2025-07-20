@@ -50,9 +50,8 @@ public class MusicWrapper {
                 long id1 = songObject.get("id").getAsLong();
                 String name = songObject.get("name").getAsString();
                 StringBuilder artists = new StringBuilder();
-                Iterator<JsonElement> artistIterator = songObject.getAsJsonArray("ar").iterator();
-                while (artistIterator.hasNext()) {
-                    artists.append(artistIterator.next().getAsJsonObject().get("name").getAsString());
+                for (JsonElement jsonElement : songObject.getAsJsonArray("ar")) {
+                    artists.append(jsonElement.getAsJsonObject().get("name").getAsString());
                 }
                 String picUrl = songObject.getAsJsonObject("al").get("picUrl").getAsString();
                 playList.add(new Music(id1, name, artists.toString(), picUrl));
@@ -73,9 +72,8 @@ public class MusicWrapper {
                 long id1 = songObject.get("id").getAsLong();
                 String name = songObject.get("name").getAsString();
                 StringBuilder artists = new StringBuilder();
-                Iterator<JsonElement> artistIterator = songObject.getAsJsonArray("ar").iterator();
-                while (artistIterator.hasNext()) {
-                    artists.append(artistIterator.next().getAsJsonObject().get("name").getAsString());
+                for (JsonElement jsonElement : songObject.getAsJsonArray("ar")) {
+                    artists.append(jsonElement.getAsJsonObject().get("name").getAsString());
                 }
                 String picUrl = songObject.getAsJsonObject("al").get("picUrl").getAsString();
                 playList.add(new Music(id1, name, artists.toString(), picUrl));
@@ -143,7 +141,7 @@ public class MusicWrapper {
 
     private static Lyrics parseLyrics(String str) {
         Lyrics lyrics = new Lyrics();
-        str = str.replace("\n", System.lineSeparator()).replace("\"", "\"");
+        str = str.replace("\n", System.lineSeparator());
         for (String s : str.split(System.lineSeparator())) {
             if (s.startsWith("[")) {
                 Line line = new Line();

@@ -145,7 +145,7 @@ public abstract class MixinGuiPlayerOverlay {
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             if (t < list.size()) {
-                NetworkPlayerInfo networkPlayerInfo2 = (NetworkPlayerInfo) list.get(t);
+                NetworkPlayerInfo networkPlayerInfo2 = list.get(t);
                 String string2 = this.getPlayerName(networkPlayerInfo2);
                 GameProfile gameProfile = networkPlayerInfo2.getGameProfile();
                 if (bl) {

@@ -73,13 +73,11 @@ public class SkinChanger extends Module {
     @Override
     public void onDisable() {
         super.onDisable();
-        FPSMaster.async.runnable(() -> {
-            ProviderManager.skinProvider.updateSkin(
-                    ProviderManager.mcProvider.getPlayer().getName(),
-                    ProviderManager.mcProvider.getPlayer().getUniqueID().toString(),
-                    ProviderManager.mcProvider.getPlayer().getName()
-            );
-        });
+        FPSMaster.async.runnable(() -> ProviderManager.skinProvider.updateSkin(
+                ProviderManager.mcProvider.getPlayer().getName(),
+                ProviderManager.mcProvider.getPlayer().getUniqueID().toString(),
+                ProviderManager.mcProvider.getPlayer().getName()
+        ));
         using = false;
     }
 }
