@@ -83,10 +83,13 @@ public class MusicPanel {
                 if (Mouse.isButtonDown(0)) {
                     curSearch = i;
                     if (curSearch == 2) {
-                        recommendList = MusicWrapper.getSongsFromDaily();
-                        displayList = recommendList;
                         MusicPlayer.playList.pause();
-                        setMusicList();
+                        searchThread = new Thread(() -> {
+                            recommendList = MusicWrapper.getSongsFromDaily();
+                            displayList = recommendList;
+                            setMusicList();
+                        });
+                        searchThread.start();
                     }
                 }
             }
