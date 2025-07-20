@@ -1,6 +1,7 @@
 package top.fpsmaster.forge.mixin;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -26,285 +27,264 @@ import javax.vecmath.Vector4f;
 
 @Mixin(LayerCape.class)
 public abstract class MixinLayerCape implements LayerRenderer<AbstractClientPlayer> {
+
     @Shadow
     @Final
     private RenderPlayer playerRenderer;
 
+    private static final int SEGMENTS = 16;
+    private static final float CAPE_WIDTH = 0.6F;
+    private static final float CAPE_LENGTH = 0.96F;
+    private static final float CAPE_DEPTH = 0.06F;
 
-    @Inject(method = "doRenderLayer(Lnet/minecraft/client/entity/AbstractClientPlayer;FFFFFFF)V", at = @At("HEAD"), cancellable = true)
-    public void renderLayer(AbstractClientPlayer player, float f, float g, float partialTicks, float h, float i, float j, float scale, CallbackInfo ci) {
-        if (FPSMaster.moduleManager.getModule(WavyCape.class).isEnabled()) {
-            if (player.isInvisible()) return;
+    @Inject(method = "doRenderLayer", at = @At("HEAD"), cancellable = true)
+    public void onRenderCape(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks,
+                             float ageInTicks, float netHeadYaw, float headPitch, float scale, CallbackInfo ci) {
+        if (!FPSMaster.moduleManager.getModule(WavyCape.class).isEnabled()) return;
+        if (shouldSkipRender(player)) return;
 
-            if (!player.hasPlayerInfo() || player.isInvisible() || !player.isWearing(EnumPlayerModelParts.CAPE) || player.getLocationCape() == null) {
-                return;
-            }
-            this.playerRenderer.bindTexture(player.getLocationCape());
-            v1_8_9$renderSmoothCape(player, partialTicks);
-            ci.cancel();
-        }
+        playerRenderer.bindTexture(player.getLocationCape());
+        renderWavyCape(player, partialTicks);
+        ci.cancel();
     }
 
     @Unique
-    public void v1_8_9$renderSmoothCape(AbstractClientPlayer abstractClientPlayer, float delta) {
-        WorldRenderer worldrenderer = Tessellator.getInstance().getWorldRenderer();
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
+    private boolean shouldSkipRender(AbstractClientPlayer player) {
+        return player.isInvisible() ||
+                !player.hasPlayerInfo() ||
+                !player.isWearing(EnumPlayerModelParts.CAPE) ||
+                player.getLocationCape() == null;
+    }
+
+    @Unique
+    private void renderWavyCape(AbstractClientPlayer player, float partialTicks) {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer buffer = tessellator.getWorldRenderer();
         PoseStack poseStack = new PoseStack();
+
+        buffer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
         poseStack.pushPose();
 
-        Matrix4f oldPositionMatrix = null;
-        for (int part = 0; part < 16; part++) {
-            v1_8_9$modifyPoseStack(poseStack, abstractClientPlayer, delta, part);
+        Matrix4f prevMatrix = null;
+        final float segmentLength = CAPE_LENGTH / SEGMENTS;
 
-            if (oldPositionMatrix == null) {
-                oldPositionMatrix = poseStack.last().pose;
+        for (int segment = 0; segment < SEGMENTS; segment++) {
+            poseStack.pushPose();
+            applySegmentTransform(poseStack, player, partialTicks, segment);
+
+            Matrix4f currentMatrix = poseStack.last().pose;
+            float yOffsetTop = segment * segmentLength;
+            float yOffsetBottom = (segment + 1) * segmentLength;
+
+            if (prevMatrix != null) {
+                renderCapeSegment(buffer, prevMatrix, currentMatrix, yOffsetTop, yOffsetBottom, segment);
             }
 
-            if (part == 0) {
-                v1_8_9$addTopVertex(worldrenderer, poseStack.last().pose, oldPositionMatrix, part);
-            } else if (part == 15) {
-                v1_8_9$addBottomVertex(worldrenderer, poseStack.last().pose, poseStack.last().pose, (part + 1) * (0.96F / 16), (part + 1) * (0.96F / 16), part);
+            if (segment == 0) {
+                renderTopSegment(buffer, currentMatrix);
             }
 
-            v1_8_9$addLeftVertex(worldrenderer, poseStack.last().pose, oldPositionMatrix, (part + 1) * (0.96F / 16), part * (0.96F / 16), part);
-            v1_8_9$addRightVertex(worldrenderer, poseStack.last().pose, oldPositionMatrix, (part + 1) * (0.96F / 16), part * (0.96F / 16), part);
-            v1_8_9$addBackVertex(worldrenderer, poseStack.last().pose, oldPositionMatrix, (part + 1) * (0.96F / 16), part * (0.96F / 16), part);
-            v1_8_9$addFrontVertex(worldrenderer, oldPositionMatrix, poseStack.last().pose, (part + 1) * (0.96F / 16), part * (0.96F / 16), part);
-            oldPositionMatrix = poseStack.last().pose;
+            prevMatrix = currentMatrix;
             poseStack.popPose();
         }
-        Tessellator.getInstance().draw();
+
+        poseStack.popPose();
+        tessellator.draw();
     }
 
     @Unique
-    private void v1_8_9$modifyPoseStack(PoseStack poseStack, AbstractClientPlayer abstractClientPlayer, float h, int part) {
-        poseStack.pushPose();
-        poseStack.translate(0.0D, 0.0D, 0.125D);
-        double d = v1_8_9$lerp(h, abstractClientPlayer.prevChasingPosX, abstractClientPlayer.chasingPosX)
-                - v1_8_9$lerp(h, abstractClientPlayer.prevPosX, abstractClientPlayer.posX);
-        double e = v1_8_9$lerp(h, abstractClientPlayer.prevChasingPosY, abstractClientPlayer.chasingPosY)
-                - v1_8_9$lerp(h, abstractClientPlayer.prevPosY, abstractClientPlayer.posY);
-        double m = v1_8_9$lerp(h, abstractClientPlayer.prevChasingPosZ, abstractClientPlayer.chasingPosZ)
-                - v1_8_9$lerp(h, abstractClientPlayer.prevPosZ, abstractClientPlayer.posZ);
-        float n = abstractClientPlayer.prevRenderYawOffset + abstractClientPlayer.renderYawOffset - abstractClientPlayer.prevRenderYawOffset;
-        double o = Math.sin(n * 0.017453292F);
-        double p = -Math.cos(n * 0.017453292F);
-        float height = (float) e * 10.0F;
-        height = MathHelper.clamp_float(height, -6.0F, 32.0F);
-        float swing = (float) (d * o + m * p) * v1_8_9$easeOutSine(1.0F / 16 * part) * 100;
-        swing = MathHelper.clamp_float(swing, 0.0F, 150.0F * v1_8_9$easeOutSine(1F / 16 * part));
-        float sidewaysRotationOffset = (float) (d * p - m * o) * 100.0F;
-        sidewaysRotationOffset = MathHelper.clamp_float(sidewaysRotationOffset, -20.0F, 20.0F);
-        float t = v1_8_9$lerp(h, abstractClientPlayer.prevCameraYaw, abstractClientPlayer.cameraYaw);
-        height += (float) (Math.sin(v1_8_9$lerp(h, abstractClientPlayer.prevDistanceWalkedModified, abstractClientPlayer.distanceWalkedModified) * 6.0F) * 32.0F * t);
-        if (abstractClientPlayer.isSneaking()) {
-            height += 25.0F;
+    private void applySegmentTransform(PoseStack poseStack, AbstractClientPlayer player, float partialTicks, int segment) {
+        poseStack.translate(0.0, 0.0, 0.125);
+
+        // 计算玩家运动差值
+        double motionX = interpolate(partialTicks, player.prevChasingPosX, player.chasingPosX) -
+                interpolate(partialTicks, player.prevPosX, player.posX);
+        double motionY = interpolate(partialTicks, player.prevChasingPosY, player.chasingPosY) -
+                interpolate(partialTicks, player.prevPosY, player.posY);
+        double motionZ = interpolate(partialTicks, player.prevChasingPosZ, player.chasingPosZ) -
+                interpolate(partialTicks, player.prevPosZ, player.posZ);
+
+        // 计算旋转角度
+        float yawOffset = interpolate(partialTicks, player.prevRenderYawOffset, player.renderYawOffset);
+        double sinYaw = Math.sin(yawOffset * Math.PI / 180.0);
+        double cosYaw = -Math.cos(yawOffset * Math.PI / 180.0);
+
+        // 计算高度偏移
+        float heightOffset = (float) motionY * 10.0F;
+        heightOffset = MathHelper.clamp_float(heightOffset, -6.0F, 32.0F);
+
+        // 计算摆动幅度
+        float swingFactor = (float) (motionX * sinYaw + motionZ * cosYaw) *
+                easeOutSine((float) segment / SEGMENTS) * 100;
+        swingFactor = MathHelper.clamp_float(swingFactor, 0.0F, 150.0F * easeOutSine((float) segment / SEGMENTS));
+
+        // 计算侧向旋转
+        float sidewaysRotation = (float) (motionX * cosYaw - motionZ * sinYaw) * 100.0F;
+        sidewaysRotation = MathHelper.clamp_float(sidewaysRotation, -20.0F, 20.0F);
+
+        // 添加行走动画效果
+        float walkAnimation = interpolate(partialTicks, player.prevDistanceWalkedModified, player.distanceWalkedModified);
+        heightOffset += MathHelper.sin(walkAnimation * 6.0F) * 32.0F *
+                interpolate(partialTicks, player.prevCameraYaw, player.cameraYaw);
+
+        // 蹲下调整
+        if (player.isSneaking()) {
+            heightOffset += 25.0F;
             poseStack.translate(0, 0.15F, 0);
         }
 
-        poseStack.mulPose(v1_8_9$fromDegree(1.0F, 0.0F, 0.0F, 6.0F + swing / 2.0F + height));
-        poseStack.mulPose(v1_8_9$fromDegree(0.0F, 0.0F, 1.0F, sidewaysRotationOffset / 2.0F));
-        poseStack.mulPose(v1_8_9$fromDegree(0.0F, 1.0F, 0.0F, 180.0F - sidewaysRotationOffset / 2.0F));
+        // 应用风摆效果
+        float windSwing = calculateWindSwing(segment);
+
+        // 应用旋转
+        poseStack.mulPose(createQuaternion(1.0F, 0.0F, 0.0F, 6.0F + swingFactor / 2.0F + heightOffset + windSwing));
+        poseStack.mulPose(createQuaternion(0.0F, 0.0F, 1.0F, sidewaysRotation / 2.0F));
+        poseStack.mulPose(createQuaternion(0.0F, 1.0F, 0.0F, 180.0F - sidewaysRotation / 2.0F));
     }
 
     @Unique
-    private float v1_8_9$easeOutSine(float x) {
-        return (float) Math.sin((x * Math.PI) / 2);
+    private float calculateWindSwing(int segment) {
+        long time = System.currentTimeMillis() / 3;
+        float phase = (float) (segment + 1) / SEGMENTS;
+        return (float) Math.sin(Math.toRadians(phase * 360 - (time % 360))) * 3;
     }
 
     @Unique
-    private Quaternion v1_8_9$fromDegree(float x, float y, float z, float degree) {
-        Quaternion quaternion = new Quaternion();
-        degree *= 0.017453292F;
-        float g = (float) Math.sin(degree / 2.0F);
-        quaternion.x = x * g;
-        quaternion.y = y * g;
-        quaternion.z = z * g;
-        quaternion.w = (float) Math.cos(degree / 2.0F);
-        return quaternion;
-    }
+    private void renderCapeSegment(WorldRenderer buffer, Matrix4f prevMatrix, Matrix4f currentMatrix,
+                                   float yTop, float yBottom, int segment) {
+        renderBackFace(buffer, prevMatrix, currentMatrix, yTop, yBottom, segment);
+        renderFrontFace(buffer, prevMatrix, currentMatrix, yTop, yBottom, segment);
+        renderLeftSide(buffer, prevMatrix, currentMatrix, yTop, yBottom, segment);
+        renderRightSide(buffer, prevMatrix, currentMatrix, yTop, yBottom, segment);
 
-    @Unique
-    private float v1_8_9$lerp(float f, float g, float h) {
-        return g + f * (h - g);
-    }
-
-    @Unique
-    private double v1_8_9$lerp(double d, double e, double f) {
-        return e + d * (f - e);
-    }
-
-    @Unique
-    private void v1_8_9$addBackVertex(WorldRenderer worldrenderer, Matrix4f matrix, Matrix4f oldMatrix, float y1, float y2, int part) {
-        float i;
-        Matrix4f k;
-        if (y1 < y2) {
-            i = y1;
-            y1 = y2;
-            y2 = i;
-
-            k = matrix;
-            matrix = oldMatrix;
-            oldMatrix = k;
+        if (segment == SEGMENTS - 1) {
+            renderBottomEdge(buffer, prevMatrix, currentMatrix, yTop, yBottom);
         }
-
-        float minU = .015625F;
-        float maxU = .171875F;
-
-        float minV = .03125F;
-        float maxV = .53125F;
-
-        float deltaV = maxV - minV;
-        float vPerPart = deltaV / 16;
-        maxV = minV + (vPerPart * (part + 1));
-        minV = minV + (vPerPart * part);
-
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) 0.3, y2, (float) -0.06).tex(maxU, minV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) -0.3, y2, (float) -0.06).tex(minU, minV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) -0.3, y1, (float) -0.06).tex(minU, maxV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) 0.3, y1, (float) -0.06).tex(maxU, maxV).normal(1, 0, 0).endVertex();
-
     }
 
     @Unique
-    private void v1_8_9$addFrontVertex(WorldRenderer worldrenderer, Matrix4f matrix, Matrix4f oldMatrix, float y1, float y2, int part) {
-        float i;
-        Matrix4f k;
+    private void renderBackFace(WorldRenderer buffer, Matrix4f prevMatrix, Matrix4f currentMatrix,
+                                float yTop, float yBottom, int segment) {
+        float minU = 0.015625F;
+        float maxU = 0.171875F;
+        float[] texCoords = getVerticalTexCoords(segment, 0.03125F, 0.53125F);
 
-        if (y1 < y2) {
-            i = y1;
-            y1 = y2;
-            y2 = i;
-
-            k = matrix;
-            matrix = oldMatrix;
-            oldMatrix = k;
-        }
-
-        float minU = .1875F;
-        float maxU = .34375F;
-
-        float minV = .03125F;
-        float maxV = .53125F;
-
-        float deltaV = maxV - minV;
-        float vPerPart = deltaV / 16;
-        maxV = minV + (vPerPart * (part + 1));
-        minV = minV + (vPerPart * part);
-
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) 0.3, y1, (float) 0.0).tex(maxU, maxV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) -0.3, y1, (float) 0.0).tex(minU, maxV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) -0.3, y2, (float) 0.0).tex(minU, minV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) 0.3, y2, (float) 0.0).tex(maxU, minV).normal(1, 0, 0).endVertex();
-
+        addVertex(buffer, prevMatrix, -CAPE_WIDTH/2, yTop, -CAPE_DEPTH, minU, texCoords[0]);
+        addVertex(buffer, prevMatrix, CAPE_WIDTH/2, yTop, -CAPE_DEPTH, maxU, texCoords[0]);
+        addVertex(buffer, currentMatrix, CAPE_WIDTH/2, yBottom, -CAPE_DEPTH, maxU, texCoords[1]);
+        addVertex(buffer, currentMatrix, -CAPE_WIDTH/2, yBottom, -CAPE_DEPTH, minU, texCoords[1]);
     }
 
     @Unique
-    private void v1_8_9$addLeftVertex(WorldRenderer worldrenderer, Matrix4f matrix, Matrix4f oldMatrix, float y1, float y2, int part) {
-        float i;
-        if (y1 < y2) {
-            i = y1;
-            y1 = y2;
-            y2 = i;
-        }
+    private void renderFrontFace(WorldRenderer buffer, Matrix4f prevMatrix, Matrix4f currentMatrix,
+                                 float yTop, float yBottom, int segment) {
+        float minU = 0.1875F;
+        float maxU = 0.34375F;
+        float[] texCoords = getVerticalTexCoords(segment, 0.03125F, 0.53125F);
 
-        float minU = 0;
-        float maxU = .015625F;
-
-        float minV = .03125F;
-        float maxV = .53125F;
-
-        float deltaV = maxV - minV;
-        float vPerPart = deltaV / 16;
-        maxV = minV + (vPerPart * (part + 1));
-        minV = minV + (vPerPart * part);
-
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) -0.3, y2, (float) -0.06).tex(minU, minV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) -0.3, y2, (float) 0.0).tex(maxU, minV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) -0.3, y1, (float) 0.0).tex(maxU, maxV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) -0.3, y1, (float) -0.06).tex(minU, maxV).normal(1, 0, 0).endVertex();
-
+        addVertex(buffer, prevMatrix, -CAPE_WIDTH/2, yBottom, 0, minU, texCoords[1]);
+        addVertex(buffer, prevMatrix, CAPE_WIDTH/2, yBottom, 0, maxU, texCoords[1]);
+        addVertex(buffer, currentMatrix, CAPE_WIDTH/2, yTop, 0, maxU, texCoords[0]);
+        addVertex(buffer, currentMatrix, -CAPE_WIDTH/2, yTop, 0, minU, texCoords[0]);
     }
 
     @Unique
-    private void v1_8_9$addRightVertex(WorldRenderer worldrenderer, Matrix4f matrix, Matrix4f oldMatrix, float y1, float y2, int part) {
-        float i;
+    private void renderLeftSide(WorldRenderer buffer, Matrix4f prevMatrix, Matrix4f currentMatrix,
+                                float yTop, float yBottom, int segment) {
+        float minU = 0.0F;
+        float maxU = 0.015625F;
+        float[] texCoords = getVerticalTexCoords(segment, 0.03125F, 0.53125F);
 
-        if (y1 < y2) {
-            i = y1;
-            y1 = y2;
-            y2 = i;
-        }
-
-        float minU = .171875F;
-        float maxU = .1875F;
-
-        float minV = .03125F;
-        float maxV = .53125F;
-
-        float deltaV = maxV - minV;
-        float vPerPart = deltaV / 16;
-        maxV = minV + (vPerPart * (part + 1));
-        minV = minV + (vPerPart * part);
-
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) 0.3, y2, (float) 0.0).tex(maxU, minV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) 0.3, y2, (float) -0.06).tex(minU, minV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) 0.3, y1, (float) -0.06).tex(minU, maxV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) 0.3, y1, (float) 0.0).tex(maxU, maxV).normal(1, 0, 0).endVertex();
-
+        addVertex(buffer, prevMatrix, -CAPE_WIDTH/2, yTop, 0, maxU, texCoords[0]);
+        addVertex(buffer, prevMatrix, -CAPE_WIDTH/2, yTop, -CAPE_DEPTH, minU, texCoords[0]);
+        addVertex(buffer, currentMatrix, -CAPE_WIDTH/2, yBottom, -CAPE_DEPTH, minU, texCoords[1]);
+        addVertex(buffer, currentMatrix, -CAPE_WIDTH/2, yBottom, 0, maxU, texCoords[1]);
     }
 
     @Unique
-    private void v1_8_9$addBottomVertex(WorldRenderer worldrenderer, Matrix4f matrix, Matrix4f oldMatrix, float y1, float y2, int part) {
-        float i;
-        if (y1 < y2) {
-            i = y1;
-            y1 = y2;
-            y2 = i;
-        }
+    private void renderRightSide(WorldRenderer buffer, Matrix4f prevMatrix, Matrix4f currentMatrix,
+                                 float yTop, float yBottom, int segment) {
+        float minU = 0.171875F;
+        float maxU = 0.1875F;
+        float[] texCoords = getVerticalTexCoords(segment, 0.03125F, 0.53125F);
 
-        float minU = .171875F;
-        float maxU = .328125F;
-
-        float minV = 0;
-        float maxV = .03125F;
-
-        float deltaV = maxV - minV;
-        float vPerPart = deltaV / 16;
-        maxV = minV + (vPerPart * (part + 1));
-        minV = minV + (vPerPart * part);
-
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) 0.3, y2, (float) -0.06).tex(maxU, minV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) -0.3, y2, (float) -0.06).tex(minU, minV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) -0.3, y1, (float) 0.0).tex(minU, maxV).normal(1, 0, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) 0.3, y1, (float) 0.0).tex(maxU, maxV).normal(1, 0, 0).endVertex();
-
+        addVertex(buffer, prevMatrix, CAPE_WIDTH/2, yTop, -CAPE_DEPTH, minU, texCoords[0]);
+        addVertex(buffer, prevMatrix, CAPE_WIDTH/2, yTop, 0, maxU, texCoords[0]);
+        addVertex(buffer, currentMatrix, CAPE_WIDTH/2, yBottom, 0, maxU, texCoords[1]);
+        addVertex(buffer, currentMatrix, CAPE_WIDTH/2, yBottom, -CAPE_DEPTH, minU, texCoords[1]);
     }
 
     @Unique
-    private WorldRenderer v1_8_9$vertex(WorldRenderer worldrenderer, Matrix4f matrix4f, float f, float g, float h) {
-        Vector4f vector4f = new Vector4f(f, g, h, 1.0F);
-        matrix4f.transform(vector4f);
-        worldrenderer.pos(vector4f.x, vector4f.y, vector4f.z);
-        return worldrenderer;
+    private void renderTopSegment(WorldRenderer buffer, Matrix4f matrix) {
+        float minU = 0.015625F;
+        float maxU = 0.171875F;
+        float minV = 0.0F;
+        float maxV = 0.03125F;
+
+        addVertex(buffer, matrix, -CAPE_WIDTH/2, 0, 0, minU, maxV);
+        addVertex(buffer, matrix, CAPE_WIDTH/2, 0, 0, maxU, maxV);
+        addVertex(buffer, matrix, CAPE_WIDTH/2, 0, -CAPE_DEPTH, maxU, minV);
+        addVertex(buffer, matrix, -CAPE_WIDTH/2, 0, -CAPE_DEPTH, minU, minV);
     }
 
     @Unique
-    private void v1_8_9$addTopVertex(WorldRenderer worldrenderer, Matrix4f matrix, Matrix4f oldMatrix, int part) {
-        float minU = .015625F;
-        float maxU = .171875F;
+    private void renderBottomEdge(WorldRenderer buffer, Matrix4f prevMatrix, Matrix4f currentMatrix,
+                                  float yTop, float yBottom) {
+        float minU = 0.171875F;
+        float maxU = 0.328125F;
+        float minV = 0.0F;
+        float maxV = 0.03125F;
 
-        float minV = 0;
-        float maxV = .03125F;
+        addVertex(buffer, prevMatrix, -CAPE_WIDTH/2, yBottom, -CAPE_DEPTH, minU, minV);
+        addVertex(buffer, prevMatrix, CAPE_WIDTH/2, yBottom, -CAPE_DEPTH, maxU, minV);
+        addVertex(buffer, currentMatrix, CAPE_WIDTH/2, yTop, 0, maxU, maxV);
+        addVertex(buffer, currentMatrix, -CAPE_WIDTH/2, yTop, 0, minU, maxV);
+    }
 
-        float deltaV = maxV - minV;
-        float vPerPart = deltaV / 16;
-        maxV = minV + (vPerPart * (part + 1));
-        minV = minV + (vPerPart * part);
+    @Unique
+    private float[] getVerticalTexCoords(int segment, float minV, float maxV) {
+        float vRange = maxV - minV;
+        float vStep = vRange / SEGMENTS;
+        return new float[] {
+                minV + segment * vStep,
+                minV + (segment + 1) * vStep
+        };
+    }
 
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) 0.3, (float) 0, (float) 0.0).tex(maxU, maxV).normal(0, 1, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, oldMatrix, (float) -0.3, (float) 0, (float) 0.0).tex(minU, maxV).normal(0, 1, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) -0.3, (float) 0, (float) -0.06).tex(minU, minV).normal(0, 1, 0).endVertex();
-        v1_8_9$vertex(worldrenderer, matrix, (float) 0.3, (float) 0, (float) -0.06).tex(maxU, minV).normal(0, 1, 0).endVertex();
+    @Unique
+    private void addVertex(WorldRenderer buffer, Matrix4f matrix, float x, float y, float z, float u, float v) {
+        Vector4f pos = new Vector4f(x, y, z, 1.0F);
+        matrix.transform(pos);
+        buffer.pos(pos.x, pos.y, pos.z)
+                .tex(u, v)
+                .normal(0, 1, 0) // 实际法线应根据面调整，此处简化为(0,1,0)
+                .endVertex();
+    }
+
+    @Unique
+    private float interpolate(float delta, float prev, float current) {
+        return prev + delta * (current - prev);
+    }
+
+    @Unique
+    private double interpolate(double delta, double prev, double current) {
+        return prev + delta * (current - prev);
+    }
+
+    @Unique
+    private float easeOutSine(float progress) {
+        return (float) Math.sin((progress * Math.PI) / 2);
+    }
+
+    @Unique
+    private Quaternion createQuaternion(float axisX, float axisY, float axisZ, float degrees) {
+        Quaternion q = new Quaternion();
+        float radians = degrees * (float) Math.PI / 180;
+        float sinHalf = (float) Math.sin(radians / 2);
+        q.x = axisX * sinHalf;
+        q.y = axisY * sinHalf;
+        q.z = axisZ * sinHalf;
+        q.w = (float) Math.cos(radians / 2);
+        return q;
     }
 }
