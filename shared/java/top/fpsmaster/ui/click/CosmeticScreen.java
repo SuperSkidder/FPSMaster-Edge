@@ -56,8 +56,7 @@ public class CosmeticScreen extends ScaledGuiScreen {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+    public void onClick(int mouseX, int mouseY, int mouseButton) {
         String[] split = AccountManager.cosmeticsHeld.split(",");
         int y = 0;
         for (String id : split) {

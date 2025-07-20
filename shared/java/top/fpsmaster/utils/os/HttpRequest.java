@@ -143,6 +143,16 @@ public final class HttpRequest {
         }
     }
 
+    // download file to buffer
+    public static InputStream downloadFile(String url) {
+        try {
+            return HTTP_CLIENT.execute(new HttpGet(url)).getEntity().getContent();
+        } catch (Exception e) {
+            ClientLogger.error("Download failed: " + e.getMessage());
+            return null;
+        }
+    }
+
     public static void downloadAsync(String url, String filepath, Runnable callback) {
         new Thread(() -> {
             boolean success = downloadFile(url, filepath);

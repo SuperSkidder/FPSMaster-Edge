@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +28,10 @@ public class GifUtil {
         }
     }
 
-    public static List<FrameData> convertGifToPng(String gifPath) throws IOException {
+    public static List<FrameData> convertGifToPng(InputStream stream) throws IOException {
         // 读取GIF
         ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
-        ImageInputStream in = ImageIO.createImageInputStream(new File(gifPath));
+        ImageInputStream in = ImageIO.createImageInputStream(stream);
         reader.setInput(in);
 
         // 获取GIF的帧数

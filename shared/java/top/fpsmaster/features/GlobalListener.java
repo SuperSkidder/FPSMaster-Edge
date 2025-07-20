@@ -11,6 +11,7 @@ import top.fpsmaster.event.events.*;
 import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.modules.account.AccountManager;
+import top.fpsmaster.modules.account.Cosmetic;
 import top.fpsmaster.modules.client.ClientUser;
 import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.ui.notification.NotificationManager;
@@ -121,12 +122,34 @@ public class GlobalListener {
     @Subscribe
     public void onCape(EventCapeLoading e) {
         if (!AccountManager.cosmeticsUsing.isEmpty()) {
+            String[] cosmetics;
+
             if (e.player == mc.thePlayer)
-                e.setCachedCape("ornaments/" + AccountManager.cosmeticsUsing + "_resource");
+                cosmetics = AccountManager.cosmeticsUsing.split(",");
             else {
                 ClientUser clientUser = FPSMaster.clientUsersManager.getClientUser(e.player);
-                if (clientUser != null) {
-                    e.setCachedCape("ornaments/" + clientUser.cosmetics + "_resource");
+                if (clientUser == null)
+                    return;
+                cosmetics = clientUser.cosmetics.split(",");
+            }
+
+            for (String cosmetic : cosmetics) {
+                if (cosmetic.isEmpty())
+                    continue;
+                Cosmetic cosmetic1 = AccountManager.cosmetics.get(Integer.valueOf(cosmetic));
+                if (cosmetic1.resource.endsWith(".gif")) {
+                    if (cosmetic1.frame < cosmetic1.frames.size() - 1){
+                        if (System.currentTimeMillis() - cosmetic1.frameTime > cosmetic1.frames.get(cosmetic1.frame).delay) {
+                            cosmetic1.frame++;
+                            cosmetic1.frameTime = System.currentTimeMillis();
+                        }
+                    }else{
+                        cosmetic1.frame = 0;
+                        cosmetic1.frameTime = System.currentTimeMillis();
+                    }
+                    e.setCachedCape("ornaments/" + cosmetic + "_resource_" + cosmetic1.frame);
+                } else {
+                    e.setCachedCape("ornaments/" + cosmetic + "_resource");
                 }
             }
         }
