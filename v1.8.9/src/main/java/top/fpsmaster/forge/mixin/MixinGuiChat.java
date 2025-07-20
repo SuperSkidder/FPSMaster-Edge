@@ -29,15 +29,15 @@ public class MixinGuiChat extends GuiScreen {
 
 
         Gui.drawRect(2, this.height - 28, 2 + width1 + 4, this.height - 14, irc ? new Color(0, 0, 0, 180).getRGB() : new Color(80, 80, 80, 180).getRGB());
-        mc.fontRendererObj.drawStringWithShadow(FPSMaster.i18n.get("chat.mc"), 4, this.height - 28, irc ? new Color(200, 200, 200).getRGB() : -1);
+        mc.fontRendererObj.drawStringWithShadow(FPSMaster.i18n.get("chat.mc"), 4, this.height - 26, irc ? new Color(200, 200, 200).getRGB() : -1);
 
-        Gui.drawRect(2 + width1 + 8, this.height - 28, 2 + width1 + 6 + width2 + 6, this.height - 14, irc ? new Color(80, 80, 80, 180).getRGB() : new Color(0, 0, 0, 180).getRGB());
-        mc.fontRendererObj.drawStringWithShadow(FPSMaster.i18n.get("chat.irc"), 4 + width1 + 8, this.height - 28, irc ? -1 : new Color(200, 200, 200).getRGB());
+        Gui.drawRect(2 + width1 + 4, this.height - 28, 2 + width1 + 6 + width2 + 2, this.height - 14, irc ? new Color(80, 80, 80, 180).getRGB() : new Color(0, 0, 0, 180).getRGB());
+        mc.fontRendererObj.drawStringWithShadow(FPSMaster.i18n.get("chat.irc"), 4 + width1 + 4, this.height - 26, irc ? -1 : new Color(200, 200, 200).getRGB());
 
         if (Mouse.isButtonDown(0)) {
             if (Render2DUtils.isHovered(2, this.height - 28, width1 + 4, 12, mouseX, mouseY)) {
                 irc = false;
-            } else if (Render2DUtils.isHovered(2 + width1 + 8, this.height - 28, width1 + 6 + width2 + 4, 12, mouseX, mouseY)) {
+            } else if (Render2DUtils.isHovered(2 + width1 + 4, this.height - 28, width2 + 2, 12, mouseX, mouseY)) {
                 irc = true;
             }
         }
