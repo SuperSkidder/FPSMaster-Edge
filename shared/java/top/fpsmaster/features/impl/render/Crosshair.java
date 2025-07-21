@@ -20,15 +20,15 @@ import top.fpsmaster.utils.render.Render2DUtils;
 import java.awt.*;
 
 public class Crosshair extends Module {
-    private final NumberSetting dynamic = new NumberSetting("Dynamic", 4, 0, 10, 0.1);
+    private final NumberSetting dynamic = new NumberSetting("Dynamic", 3.0, 0, 10, 0.1);
     private final BooleanSetting outline = new BooleanSetting("Outline", true);
-    private final NumberSetting outlineWidth = new NumberSetting("OutlineWidth", 1, 0, 10, 0.1, outline::getValue);
+    private final NumberSetting outlineWidth = new NumberSetting("OutlineWidth", 0.8, 0, 10, 0.1, outline::getValue);
     private final BooleanSetting dot = new BooleanSetting("Dot", true);
-    private final NumberSetting gap = new NumberSetting("Gap", 6, 0, 10, 0.1);
+    private final NumberSetting gap = new NumberSetting("Gap", 3.5, 0, 10, 0.1);
     private final NumberSetting width = new NumberSetting("Width", 0.6, 0, 10, 0.1);
-    private final NumberSetting length = new NumberSetting("Length", 3.5, 0, 10, 0.1);
+    private final NumberSetting length = new NumberSetting("Length", 3.0, 0, 10, 0.1);
     private final ColorSetting color = new ColorSetting("Color", new Color(255, 255, 255));
-    private final ColorSetting outlineColor = new ColorSetting("OutlineColor", new Color(161, 161, 161), outline::getValue);
+    private final ColorSetting outlineColor = new ColorSetting("OutlineColor", new Color(0, 0, 0), outline::getValue);
     private final ColorSetting enemyColor = new ColorSetting("Enemy", new Color(255, 55, 50));
     private final ColorSetting friendColor = new ColorSetting("Friend", new Color(20, 255, 55));
 
