@@ -55,11 +55,11 @@ public class Cosmetic {
                         downloadImageData.setBufferedImage(frame.image);
                         mc.getTextureManager().loadTexture(textureLocation, downloadImageData);
                     }
+                    loaded = true;
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
-        loaded = true;
     }
 }

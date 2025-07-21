@@ -48,12 +48,12 @@ public class AutoGG extends Module {
                     if (hasPlayCommand) {
                         if (autoPlay.getValue()) {
                             FPSMaster.async.runnable(() -> {
+                                Utility.sendClientNotify("Sending you to the next game in " + delay.getValue() + " seconds");
                                 try {
                                     Thread.sleep(delay.getValue().longValue() * 1000);
                                 } catch (InterruptedException e) {
                                     throw new RuntimeException(e);
                                 }
-                                Utility.sendClientNotify("Sending you to the next game in " + delay.getValue() + " seconds");
                                 Utility.sendChatMessage(componentValue.substring(componentValue.indexOf("value='") + 7, componentValue.indexOf("'}")));
                             });
                         }
