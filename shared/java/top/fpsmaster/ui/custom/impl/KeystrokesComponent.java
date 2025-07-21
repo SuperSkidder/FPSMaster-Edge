@@ -80,15 +80,15 @@ public class KeystrokesComponent extends Component {
             if (keyCode == -1) {
                 pressed = Mouse.isButtonDown(0);
                 drawRect(x + xOffset, y + yOffset, 28f, 18f, this.color.getColor());
-                drawString(16, name, x + xOffset + 7, y + yOffset + 4, -1);
+                drawString(16, name, x + xOffset + 7, y + yOffset + 4, pressed ? Keystrokes.fontColor.getRGB() : Keystrokes.pressedFontColor.getRGB());
             } else if (keyCode == -2) {
                 pressed = Mouse.isButtonDown(1);
                 drawRect(x + xOffset - 10, y + yOffset, 28f, 18f, this.color.getColor());
-                drawString(16, name, x + xOffset - 4, y + yOffset + 4, -1);
+                drawString(16, name, x + xOffset - 4, y + yOffset + 4, pressed ? Keystrokes.fontColor.getRGB() : Keystrokes.pressedFontColor.getRGB());
             } else {
                 pressed = Keyboard.isKeyDown(keyCode);
                 drawRect(x + xOffset, y + yOffset, 18f, 18f, this.color.getColor());
-                drawString(16, name, x + xOffset + 9 - getStringWidth(16, name) / 2f, y + yOffset + 4, -1);
+                drawString(16, name, x + xOffset + 9 - getStringWidth(16, name) / 2f, y + yOffset + 4, pressed ? Keystrokes.fontColor.getRGB() : Keystrokes.pressedFontColor.getRGB());
             }
 
             this.color.base(pressed ? color1 : color);

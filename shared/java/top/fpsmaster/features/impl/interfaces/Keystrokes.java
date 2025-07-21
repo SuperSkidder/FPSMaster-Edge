@@ -8,9 +8,11 @@ import java.awt.*;
 
 public class Keystrokes extends InterfaceModule {
     public static ColorSetting pressedColor = new ColorSetting("PressedColor", new Color(255, 255, 255, 120));
+    public static ColorSetting fontColor = new ColorSetting("FontColor", new Color(255, 255, 255));
+    public static ColorSetting pressedFontColor = new ColorSetting("PressedFontColor", new Color(201, 201, 201));
 
     public Keystrokes() {
         super("Keystrokes", Category.Interface);
-        addSettings(fontShadow, betterFont, pressedColor, spacing, bg, backgroundColor, rounded, roundRadius);
+        addSettings(fontShadow, betterFont, pressedColor, fontColor, pressedFontColor, spacing, bg, backgroundColor, rounded, roundRadius);
     }
 }

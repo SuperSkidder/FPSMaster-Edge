@@ -115,6 +115,8 @@ keystrokes.betterfont=更好的字体
 keystrokes.roundradius=圆角半径
 keystrokes.background=背景
 keystrokes.spacing=间距
+keystrokes.fontcolor=字体颜色
+keystrokes.pressedfontcolor=按下字体颜色
 
 potiondisplay=药水显示
 potiondisplay.desc=显示玩家的药水效果
