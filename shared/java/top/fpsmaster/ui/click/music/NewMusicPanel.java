@@ -99,7 +99,9 @@ public class NewMusicPanel {
         }
         if (loadThread == null || !loadThread.isAlive()) {
             loadThread = new Thread(() -> {
-                profile = MusicWrapper.getProfile();
+                searching = true;
+                if (profile == null)
+                    profile = MusicWrapper.getProfile();
                 if (recommendTrack == null || recommendTrack.getMusics().isEmpty()) {
                     recommendTrack = new Track(0L, "日推", "");
                     recommendTrack.setMusics(MusicWrapper.getSongsFromDaily().musics);
@@ -112,6 +114,7 @@ public class NewMusicPanel {
                 if (likedTracks.isEmpty()) {
                     likedTracks = MusicWrapper.getTracksLiked(profile.id);
                 }
+                searching = false;
             });
             loadThread.start();
         }
@@ -166,7 +169,7 @@ public class NewMusicPanel {
 
 
         if (searching) {
-            FPSMaster.fontManager.s22.drawCenteredString("搜索中...", x + width / 2, y + height / 2 - 20, -1);
+            FPSMaster.fontManager.s22.drawCenteredString("加载中...", x + width / 2, y + height / 2 - 20, -1);
         } else {
             if (currentTrack == null) {
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
@@ -196,7 +199,9 @@ public class NewMusicPanel {
                 Render2DUtils.doGlScissor(x + 12, y + 35, width - 12, height - 65, scaleFactor);
                 if (!currentTrack.isLoaded() && (songsLoadThread == null || !songsLoadThread.isAlive())) {
                     songsLoadThread = new Thread(() -> {
+                        searching = true;
                         currentTrack.loadMusic();
+                        searching = false;
                     });
                     songsLoadThread.start();
                 }
