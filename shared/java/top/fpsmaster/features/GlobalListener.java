@@ -15,6 +15,7 @@ import top.fpsmaster.modules.account.AccountManager;
 import top.fpsmaster.modules.account.Cosmetic;
 import top.fpsmaster.modules.client.ClientUser;
 import top.fpsmaster.modules.music.MusicPlayer;
+import top.fpsmaster.modules.music.netease.Music;
 import top.fpsmaster.ui.notification.NotificationManager;
 import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.math.MathTimer;
@@ -71,8 +72,13 @@ public class GlobalListener {
                 } catch (InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
-                if (MusicPlayer.isPlaying && MusicPlayer.getPlayProgress() > 0.999) {
+                if (MusicPlayer.isPlaying && MusicPlayer.getPlayProgress() > 0.999 && (Music.downloadThread == null || !Music.downloadThread.isAlive())) {
                     MusicPlayer.playList.next();
+                    try {
+                        Thread.sleep(20000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
                 if (ProviderManager.mcProvider.getWorld() != null) {
                     Utility.flush();

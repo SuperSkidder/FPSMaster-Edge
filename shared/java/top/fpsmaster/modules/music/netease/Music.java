@@ -18,7 +18,7 @@ public class Music extends AbstractMusic {
     String imgURL;
     String musicURL;
     public String id;
-    static Thread downloadThread;
+    public static Thread downloadThread;
 
     public Music(long id, String name, String artists, String picUrl) {
         this.name = name;
