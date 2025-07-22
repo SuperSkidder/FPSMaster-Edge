@@ -38,6 +38,7 @@ public class TNTTimer extends Module {
     public static void doRender(EntityTNTPrimed entity) {
         if (!using) return;
         Minecraft mc = Minecraft.getMinecraft();
+        GL11.glPushAttrib(GL11.GL_ALPHA | GL11.GL_BLEND | GL11.GL_TEXTURE_2D | GL11.GL_LIGHTING | GL11.GL_DEPTH_TEST | GL11.GL_CULL_FACE);
         GL11.glPushMatrix();
         GL11.glEnable(3042);
         GL11.glDisable(2929);
@@ -67,6 +68,7 @@ public class TNTTimer extends Module {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         GL11.glNormal3f(1.0f, 1.0f, 1.0f);
         GL11.glPopMatrix();
+        GL11.glPopAttrib();
     }
 
     private static void drawTime(EntityTNTPrimed entity) {

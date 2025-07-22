@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import org.lwjgl.opengl.GL11;
 import top.fpsmaster.event.events.EventRender3D;
 import top.fpsmaster.features.settings.impl.ColorSetting;
 import top.fpsmaster.forge.api.IRenderManager;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class WrapperHitboxes {
     public static void render(EventRender3D event, ColorSetting color) {
-        GlStateManager.pushMatrix();
+        GL11.glPushAttrib(GL11.GL_ALPHA | GL11.GL_BLEND | GL11.GL_TEXTURE_2D | GL11.GL_LIGHTING | GL11.GL_DEPTH_TEST | GL11.GL_CULL_FACE);
         GlStateManager.depthMask(false);
         GlStateManager.disableTexture2D();
         GlStateManager.disableLighting();
@@ -46,6 +47,6 @@ public class WrapperHitboxes {
         GlStateManager.enableCull();
         GlStateManager.disableBlend();
         GlStateManager.depthMask(true);
-        GlStateManager.popMatrix();
+        GL11.glPopAttrib();
     }
 }

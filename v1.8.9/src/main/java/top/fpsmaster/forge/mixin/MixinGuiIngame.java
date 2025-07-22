@@ -19,11 +19,6 @@ import top.fpsmaster.features.impl.render.Crosshair;
 
 @Mixin(GuiIngame.class)
 public class MixinGuiIngame {
-    @Inject(method = "renderTooltip", at = @At("RETURN"))
-    private void renderTooltipPost(ScaledResolution sr, float partialTicks, CallbackInfo callbackInfo) {
-        EventDispatcher.dispatchEvent(new EventRender2D(partialTicks));
-    }
-
     @Inject(method = "showCrosshair", at = @At("HEAD"), cancellable = true)
     protected void showCrosshair(CallbackInfoReturnable<Boolean> cir) {
         if (Crosshair.using)
