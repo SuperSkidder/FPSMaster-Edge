@@ -368,8 +368,9 @@ public abstract class MixinEntityRenderer {
                 }
             }
 
-            double v = vec3.distanceTo(vec33);
-            if (this.pointedEntity != null && flag && v > (double) 3.0F) {
+            double v = 0;
+            if (this.pointedEntity != null && flag && vec3.distanceTo(vec33) > (double) 3.0F) {
+                v = vec3.distanceTo(vec33);
                 this.pointedEntity = null;
                 mc.objectMouseOver = new MovingObjectPosition(MovingObjectPosition.MovingObjectType.MISS, vec33, (EnumFacing) null, new BlockPos(vec33));
             }
