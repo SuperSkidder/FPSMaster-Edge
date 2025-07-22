@@ -13,19 +13,22 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.forge.api.IChatLine;
 import top.fpsmaster.features.impl.interfaces.BetterChat;
+import top.fpsmaster.interfaces.gui.IGuiNewChatProvider;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
 import java.awt.*;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static top.fpsmaster.utils.Utility.mc;
 
 @Mixin(GuiNewChat.class)
-public abstract class MixinGuiNewChat {
+public abstract class MixinGuiNewChat implements IGuiNewChatProvider {
 
-    private boolean isChatOpenAnimationNeed = true;
+    @Unique
+    private boolean v1_8_9$isChatOpenAnimationNeed = true;
 
     @Shadow
     public abstract int getLineCount();
@@ -49,6 +52,8 @@ public abstract class MixinGuiNewChat {
 
     @Shadow
     private boolean isScrolled;
+
+    @Shadow @Final private List<ChatLine> chatLines;
 
     /**
      * @author SuperSkidder
@@ -123,9 +128,8 @@ public abstract class MixinGuiNewChat {
                 }
             } else {
                 BetterChat module = (BetterChat) FPSMaster.moduleManager.getModule(BetterChat.class);
-
-                int i = this.getLineCount();
-                int j = this.drawnChatLines.size();
+                AtomicInteger i = new AtomicInteger(this.getLineCount());
+                int j = drawnChatLines.size();
                 float f = mc.gameSettings.chatOpacity * 0.9F + 0.1F;
                 if (j > 0) {
                     boolean bl = this.getChatOpen();
@@ -135,23 +139,22 @@ public abstract class MixinGuiNewChat {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(2.0F, 8.0F, 0.0F);
                     GlStateManager.scale(g, g, 1.0F);
-                    int l = 0;
 
                     int m;
                     int n;
                     int o;
-                    for (m = 0; m + this.scrollPos < this.drawnChatLines.size() && m < i; ++m) {
-                        ChatLine chatLine = this.drawnChatLines.get(m + this.scrollPos);
+                    for (m = 0; m + this.scrollPos < drawnChatLines.size() && m < i.get(); ++m) {
+                        ChatLine chatLine = drawnChatLines.get(m + this.scrollPos);
                         if (chatLine != null) {
-                            if (getChatOpen() && isChatOpenAnimationNeed) {
-                                for (int i1 = 0; i1 + this.scrollPos < this.drawnChatLines.size() && i1 < i; ++i1) {
-                                    ChatLine chatline = this.drawnChatLines.get(i1 + this.scrollPos);
+                            if (getChatOpen() && v1_8_9$isChatOpenAnimationNeed) {
+                                for (int i1 = 0; i1 + this.scrollPos < drawnChatLines.size() && i1 < i.get(); ++i1) {
+                                    ChatLine chatline = drawnChatLines.get(i1 + this.scrollPos);
                                     ((IChatLine) chatline).setAnimation(100);
                                 }
-                                isChatOpenAnimationNeed = false;
+                                v1_8_9$isChatOpenAnimationNeed = false;
                             }
                             if (!getChatOpen()) {
-                                isChatOpenAnimationNeed = true;
+                                v1_8_9$isChatOpenAnimationNeed = true;
                             }
 
                             n = updateCounter - chatLine.getUpdatedCounter();
@@ -166,7 +169,7 @@ public abstract class MixinGuiNewChat {
                                 if (alpha > 3) {
                                     int q = -m * 9;
                                     int alpha1 = (int) ((alpha / 255f) * module.backgroundColor.getColor().getAlpha());
-                                    Gui.drawRect(-2, q - 9, k + 4, q, Render2DUtils.reAlpha(module.backgroundColor.getColor(), alpha1).getRGB());
+                                    Gui.drawRect(-2, q - 8, k + 4, q + 1, Render2DUtils.reAlpha(module.backgroundColor.getColor(), alpha1).getRGB());
                                     String string = chatLine.getChatComponent().getFormattedText();
                                     GlStateManager.enableBlend();
                                     if (module.betterFont.getValue()) {
@@ -214,14 +217,14 @@ public abstract class MixinGuiNewChat {
             j = MathHelper.floor_float((float) j / f);
             k = MathHelper.floor_float((float) k / f);
             if (j >= 0 && k >= 0) {
-                int l = Math.min(this.getLineCount(), this.drawnChatLines.size());
+                AtomicInteger l = new AtomicInteger(Math.min(this.getLineCount(), this.drawnChatLines.size()));
                 int fontHeight = mc.fontRendererObj.FONT_HEIGHT;
                 BetterChat module = (BetterChat) FPSMaster.moduleManager.getModule(BetterChat.class);
 
                 if (BetterChat.using && module.betterFont.getValue()) {
                     fontHeight = FPSMaster.fontManager.s16.getHeight();
                 }
-                if (j <= MathHelper.floor_float((float) this.getChatWidth() / this.getChatScale()) && k < fontHeight * l + l) {
+                if (j <= MathHelper.floor_float((float) this.getChatWidth() / this.getChatScale()) && k < fontHeight * l.get() + l.get()) {
                     int m = k / fontHeight + this.scrollPos;
                     if (m >= 0 && m < this.drawnChatLines.size()) {
                         ChatLine chatLine = this.drawnChatLines.get(m);
@@ -260,5 +263,15 @@ public abstract class MixinGuiNewChat {
         } else {
             return GuiUtilRenderComponents.splitText(chatComponent, i, mc.fontRendererObj, false, false);
         }
+    }
+
+    @Override
+    public List<ChatLine> getChatLines() {
+        return chatLines;
+    }
+
+    @Override
+    public List<ChatLine> getDrawnChatLines() {
+        return drawnChatLines;
     }
 }

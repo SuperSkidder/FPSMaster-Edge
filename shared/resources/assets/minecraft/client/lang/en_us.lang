@@ -67,6 +67,7 @@ betterchat.fontshadow=Font Shadow
 betterchat.betterfont=Clean Font
 betterchat.roundradius=Corner Radius
 betterchat.background=Show Background
+betterchat.foldmessage=Fold Message
 
 combodisplay=Combo Counter
 combodisplay.desc=Displays current combo count

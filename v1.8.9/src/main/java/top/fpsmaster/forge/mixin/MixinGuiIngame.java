@@ -1,19 +1,13 @@
 package top.fpsmaster.forge.mixin;
 
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.scoreboard.ScoreObjective;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import top.fpsmaster.event.EventDispatcher;
-import top.fpsmaster.event.events.EventRender2D;
-import top.fpsmaster.features.impl.interfaces.CustomTitles;
 import top.fpsmaster.features.impl.interfaces.Scoreboard;
 import top.fpsmaster.features.impl.render.Crosshair;
 
@@ -30,6 +24,4 @@ public class MixinGuiIngame {
         if (Scoreboard.using)
             ci.cancel();
     }
-
-
 }
