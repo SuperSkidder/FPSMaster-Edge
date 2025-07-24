@@ -80,9 +80,9 @@ public class ConfigManager {
             moduleJson.addProperty("enabled", module.isEnabled());
             moduleJson.addProperty("key", module.key);
             for (Setting<?> setting : module.settings) {
-                if(setting instanceof MutipleItemSetting) {
-                    MutipleItemSetting mutipleItemSetting = (MutipleItemSetting) setting;
-                    ArrayList<ItemStack> value = mutipleItemSetting.getValue();
+                if(setting instanceof MultipleItemSetting) {
+                    MultipleItemSetting multipleItemSetting = (MultipleItemSetting) setting;
+                    ArrayList<ItemStack> value = multipleItemSetting.getValue();
                     List<String> items = new ArrayList<>();
                     value.forEach((itemStack)->{
                         items.add(Item.getIdFromItem(itemStack.getItem()) + "|" + itemStack.getMetadata());
@@ -152,14 +152,14 @@ public class ConfigManager {
                         } else if (setting instanceof BindSetting) {
                             BindSetting bindSetting = (BindSetting) setting;
                             bindSetting.setValue(settingValue.getAsInt());
-                        } else if (setting instanceof MutipleItemSetting) {
-                            MutipleItemSetting mutipleItemSetting = (MutipleItemSetting) setting;
+                        } else if (setting instanceof MultipleItemSetting) {
+                            MultipleItemSetting multipleItemSetting = (MultipleItemSetting) setting;
                             String[] itemInfoList = gson.fromJson(settingValue.getAsJsonArray(), String[].class);
                             for (String itemStack : itemInfoList) {
                                 String[] item = itemStack.split("\\|");
                                 int id = Integer.parseInt(item[0]);
                                 int metadata = Integer.parseInt(item[1]);
-                                mutipleItemSetting.addItem(ItemsUtil.getItemStackWithMetadata(Item.getItemById(id),metadata));
+                                multipleItemSetting.addItem(ItemsUtil.getItemStackWithMetadata(Item.getItemById(id),metadata));
                             }
                         }
                     }

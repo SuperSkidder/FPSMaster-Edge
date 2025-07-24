@@ -48,7 +48,7 @@ public class Module {
                     this.settings.add(setting);
                 } else if (setting instanceof ColorSetting) {
                     this.settings.add(setting);
-                } else if (setting instanceof MutipleItemSetting) {
+                } else if (setting instanceof MultipleItemSetting) {
                     this.settings.add(setting);
                 }
             }

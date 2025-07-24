@@ -5,13 +5,13 @@ import top.fpsmaster.features.settings.Setting;
 
 import java.util.ArrayList;
 
-public class MutipleItemSetting extends Setting<ArrayList<ItemStack>> {
+public class MultipleItemSetting extends Setting<ArrayList<ItemStack>> {
     public static final int MAX_CAPACITY = 7;
-    public MutipleItemSetting(String name) {
+    public MultipleItemSetting(String name) {
         super(name, new ArrayList<>());
     }
 
-    public MutipleItemSetting(String name, VisibleCondition condition) {
+    public MultipleItemSetting(String name, VisibleCondition condition) {
         super(name, new ArrayList<>(), condition);
     }
 

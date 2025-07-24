@@ -3,7 +3,7 @@ package top.fpsmaster.ui.click.modules.impl;
 import net.minecraft.item.ItemStack;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Module;
-import top.fpsmaster.features.settings.impl.MutipleItemSetting;
+import top.fpsmaster.features.settings.impl.MultipleItemSetting;
 import top.fpsmaster.interfaces.ProviderManager;
 import top.fpsmaster.ui.click.modules.SettingRender;
 import top.fpsmaster.utils.render.Render2DUtils;
@@ -12,13 +12,13 @@ import top.fpsmaster.utils.world.ItemsUtil;
 import java.awt.*;
 import java.util.Locale;
 
-public class MultipleItemSettingRender extends SettingRender<MutipleItemSetting> {
+public class MultipleItemSettingRender extends SettingRender<MultipleItemSetting> {
     public static final int xOffset = 14;
     public static final int padding = 3;
     public static final int itemHeight = 21;
     public static final int buttonSize = 15;
 
-    public MultipleItemSettingRender(Module module, MutipleItemSetting setting) {
+    public MultipleItemSettingRender(Module module, MultipleItemSetting setting) {
         super(setting);
         this.mod = module;
     }

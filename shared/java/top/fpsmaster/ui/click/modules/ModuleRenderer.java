@@ -44,8 +44,8 @@ public class ModuleRenderer extends ValueRender {
                 settingsRenderers.add(new ColorSettingRender(module, (ColorSetting) setting));
             } else if (setting instanceof BindSetting) {
                 settingsRenderers.add(new BindSettingRender(module, (BindSetting) setting));
-            } else if(setting instanceof  MutipleItemSetting) {
-                settingsRenderers.add(new MultipleItemSettingRender(module,(MutipleItemSetting)setting));
+            } else if(setting instanceof MultipleItemSetting) {
+                settingsRenderers.add(new MultipleItemSettingRender(module,(MultipleItemSetting)setting));
             }
         });
     }
