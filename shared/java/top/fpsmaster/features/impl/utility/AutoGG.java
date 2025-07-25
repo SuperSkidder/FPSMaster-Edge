@@ -35,7 +35,6 @@ public class AutoGG extends Module {
             String componentValue = ProviderManager.packetChat.getChatComponent(event.packet).toString();
             String chatMessage = ProviderManager.packetChat.getUnformattedText(event.packet);
             boolean hasEndInformation = false;
-            Utility.sendClientMessage(componentValue);
             switch (servers.getValue()) {
                 case 0:
                     boolean hasPlayCommand = componentValue.contains("ClickEvent{action=RUN_COMMAND, value='/play ");
@@ -67,9 +66,9 @@ public class AutoGG extends Module {
                     }
                     if (hasEndInformation) {
                         Utility.sendChatMessage(message.getValue());
-                    }
-                    if(autoPlay.getValue()) {
-                        Utility.sendClientNotify("AutoPlay is not supported at the moment in KKCraft");
+                        if(autoPlay.getValue()) {
+                            Utility.sendClientNotify("AutoPlay is not supported at the moment in KKCraft");
+                        }
                     }
                     break;
                 default:
