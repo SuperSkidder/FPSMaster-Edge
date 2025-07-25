@@ -18,7 +18,7 @@ import top.fpsmaster.utils.math.MathTimer;
 
 public class AutoGG extends Module {
     private final BooleanSetting autoPlay = new BooleanSetting("AutoPlay", false);
-    private final NumberSetting delay = new NumberSetting("DelayToPlay", 5, 0, 10, 1, () -> autoPlay.getValue());
+    private final NumberSetting delay = new NumberSetting("DelayToPlay", 5, 0, 10, 1, autoPlay::getValue);
     private final TextSetting message = new TextSetting("Message", "gg");
     private final ModeSetting servers = new ModeSetting("Servers", 0, "hypxiel", "kkcraft");
     private final String[] hypixelTrigger = new String[]{"Reward Summary", "1st Killer", "Damage Dealt", "奖励总览", "击杀数第一名", "造成伤害"};
@@ -51,7 +51,7 @@ public class AutoGG extends Module {
                             ClickEvent clickEvent = chatComponent.getChatStyle().getChatClickEvent();
                             if (clickEvent != null && clickEvent.getAction().equals(ClickEvent.Action.RUN_COMMAND) && clickEvent.getValue().trim().toLowerCase().startsWith("/play ")) {
                                 if (delay.getValue().doubleValue() > 0) {
-                                    Utility.sendClientNotify("Sending you to the next game in " + delay.getValue() + " seconds");
+                                    Utility.sendClientNotify("Sending you to the next game in " + delay.getValue().intValue() + " seconds");
                                     FPSMaster.async.runnable(() -> {
                                         try {
                                             Thread.sleep(delay.getValue().longValue() * 1000);
