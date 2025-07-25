@@ -89,6 +89,7 @@ public class GuiMultiplayer extends ScaledGuiScreen {
     @Override
     public void initGui() {
         super.initGui();
+        tab = 0;
         loadServerList();
         serverListInternet.clear();
         for (ServerData server : servers) {
