@@ -220,6 +220,7 @@ autogg=AutoGG
 autogg.desc=Automatically send a custom message after a game has ended.
 autogg.servers=Servers
 autogg.servers.hypxiel=Hypxiel
+autogg.servers.kkcraft=KKCraft
 autogg.message=Custom Message
 autogg.autoplay=Auto Play
 autogg.delaytoplay=Auto Play Delay
@@ -383,6 +384,24 @@ targetdisplay.roundradius=Corner Radius
 targetdisplay.background=Show Background
 targetdisplay.omitname=Omit Long Names
 
+itemcountdisplay=Item Count Display
+itemcountdisplay.desc=Quick show your items count in hud
+itemcountdisplay.round=Rounded Corners
+itemcountdisplay.roundradius=Corner Radius
+itemcountdisplay.background=Show Background
+itemcountdisplay.backgroundcolor=Background Color
+itemcountdisplay.betterfont=Clean Font
+itemcountdisplay.fontshadow=Font Shadow
+itemcountdisplay.spacing=Spacing
+itemcountdisplay.mode=Mode
+itemcountdisplay.mode.potpvp=Pot PVP
+itemcountdisplay.mode.uhc=UHC
+itemcountdisplay.mode.custom=Custom
+itemcountdisplay.items=Items
+
+itemssetting.isempty=null
+itemssetting.helditem=your current held item
+
 minimizedbobbing=No Bobbing
 minimizedbobbing.desc=Removes all screen shake
 
@@ -442,6 +461,8 @@ coordsdisplay.limitdisplay=Y Limit Display
 coordsdisplay.limitdisplayy=Y Limit
 coordsdisplay.roundradius=Corner Radius
 coordsdisplay.background=Show Background
+
+
 
 modslist=Mod List
 modslist.desc=Show enabled modules
