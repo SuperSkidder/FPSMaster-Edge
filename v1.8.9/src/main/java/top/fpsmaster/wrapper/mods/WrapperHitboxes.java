@@ -24,13 +24,14 @@ import java.util.stream.Collectors;
 
 public class WrapperHitboxes {
     public static void render(EventRender3D event, ColorSetting color) {
-        GL11.glPushAttrib(GL11.GL_ALPHA | GL11.GL_BLEND | GL11.GL_TEXTURE_2D | GL11.GL_LIGHTING | GL11.GL_DEPTH_TEST | GL11.GL_CULL_FACE);
+//        GL11.glPushAttrib(GL11.GL_ALPHA | GL11.GL_BLEND | GL11.GL_TEXTURE_2D | GL11.GL_LIGHTING | GL11.GL_DEPTH_TEST | GL11.GL_CULL_FACE);
+        GlStateManager.pushAttrib();
         GlStateManager.depthMask(false);
         GlStateManager.disableTexture2D();
-        GlStateManager.disableLighting();
+//        GlStateManager.disableLighting();
         GlStateManager.disableCull();
-        GlStateManager.disableBlend();
-
+        GlStateManager.enableBlend();
+        GlStateManager.enableAlpha();
         for (Entity entity : Minecraft.getMinecraft().theWorld.loadedEntityList.stream().filter(e -> e != Minecraft.getMinecraft().thePlayer && !e.isInvisible()).collect(Collectors.toList())) {
             AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox();
             double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * ProviderManager.timerProvider.getRenderPartialTicks();
@@ -43,10 +44,11 @@ public class WrapperHitboxes {
             RenderGlobal.drawOutlinedBoundingBox(axisalignedbb1, color.getColor().getRed(), color.getColor().getGreen(), color.getColor().getBlue(), color.getColor().getAlpha());
         }
         GlStateManager.enableTexture2D();
-        GlStateManager.enableLighting();
+//        GlStateManager.enableLighting();
         GlStateManager.enableCull();
         GlStateManager.disableBlend();
         GlStateManager.depthMask(true);
-        GL11.glPopAttrib();
+        GlStateManager.popAttrib();
+
     }
 }
