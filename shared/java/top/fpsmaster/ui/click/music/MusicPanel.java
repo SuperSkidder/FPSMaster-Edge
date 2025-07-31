@@ -21,8 +21,12 @@ import top.fpsmaster.ui.common.TextField;
 import top.fpsmaster.utils.os.FileUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -398,16 +402,16 @@ public class MusicPanel {
             byte[] bytes = Base64.getDecoder().decode(base64);
             // create resource location
             ResourceLocation resourceLocation = new ResourceLocation("music/qr");
-            File qr = new File(FileUtils.dir, "/music/qr.png");
-            File qrf = new File(FileUtils.dir, "/music");
-            qrf.mkdirs();
             try {
-                FileUtils.saveFileBytes("/music/qr.png", bytes);
-                ThreadDownloadImageData textureArt = new ThreadDownloadImageData(qr, null, null, null);
+                ThreadDownloadImageData textureArt = new ThreadDownloadImageData(null, null, resourceLocation, null);
+                // convert bytes to bufferedimage
+                ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+                BufferedImage bufferedImage = ImageIO.read(bis);
+                textureArt.setBufferedImage(bufferedImage);
                 textureManager.loadTexture(resourceLocation, textureArt);
                 loginThread.start();
-            } catch (FileException e) {
-                ExceptionHandler.handleFileException(e, "无法保存二维码图片");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
     }

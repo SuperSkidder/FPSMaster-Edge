@@ -107,6 +107,13 @@ public class MusicWrapper {
         try {
             String verbatimLyrics = NeteaseApi.getVerbatimLyrics(music.id);
             if (verbatimLyrics.isEmpty()) {
+                Lyrics lyrics = new Lyrics();
+                Line line = new Line();
+                line.addWord(new Word("暂无歌词", 0, Long.MAX_VALUE));
+                line.time = 0;
+                line.duration = Long.MAX_VALUE;
+                lyrics.addLine(line);
+                music.lyrics = lyrics;
                 return;
             }
             JsonObject jsonObject = gson.fromJson(verbatimLyrics, JsonObject.class);
@@ -121,14 +128,6 @@ public class MusicWrapper {
                 String lrcs = lrc.getAsJsonPrimitive("lyric").getAsString();
                 if (lrcs != null) {
                     music.lyrics = parseLyrics2(lrcs);
-                } else {
-                    Lyrics lyrics = new Lyrics();
-                    Line line = new Line();
-                    line.addWord(new Word("暂无歌词", 0, Long.MAX_VALUE));
-                    line.time = 0;
-                    line.duration = Long.MAX_VALUE;
-                    lyrics.addLine(line);
-                    music.lyrics = lyrics;
                 }
             }
         } catch (Exception e) {
