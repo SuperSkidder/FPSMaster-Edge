@@ -39,6 +39,7 @@
     "MixinMainMenu",
     "MixinMinecraft",
     "MixinNetworkPlayerInfo",
+    "MixinPlayerControllerMP",
     "MixinRender",
     "MixinRenderEntityItem",
     "MixinRenderLivingBase",

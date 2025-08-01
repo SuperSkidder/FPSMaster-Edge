@@ -9,7 +9,6 @@ import top.fpsmaster.exception.FileException;
 public class Mod {
     @net.minecraftforge.fml.common.Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new ForgeEventAPI());
         FPSMaster.INSTANCE.initialize();
     }
 }
