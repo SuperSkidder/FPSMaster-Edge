@@ -93,6 +93,7 @@ public class ModuleManager {
         modules.add(new OldAnimations());
         modules.add(new HitColor());
         modules.add(new BlockOverlay());
+        modules.add(new CleanView());
         modules.add(new DragonWings());
         modules.add(new FireModifier());
         modules.add(new FreeLook());

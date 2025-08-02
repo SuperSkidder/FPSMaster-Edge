@@ -329,6 +329,9 @@ blockoverlay.outlinecolor=描边颜色
 blockoverlay.throughblock=穿透方块
 blockoverlay.width=描边宽度
 
+cleanview=清洁视角
+cleanview.desc=隐藏自己身上发出的粒子
+
 timechanger=时间修改
 timechanger.desc=修改世界时间
 timechanger.time=时间

@@ -327,6 +327,9 @@ blockoverlay.outlinecolor=Outline Color
 blockoverlay.throughblock=Through Block
 blockoverlay.width=Outline Width
 
+cleanview=Clean View
+cleanview.desc=Hide the particles on you
+
 timechanger=Time Changer
 timechanger.desc=Change world time
 timechanger.time=Time
