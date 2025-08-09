@@ -7,6 +7,9 @@ mainmenu.welcome=欢迎您，%s
 mainmenu.latest=您使用的是最新版本！
 mainmenu.failed=获取更新失败！
 mainmenu.notlatest=您使用的不是最新版本，点此更新！
+mainmenu.javafail=无法获取到您的Java版本
+mainmenu.oldjava=您的Java版本过低，请更新
+mainmenu.javatip=请尽量使用新版本的Java8，否则可能会出现登录等联网功能异常
 
 music.title=音乐
 music.search=搜索

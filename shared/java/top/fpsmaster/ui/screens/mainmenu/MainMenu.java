@@ -6,7 +6,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.interfaces.ProviderManager;
-import top.fpsmaster.modules.music.MusicPlayer;
 import top.fpsmaster.ui.mc.GuiMultiplayer;
 import top.fpsmaster.ui.screens.account.GuiWaiting;
 import top.fpsmaster.ui.screens.oobe.GuiLogin;
@@ -20,6 +19,7 @@ import java.awt.*;
 import java.net.URI;
 
 public class MainMenu extends ScaledGuiScreen {
+    private static int firstBoot = 0;
 
     // Buttons for the main menu
     private final MenuButton singlePlayer;
@@ -44,6 +44,24 @@ public class MainMenu extends ScaledGuiScreen {
     @Override
     public void initGui() {
         ProviderManager.mainmenuProvider.initGui();
+        if (firstBoot == 0) {
+            // Check Java Version
+            String version = System.getProperty("java.version");
+            String major = version.split("_")[0];
+            String minor = version.split("_")[1];
+            if (major.equals("1.8.0")) {
+                try {
+                    int minorVersion = Integer.parseInt(minor);
+                    if (minorVersion >= 382) {
+                        firstBoot = 2;
+                    }
+                } catch (NumberFormatException e) {
+                    firstBoot = 1;
+                }
+            } else {
+                firstBoot = 2;
+            }
+        }
 //        if (!MusicPlayer.playList.getMusics().isEmpty()) {
 //            if (MusicPlayer.isPlaying) {
 //                MusicPlayer.playList.pause();
@@ -114,9 +132,12 @@ public class MainMenu extends ScaledGuiScreen {
         Render2DUtils.drawRect(0f, 0f, 0f, 0f, -1);
         FPSMaster.fontManager.s16.drawString(FPSMaster.COPYRIGHT, 4, guiHeight - 14, Color.WHITE.getRGB());
         FPSMaster.fontManager.s16.drawString(FPSMaster.CLIENT_NAME + " Client " + FPSMaster.CLIENT_VERSION + " (Minecraft " + FPSMaster.EDITION + ")", 4, guiHeight - 28, Color.WHITE.getRGB());
+        if (firstBoot != 2) {
+            FPSMaster.fontManager.s16.drawCenteredString(FPSMaster.i18n.get(firstBoot == 0 ? "mainmenu.oldjava" : "mainmenu.javafail"), width / 2f, height / 2f + 40, Color.WHITE.getRGB());
+            FPSMaster.fontManager.s16.drawCenteredString(FPSMaster.i18n.get("mainmenu.javatip"), width / 2f, height / 2f + 50, Color.WHITE.getRGB());
+        }
         Render2DUtils.drawRect(0, 0, width, height, new Color(20, 20, 20, (int) (255 - 255 * Math.max(0, (float) backgroundAnimation.value - 0.5f))));
         Render2DUtils.drawImage(new ResourceLocation("client/gui/logo.png"), guiWidth / 2f - 153 / 4f, guiHeight / 2f - 30 - 70 * ((float) Math.min(startAnimation.value, 1)), 153 / 2f, 67f, -1);
-
     }
 
     @Override

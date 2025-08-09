@@ -7,6 +7,9 @@ mainmenu.welcome=Welcome, %s
 mainmenu.latest=You're using the latest version!
 mainmenu.failed=Failed to fetch update!
 mainmenu.notlatest=You're not on the latest version. Click to update!
+mainmenu.javafail=Cannot access the version of Java
+mainmenu.oldjava=The Java you're using is outdated!
+mainmenu.javatip=Please try to use the new version of Java8 as much as possible, otherwise there may be login and other network connectivity issues
 
 music.title=Music
 music.search=Search
