@@ -48,7 +48,7 @@ public class GlobalListener {
     @Subscribe
     public void onChat(EventPacket e) {
         if (e.packet instanceof S02PacketChat && e.type == EventPacket.PacketType.RECEIVE) {
-            if (((S02PacketChat) e.packet).getChatComponent().getUnformattedText().length() > 5) {
+            if (((S02PacketChat) e.packet).getChatComponent().getUnformattedText().length() > 5 && ((S02PacketChat) e.packet).isChat()) {
                 IChatComponent copyText = new ChatComponentText(" \247f[C]");
                 copyText.getChatStyle()
                         .setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "\u0000#COPY" + ((S02PacketChat) e.packet).getChatComponent().getUnformattedText()))
