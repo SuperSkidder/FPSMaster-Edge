@@ -485,6 +485,7 @@ modslist.spacing=Spacing
 
 betterscreen=Enhanced UI
 betterscreen.desc=Improves vanilla UI visuals
+betterscreen.blur=Blur
 betterscreen.background=Enable Background
 betterscreen.backgroundanimation=Background Animation
 betterscreen.noflickering=No Flickering
