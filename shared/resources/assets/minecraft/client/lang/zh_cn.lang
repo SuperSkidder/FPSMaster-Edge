@@ -71,6 +71,7 @@ betterchat.betterfont=更好的字体
 betterchat.roundradius=圆角半径
 betterchat.background=背景
 betterchat.foldmessage=折叠消息
+betterchat.copymessage=复制消息
 
 combodisplay=连击显示
 combodisplay.desc=显示连击数

@@ -40,42 +40,13 @@ import java.util.stream.Collectors;
 import static top.fpsmaster.utils.Utility.mc;
 
 public class GlobalListener {
-    private IChatComponent lastMessage = null;
-    private int counter = 1;
-
     public void init() {
         EventDispatcher.registerListener(this);
     }
 
     @Subscribe
     public void onChat(EventPacket e) {
-        if (e.packet instanceof S02PacketChat && e.type == EventPacket.PacketType.RECEIVE && ((S02PacketChat) e.packet).getType() != 2) {
-            S02PacketChat packet = (S02PacketChat) e.packet;
-            IChatComponent copyText = new ChatComponentText(" \247f[C]");
-            copyText.getChatStyle()
-                    .setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "\u0000#COPY" + ((S02PacketChat) e.packet).getChatComponent().getUnformattedText()))
-                    .setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(FPSMaster.i18n.get("copy.hover"))));
-            if (BetterChat.using && BetterChat.foldMessage.getValue()) {
-                IGuiNewChatProvider chatProvider = (IGuiNewChatProvider) mc.ingameGUI.getChatGUI();
-                if (chatProvider.getDrawnChatLines().isEmpty()) {
-                    counter = 1;
-                    lastMessage = packet.getChatComponent().createCopy();
-                } else if (lastMessage.equals(packet.getChatComponent())) {
-                    ChatLine c = chatProvider.getDrawnChatLines().get(0);
-                    c = new ChatLine(c.getUpdatedCounter(), lastMessage.createCopy().appendSibling(new ChatComponentText("\247r\247f [x" + ++counter + "]")).appendSibling(copyText), c.getChatLineID());
-                    chatProvider.getChatLines().set(0, c);
-                    chatProvider.getDrawnChatLines().set(0, c);
-                    e.cancel();
-                    return;
-                } else {
-                    counter = 1;
-                    lastMessage = packet.getChatComponent().createCopy();
-                }
-            }
-            if (packet.getChatComponent().getUnformattedText().trim().length() > 2) {
-                packet.getChatComponent().appendSibling(copyText);
-            }
-        } else if (e.packet instanceof C01PacketChatMessage && e.type == EventPacket.PacketType.SEND) {
+        if (e.packet instanceof C01PacketChatMessage && e.type == EventPacket.PacketType.SEND) {
             String msg = ((C01PacketChatMessage) e.packet).getMessage();
             if (msg.startsWith("\u0000#COPY")) {
                 msg = msg.substring(6);
