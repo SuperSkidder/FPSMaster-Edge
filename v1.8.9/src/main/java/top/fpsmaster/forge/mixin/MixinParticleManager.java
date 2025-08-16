@@ -26,7 +26,8 @@ public class MixinParticleManager {
      */
     @Overwrite
     public void emitParticleAtEntity(Entity entityIn, EnumParticleTypes particleTypes) {
-        if (!Performance.using || particleEmitters.size() < Performance.particlesLimit.getValue().intValue()) {
+        if (!Performance.using || particleEmitters.size() > Performance.particlesLimit.getValue().intValue()) {
+            this.particleEmitters.remove(0);
             this.particleEmitters.add(new EntityParticleEmitter(Minecraft.getMinecraft().theWorld, entityIn, particleTypes));
         }
     }
