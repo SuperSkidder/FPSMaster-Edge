@@ -8,4 +8,8 @@ public interface IPlayer {
     @NotNull String getName();
 
     @NotNull UUID getUniqueId();
+
+    boolean isSprinting();
+
+    void setSprinting(boolean sprinting);
 }

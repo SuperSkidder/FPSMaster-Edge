@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class IPlayerImpl implements IPlayer{
+public class IPlayerImpl implements IPlayer {
     private final EntityPlayerSP playerSP;
 
     public IPlayerImpl(EntityPlayerSP playerSP) {
@@ -20,5 +20,15 @@ public class IPlayerImpl implements IPlayer{
     @Override
     public @NotNull UUID getUniqueId() {
         return playerSP.getUniqueID();
+    }
+
+    @Override
+    public boolean isSprinting() {
+        return playerSP.isSprinting();
+    }
+
+    @Override
+    public void setSprinting(boolean sprinting) {
+        playerSP.setSprinting(sprinting);
     }
 }
