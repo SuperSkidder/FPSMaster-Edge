@@ -5,6 +5,10 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import org.jetbrains.annotations.Nullable;
 import top.fpsmaster.api.interfaces.client.IMinecraft;
 import top.fpsmaster.api.interfaces.client.IClientPlayerEntity;
+import top.fpsmaster.api.interfaces.client.settings.IGameSettings;
+import top.fpsmaster.api.interfaces.client.settings.IKeyBinding;
+import top.fpsmaster.api.interfaces.settings.IGameSettingsImpl;
+import top.fpsmaster.api.interfaces.settings.IKeyBindingImpl;
 
 public class IMinecraftImpl implements IMinecraft {
     private final Minecraft mc;
@@ -25,5 +29,15 @@ public class IMinecraftImpl implements IMinecraft {
             mcPlayer = mc.thePlayer;
         }
         return player;
+    }
+
+    @Override
+    public IKeyBinding getKeyBinding() {
+        return new IKeyBindingImpl();
+    }
+
+    @Override
+    public IGameSettings getGameSettings() {
+        return new IGameSettingsImpl(mc.gameSettings);
     }
 }

@@ -7,13 +7,10 @@ import top.fpsmaster.event.events.EventUpdate;
 import top.fpsmaster.features.impl.InterfaceModule;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
-import top.fpsmaster.interfaces.ProviderManager;
-
-import static top.fpsmaster.utils.Utility.mc;
 
 public class Sprint extends InterfaceModule {
     private final BooleanSetting toggleSprint = new BooleanSetting("ToggleSprint", true);
-    public static boolean using = true;
+    public static boolean using = false;
     public static boolean sprint = true;
 
     public Sprint() {
@@ -37,18 +34,23 @@ public class Sprint extends InterfaceModule {
 
     @Subscribe
     public void onKey(EventKey e) {
-        if (toggleSprint.getValue() && e.key == mc.gameSettings.keyBindSprint.getKeyCode()) {
+        if (toggleSprint.getValue() && e.key == ProviderRegistry.getMinecraftProvider().getMinecraft().getGameSettings().getKeyBindSprint().getKeyCode()) {
             sprint = !sprint;
-            if (!sprint)
-                ProviderRegistry.getMinecraftProvider().getMinecraft().getClientPlayer().setSprinting(false);
+            if (!sprint) {
+                if (ProviderRegistry.getMinecraftProvider().getMinecraft().getClientPlayer() != null) {
+                    ProviderRegistry.getMinecraftProvider().getMinecraft().getClientPlayer().setSprinting(false);
+                }
+            }
         }
     }
 
     @Override
     public void onDisable() {
         super.onDisable();
-        ProviderManager.gameSettings.setKeyPress(mc.gameSettings.keyBindSprint, false);
-        mc.thePlayer.setSprinting(false);
+        ProviderRegistry.getMinecraftProvider().getMinecraft().getKeyBinding().setKeyBindState(ProviderRegistry.getMinecraftProvider().getMinecraft().getGameSettings().getKeyBindSprint().getKeyCode(), false);
+        if (ProviderRegistry.getMinecraftProvider().getMinecraft().getClientPlayer() != null) {
+            ProviderRegistry.getMinecraftProvider().getMinecraft().getClientPlayer().setSprinting(false);
+        }
         using = false;
     }
 }
