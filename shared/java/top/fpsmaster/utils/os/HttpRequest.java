@@ -138,6 +138,7 @@ public final class HttpRequest {
             }
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             ClientLogger.error("Download failed: " + e.getMessage());
             return false;
         }

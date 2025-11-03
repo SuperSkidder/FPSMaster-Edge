@@ -17,7 +17,7 @@ public class Performance extends Module {
     public static BooleanSetting ignoreStands = new BooleanSetting("IgnoreStands", true);
     public static BooleanSetting entitiesOptimize = new BooleanSetting("EntitiesOptimize", false);
     public static BooleanSetting fastLoad = new BooleanSetting("FastLoad", true);
-    public static BooleanSetting fontOptimize = new BooleanSetting("FontOptimize", true);
+    public static BooleanSetting fontOptimize = new BooleanSetting("FontOptimize", false);
     public static BooleanSetting staticParticleColor = new BooleanSetting("StaticParticleColor", true);
     public static BooleanSetting limitChunks = new BooleanSetting("LimitChunks", true);
     public static BooleanSetting batchModelRendering = new BooleanSetting("BatchModelRendering", true);

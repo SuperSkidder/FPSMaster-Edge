@@ -144,7 +144,6 @@ public class MainPanel extends ScaledGuiScreen {
         }
 
 
-
         if (Render2DUtils.isHovered(x, (int) (y + height / 2 - 70), categoryAnimation, 140, mouseX, mouseY)) {
             categoryAnimation = (float) AnimationUtils.base(categoryAnimation, 100f, 0.15f);
         } else {
@@ -233,7 +232,9 @@ public class MainPanel extends ScaledGuiScreen {
     public void initGui() {
         super.initGui();
 //        aiChatPanel.init();
-        NewMusicPanel.init();
+        if (curType == Category.Music)
+            NewMusicPanel.init();
+
         scaleAnimation.fstart(0.8, 1.0, 0.2f, Type.EASE_IN_OUT_QUAD);
         close = false;
 
@@ -291,11 +292,11 @@ public class MainPanel extends ScaledGuiScreen {
     @Override
     public void onClick(int mouseX, int mouseY, int mouseButton) {
 //        aiChatPanel.click(mouseX, mouseY, mouseButton);
-        if(Render2DUtils.isHovered(x + 5,
+        if (Render2DUtils.isHovered(x + 5,
                 y + height - 25,
                 20,
                 20, mouseX, mouseY)) {
-            if (mouseButton == 0){
+            if (mouseButton == 0) {
                 mc.displayGuiScreen(new CosmeticScreen());
             }
         }
@@ -326,6 +327,9 @@ public class MainPanel extends ScaledGuiScreen {
                 modsWheel = 0f;
                 if (curType != c) {
                     moduleListAlpha = 0f;
+                }
+                if (c == Category.Music) {
+                    NewMusicPanel.init();
                 }
                 curType = c;
             }

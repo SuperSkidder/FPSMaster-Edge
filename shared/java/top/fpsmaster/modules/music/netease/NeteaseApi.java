@@ -100,7 +100,6 @@ public class NeteaseApi {
         }
     }
 
-    @Deprecated
     public static String getUniKey() {
         String url = BASE_URL + "login/qr/key?timestamp=" + System.currentTimeMillis();
         try {

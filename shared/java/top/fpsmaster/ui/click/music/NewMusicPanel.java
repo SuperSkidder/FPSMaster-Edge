@@ -401,7 +401,6 @@ public class NewMusicPanel {
                         String asString = loginStatus.get("cookie").getAsString();
                         String result = "MUSIC_U=" + subString(asString, "MUSIC_U=", ";") + "; " + "NMTID=" + subString(asString, "NMTID=", ";");
                         NeteaseApi.cookies = result;
-
                         try {
                             FileUtils.saveTempValue("cookies", NeteaseApi.cookies);
                             isWaitingLogin = false;
@@ -413,15 +412,16 @@ public class NewMusicPanel {
                     }
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
+                    isWaitingLogin = false;
                     throw new RuntimeException(e);
                 }
             }
         });
         FPSMaster.async.runnable(() -> {
             key = MusicWrapper.getQRKey();
-            System.out.println(key);
             if (key == null) return;
             String base64 = MusicWrapper.getQRCodeImg(key);
+            System.out.println(base64);
             // render base64 img data
             TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
             // base64 decode
@@ -435,6 +435,7 @@ public class NewMusicPanel {
                 FileUtils.saveFileBytes("/music/qr.png", bytes);
                 ThreadDownloadImageData textureArt = new ThreadDownloadImageData(qr, null, null, null);
                 textureManager.loadTexture(resourceLocation, textureArt);
+
                 loginThread.start();
             } catch (FileException e) {
                 ExceptionHandler.handleFileException(e, "无法保存二维码图片");
