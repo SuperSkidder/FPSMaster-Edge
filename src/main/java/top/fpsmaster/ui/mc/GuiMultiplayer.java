@@ -142,7 +142,7 @@ public class GuiMultiplayer extends ScaledGuiScreen {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
-        Backgrounds.draw((int) guiWidth, (int) guiHeight, mouseX, mouseY, partialTicks, (int) zLevel);
+        Backgrounds.draw((int) (guiWidth * scaleFactor), (int) (guiHeight * scaleFactor), mouseX, mouseY, partialTicks, (int) zLevel);
 
         UFontRenderer title = FPSMaster.fontManager.s22;
         UFontRenderer font = FPSMaster.fontManager.s18;
@@ -154,7 +154,7 @@ public class GuiMultiplayer extends ScaledGuiScreen {
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        Scissor.apply((guiWidth - 400) / 2f, 60f, 400f, guiHeight - 120, scaleFactor);
+        Scissor.apply((guiWidth - 400) / 2f, 60f, 400f, guiHeight - 120);
         scrollContainer.draw((guiWidth - 400) / 2f, 60, 396, guiHeight - 120, mouseX, mouseY, () -> {
             float y = 70 + scrollContainer.getScroll();
             Rects.rounded((guiWidth - 400) / 2f, y - 10, 400, guiHeight - y, 5, new Color(0, 0, 0, 100).getRGB());

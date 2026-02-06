@@ -70,7 +70,7 @@ public class MainMenu extends ScaledGuiScreen {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        Backgrounds.draw((int) guiWidth, (int) guiHeight, mouseX, mouseY, partialTicks, (int) zLevel);
+        Backgrounds.draw((int) (guiHeight * scaleFactor), (int) (guiHeight * scaleFactor), mouseX, mouseY, partialTicks, (int) zLevel);
         double dt = animClock.tick();
         if (!startAnimation.isRunning() && startAnimation.get() == 0.0) {
             startAnimation.start(0, 1.1, 1.5f, Easings.QUINT_OUT);

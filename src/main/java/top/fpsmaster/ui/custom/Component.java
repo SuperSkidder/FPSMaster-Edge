@@ -60,7 +60,10 @@ public class Component {
         x = Math.max(0f, Math.min(1f, x));
         y = Math.max(0f, Math.min(1f, y));
 
-        int scaleFactor = ClientSettings.fixedScale.getValue() ? sr.getScaleFactor() : 2;
+        float scaleFactor = (float) ClientSettings.getUiScale();
+        if (scaleFactor <= 0) {
+            scaleFactor = 1.0f;
+        }
         float guiWidth = sr.getScaledWidth() / 2f * scaleFactor;
         float guiHeight = sr.getScaledHeight() / 2f * scaleFactor;
 
@@ -142,9 +145,9 @@ public class Component {
 
     private void move(int x, int y) {
         ScaledResolution sr = new ScaledResolution(Utility.mc);
-        int scaleFactor = 2;
-        if (ClientSettings.fixedScale.getValue()) {
-            scaleFactor = sr.getScaleFactor();
+        float scaleFactor = (float) ClientSettings.getUiScale();
+        if (scaleFactor <= 0) {
+            scaleFactor = 1.0f;
         }
         float guiWidth = sr.getScaledWidth() / 2f * scaleFactor;
         float guiHeight = sr.getScaledHeight() / 2f * scaleFactor;

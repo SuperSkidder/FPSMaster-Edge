@@ -11,6 +11,7 @@ import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.ModeSetting;
 import top.fpsmaster.ui.click.modules.SettingRender;
 import top.fpsmaster.utils.math.anim.AnimMath;
+import top.fpsmaster.utils.render.gui.UiScale;
 
 import java.awt.*;
 import java.util.Locale;
@@ -50,9 +51,9 @@ public class ModeSettingRender extends SettingRender<ModeSetting> {
         // Rotate this icon
         GL11.glPushMatrix();
         float rotatePercent = expandH / (setting.getModesSize() * 14);
-        GL11.glTranslatef(x + 16 + fw + maxWidth - 12, y + 12, 0f);
+        GL11.glTranslatef((x + 16 + fw + maxWidth - 12) * UiScale.getScale(), (y + 12) * UiScale.getScale(), 0f);
         GL11.glRotatef(rotatePercent * 180, 0f, 0f, 1f);
-        GL11.glTranslatef(-(x + 16 + fw + maxWidth - 12), -(y + 12), 0f);
+        GL11.glTranslatef(-(x + 16 + fw + maxWidth - 12) * UiScale.getScale(), -(y + 12) * UiScale.getScale(), 0f);
         Images.draw(
                 new ResourceLocation("client/gui/settings/icons/arrow.png"),
                 x + 16 + fw + maxWidth - 16,

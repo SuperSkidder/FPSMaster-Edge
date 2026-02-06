@@ -1,5 +1,6 @@
 package top.fpsmaster.ui.click;
 
+import top.fpsmaster.utils.render.gui.UiScale;
 import top.fpsmaster.utils.render.state.Alpha;
 import top.fpsmaster.utils.render.draw.Images;
 import top.fpsmaster.utils.render.draw.Hover;
@@ -93,17 +94,18 @@ public class MainPanel extends ScaledGuiScreen {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         //aiChatPanel.render(mouseX, mouseY, scaleFactor);
-
+        x = (int) ( guiWidth - width) / 2;
+        y = (int) (guiHeight - height) / 2;
         if (!Mouse.isButtonDown(0)) {
             dragLock = "null";
             drag = false;
         }
 
-        if (drag) {
-            mouseY -= (int) dragY;
-            x = (int) (mouseX - dragX);
-            y = mouseY;
-        }
+//        if (drag) {
+//            mouseY -= (int) dragY;
+//            x = (int) (mouseX - dragX);
+//            y = mouseY;
+//        }
 
         x = (int) Math.max(0, Math.min(guiWidth - (int) width, x));
         y = (int) Math.max(0, Math.min(guiHeight - (int) height, y));
@@ -124,9 +126,9 @@ public class MainPanel extends ScaledGuiScreen {
         Rects.fill(0f, 0f, guiWidth, guiHeight, new Color(0, 0, 0, (int) maskAlpha.get()));
         Alpha.set((float) alphaAnimation.get() / 255f);
 
-        GlStateManager.translate(guiWidth / 2.0, guiHeight / 2.0, 0.0);
+        GlStateManager.translate(guiWidth *scaleFactor / 2.0, guiHeight*scaleFactor / 2.0, 0.0);
         GL11.glScaled(scaleAnimation.get(), scaleAnimation.get(), 0.0);
-        GlStateManager.translate(-guiWidth / 2.0, -guiHeight / 2.0, 0.0);
+        GlStateManager.translate(-guiWidth*scaleFactor / 2.0, -guiHeight*scaleFactor / 2.0, 0.0);
 
 
         Images.draw(new ResourceLocation("client/gui/settings/window/panel.png"),
@@ -150,8 +152,7 @@ public class MainPanel extends ScaledGuiScreen {
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         Scissor.apply(
                 scissorX, scissorY, scissorW,
-                scissorH,
-                scaleFactor
+                scissorH
         );
         modHeight = 20f;
         float containerWidth = width - leftWidth - 10;
@@ -219,8 +220,7 @@ public class MainPanel extends ScaledGuiScreen {
         float categoryScissorH = categoryBgHeight * scale;
         Scissor.apply(
                 categoryScissorX, categoryScissorY, categoryScissorW,
-                categoryScissorH,
-                scaleFactor
+                categoryScissorH
         );
 
         for (CategoryComponent m : categories) {
@@ -256,8 +256,6 @@ public class MainPanel extends ScaledGuiScreen {
     @Override
     public void updateScreen() {
         super.updateScreen();
-        x = (int) ((guiWidth - width) / 2);
-        y = (int) ((guiHeight - height) / 2);
     }
 
     @Override

@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL14;
 import top.fpsmaster.utils.render.state.Alpha;
+import top.fpsmaster.utils.render.gui.UiScale;
 
 import java.awt.*;
 
@@ -47,6 +48,10 @@ public class Images {
     }
 
     public static void draw(ResourceLocation res, float x, float y, float width, float height, int color, boolean rawImage) {
+        x = UiScale.scale(x);
+        y = UiScale.scale(y);
+        width = UiScale.scale(width);
+        height = UiScale.scale(height);
         if (!rawImage) {
             glDisable(GL_DEPTH_TEST);
             glEnable(GL_BLEND);
@@ -64,6 +69,10 @@ public class Images {
     }
 
     public static void draw(ResourceLocation res, int x, int y, int width, int height, int color, boolean rawImage) {
+        x = UiScale.scale(x);
+        y = UiScale.scale(y);
+        width = UiScale.scale(width);
+        height = UiScale.scale(height);
         if (!rawImage) {
             glDisable(GL_DEPTH_TEST);
             glEnable(GL_BLEND);
@@ -82,7 +91,11 @@ public class Images {
 
     public static void playerHead(AbstractClientPlayer player, float x, float y, int w, int h) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(player.getLocationSkin());
-        Gui.drawScaledCustomSizeModalRect((int) x, (int) y, 8, 8, 8, 8, w, h, 64, 64);
+        int sx = UiScale.scale(Math.round(x));
+        int sy = UiScale.scale(Math.round(y));
+        int sw = UiScale.scale(w);
+        int sh = UiScale.scale(h);
+        Gui.drawScaledCustomSizeModalRect(sx, sy, 8, 8, 8, 8, sw, sh, 64, 64);
     }
 
     private static void glColor(int color) {

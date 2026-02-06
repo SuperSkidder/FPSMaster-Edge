@@ -14,7 +14,7 @@ public class GuiScale {
 
     public static int getFixedScale() {
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        if (ClientSettings.fixedScale.getValue()) {
+        if (ClientSettings.isFixedScaleEnabled()) {
             return sr.getScaleFactor();
         }
         return 2;
@@ -22,7 +22,7 @@ public class GuiScale {
 
     public static float[] getFixedBounds() {
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        int scaleFactor = ClientSettings.fixedScale.getValue() ? sr.getScaleFactor() : 2;
+        int scaleFactor = ClientSettings.isFixedScaleEnabled() ? sr.getScaleFactor() : 2;
         float guiWidth = sr.getScaledWidth() / 2f * scaleFactor;
         float guiHeight = sr.getScaledHeight() / 2f * scaleFactor;
         return new float[]{guiWidth, guiHeight};

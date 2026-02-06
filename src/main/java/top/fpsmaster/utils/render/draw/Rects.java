@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import top.fpsmaster.utils.imaging.AWTUtils;
+import top.fpsmaster.utils.render.gui.UiScale;
 import top.fpsmaster.utils.render.state.Alpha;
 
 import java.awt.*;
@@ -25,6 +26,10 @@ public class Rects {
     }
 
     public static void fill(float x, float y, float width, float height, int color) {
+        x = UiScale.scale(x);
+        y = UiScale.scale(y);
+        width = UiScale.scale(width);
+        height = UiScale.scale(height);
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.enableAlpha();

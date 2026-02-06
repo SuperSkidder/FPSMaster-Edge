@@ -5,8 +5,10 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import top.fpsmaster.modules.client.GlobalTextFilter;
 import top.fpsmaster.modules.logger.ClientLogger;
+import top.fpsmaster.FPSMaster;
 import top.fpsmaster.utils.io.FileUtils;
 import top.fpsmaster.utils.render.draw.Colors;
+import top.fpsmaster.utils.render.gui.UiScale;
 
 import java.awt.*;
 import java.io.File;
@@ -17,6 +19,7 @@ import static top.fpsmaster.utils.render.state.Alpha.apply;
 public class UFontRenderer extends FontRenderer {
     private final int FONT_HEIGHT = 8;
     private StringCache stringCache;
+    private final int size;
 
     public UFontRenderer(String name, int size) {
         super(
@@ -25,6 +28,7 @@ public class UFontRenderer extends FontRenderer {
                 Minecraft.getMinecraft().getTextureManager(),
                 false
         );
+        this.size = size;
         boolean antiAlias = true;
         Font font;
         try {
@@ -136,6 +140,16 @@ public class UFontRenderer extends FontRenderer {
      */
     @Override
     public int drawString(String text, float x, float y, int color, boolean dropShadow) {
+        if (UiScale.isActive()) {
+            float scale = UiScale.getScale();
+            int scaledSize = Math.max(1, Math.round(size * scale));
+            UFontRenderer renderer = scaledSize == size ? this : FPSMaster.fontManager.getFont(scaledSize);
+            return renderer.drawStringInternal(text, x * scale, y * scale, color, dropShadow);
+        }
+        return drawStringInternal(text, x, y, color, dropShadow);
+    }
+
+    private int drawStringInternal(String text, float x, float y, int color, boolean dropShadow) {
         color = apply(color);
         int i;
         if (dropShadow) {
@@ -156,6 +170,12 @@ public class UFontRenderer extends FontRenderer {
     @Override
     public int getStringWidth(String text) {
         text = GlobalTextFilter.filter(text);
+        if (UiScale.isActive()) {
+            float scale = UiScale.getScale();
+            int scaledSize = Math.max(1, Math.round(size * scale));
+            UFontRenderer renderer = scaledSize == size ? this : FPSMaster.fontManager.getFont(scaledSize);
+            return Math.round(renderer.stringCache.getStringWidth(text) / scale);
+        }
         return stringCache.getStringWidth(text);
     }
 
@@ -164,6 +184,12 @@ public class UFontRenderer extends FontRenderer {
     }
 
     public int getHeight() {
+        if (UiScale.isActive()) {
+            float scale = UiScale.getScale();
+            int scaledSize = Math.max(1, Math.round(size * scale));
+            UFontRenderer renderer = scaledSize == size ? this : FPSMaster.fontManager.getFont(scaledSize);
+            return Math.round(renderer.stringCache.height / 2f / scale);
+        }
         return stringCache.height / 2;
     }
 

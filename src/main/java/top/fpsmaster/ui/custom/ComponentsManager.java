@@ -7,8 +7,11 @@ import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.ui.custom.impl.*;
 import top.fpsmaster.utils.core.Utility;
 import top.fpsmaster.utils.render.gui.GuiScale;
+import top.fpsmaster.utils.render.gui.UiScale;
 
 import java.util.ArrayList;
+
+import static top.fpsmaster.utils.core.Utility.mc;
 
 public class ComponentsManager {
     // List to hold all components
@@ -51,17 +54,15 @@ public class ComponentsManager {
         GL11.glPushMatrix();
 
         // Adjust mouse coordinates if fixed scale is enabled
-        if (ClientSettings.fixedScale.getValue()) {
-            ScaledResolution sr = new ScaledResolution(Utility.mc);
-            int scaleFactor = ClientSettings.fixedScale.getValue() ? sr.getScaleFactor() : 2;
-            float guiWidth = sr.getScaledWidth() / 2f * scaleFactor;
-            float guiHeight = sr.getScaledHeight() / 2f * scaleFactor;
+        ScaledResolution sr = new ScaledResolution(Utility.mc);
+        int scaleFactor = sr.getScaleFactor();
+        float guiWidth = sr.getScaledWidth() / 2f * scaleFactor;
+        float guiHeight = sr.getScaledHeight() / 2f * scaleFactor;
 
-            mouseX = mouseX * scaleFactor / 2;
-            mouseY = mouseY * scaleFactor / 2;
+        mouseX = mouseX * scaleFactor / 2;
+        mouseY = mouseY * scaleFactor / 2;
 
-            GuiScale.fixScale();
-        }
+        GuiScale.fixScale();
 
         // Draw all components that should be displayed
         int finalMouseX = mouseX;

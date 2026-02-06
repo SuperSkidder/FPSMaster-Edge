@@ -28,9 +28,7 @@ public class GradientUtils extends Utility {
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
 
         int factor = sr.getScaleFactor();
-        if (ClientSettings.fixedScale.getValue()) {
-            factor = 2;
-        }
+        factor = Math.max(1, Math.round(factor * scale));
         gradientMaskShader.setUniformf("location", x * factor, (Minecraft.getMinecraft().displayHeight - (height * factor)) - (y * factor));
         gradientMaskShader.setUniformf("rectSize", width * factor, height * factor);
         gradientMaskShader.setUniformf("alpha", alpha);
