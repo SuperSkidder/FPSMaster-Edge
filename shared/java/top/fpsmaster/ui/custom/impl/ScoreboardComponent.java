@@ -49,10 +49,11 @@ public class ScoreboardComponent extends Component {
         }
 
         int maxWidth = mc.fontRendererObj.getStringWidth(objective.getDisplayName());
+        boolean showScore = Scoreboard.score.getValue();
         List<String> lines = new ArrayList<>();
         for (Score score : filtered) {
             String name = ScorePlayerTeam.formatPlayerName(scoreboard.getPlayersTeam(score.getPlayerName()), score.getPlayerName());
-            String line = name + ": " + score.getScorePoints();
+            String line = showScore ? name + ": " + score.getScorePoints() : name;
             lines.add(line);
             maxWidth = Math.max(maxWidth, mc.fontRendererObj.getStringWidth(line));
         }
