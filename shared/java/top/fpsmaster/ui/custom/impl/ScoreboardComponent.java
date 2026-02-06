@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.scoreboard.Scoreboard;
 import top.fpsmaster.utils.render.Render2DUtils;
 
 import java.util.ArrayList;
@@ -29,15 +28,15 @@ public class ScoreboardComponent extends Component {
             height = 0;
             return;
         }
-        Scoreboard scoreboard = mc.theWorld.getScoreboard();
-        ScoreObjective objective = scoreboard.getObjectiveInDisplaySlot(1);
+        net.minecraft.scoreboard.Scoreboard mcScoreboard = mc.theWorld.getScoreboard();
+        ScoreObjective objective = mcScoreboard.getObjectiveInDisplaySlot(1);
         if (objective == null) {
             width = 0;
             height = 0;
             return;
         }
 
-        Collection<Score> scores = scoreboard.getSortedScores(objective);
+        Collection<Score> scores = mcScoreboard.getSortedScores(objective);
         List<Score> filtered = new ArrayList<>();
         for (Score score : scores) {
             if (score.getPlayerName() != null && !score.getPlayerName().startsWith("#")) {
@@ -52,7 +51,7 @@ public class ScoreboardComponent extends Component {
         boolean showScore = Scoreboard.score.getValue();
         List<String> lines = new ArrayList<>();
         for (Score score : filtered) {
-            String name = ScorePlayerTeam.formatPlayerName(scoreboard.getPlayersTeam(score.getPlayerName()), score.getPlayerName());
+            String name = ScorePlayerTeam.formatPlayerName(mcScoreboard.getPlayersTeam(score.getPlayerName()), score.getPlayerName());
             String line = showScore ? name + ": " + score.getScorePoints() : name;
             lines.add(line);
             maxWidth = Math.max(maxWidth, mc.fontRendererObj.getStringWidth(line));

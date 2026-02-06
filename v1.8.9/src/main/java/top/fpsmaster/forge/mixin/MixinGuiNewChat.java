@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import top.fpsmaster.FPSMaster;
-import top.fpsmaster.forge.api.IChatLine;
 import top.fpsmaster.features.impl.interfaces.BetterChat;
 import top.fpsmaster.utils.math.animation.AnimationUtils;
 import top.fpsmaster.utils.render.Render2DUtils;
@@ -263,12 +262,10 @@ public abstract class MixinGuiNewChat {
         }
     }
 
-    @Override
     public List<ChatLine> getChatLines() {
         return chatLines;
     }
 
-    @Override
     public List<ChatLine> getDrawnChatLines() {
         return drawnChatLines;
     }

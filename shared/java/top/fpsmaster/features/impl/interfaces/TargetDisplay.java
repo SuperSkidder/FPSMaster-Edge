@@ -13,6 +13,8 @@ import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.features.settings.impl.ColorSetting;
 import top.fpsmaster.features.settings.impl.ModeSetting;
+import top.fpsmaster.forge.api.IMinecraft;
+import top.fpsmaster.forge.api.IRenderManager;
 
 import java.awt.*;
 
@@ -55,9 +57,11 @@ public class TargetDisplay extends InterfaceModule {
         GlStateManager.disableCull();
         GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
         Minecraft mc = Minecraft.getMinecraft();
-        double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * mc.timer.renderPartialTicks - mc.getRenderManager().renderPosX;
-        double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * mc.timer.renderPartialTicks - mc.getRenderManager().renderPosY + Math.sin(System.currentTimeMillis() / 2E+2) + 1;
-        double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * mc.timer.renderPartialTicks - mc.getRenderManager().renderPosZ;
+        float partialTicks = ((IMinecraft) mc).arch$getTimer().renderPartialTicks;
+        IRenderManager renderManager = (IRenderManager) mc.getRenderManager();
+        double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks - renderManager.renderPosX();
+        double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks - renderManager.renderPosY() + Math.sin(System.currentTimeMillis() / 2E+2) + 1;
+        double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks - renderManager.renderPosZ();
         Color c;
         GL11.glColor4f(1f, 0f, 0f, 0f);
         float i = 0f;

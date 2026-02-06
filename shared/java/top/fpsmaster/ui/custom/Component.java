@@ -229,10 +229,10 @@ public class Component {
             GL11.glTranslated(x, y, 0.0);
             GL11.glScaled(scaled, scaled, 1.0);
                 if (mod.fontShadow.getValue()) {
-                    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(text, 0f, 0f, color);
+                    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(text, 0, 0, color);
                 } else {
                     GL11.glColor4f(1, 1, 1, 1);
-                    Minecraft.getMinecraft().fontRendererObj.drawString(text, 0f, 0f, color);
+                    Minecraft.getMinecraft().fontRendererObj.drawString(text, 0, 0, color);
                 }
             GL11.glPopMatrix();
         }

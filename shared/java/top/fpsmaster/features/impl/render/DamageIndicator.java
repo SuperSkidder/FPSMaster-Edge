@@ -10,6 +10,7 @@ import top.fpsmaster.event.events.EventRender3D;
 import top.fpsmaster.event.events.EventUpdate;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
+import top.fpsmaster.forge.api.IRenderManager;
 import top.fpsmaster.utils.math.MathTimer;
 
 import java.awt.*;
@@ -81,10 +82,10 @@ public class DamageIndicator extends Module {
         GlStateManager.enableBlend();
         GL11.glBlendFunc(770, 771);
         GL11.glDisable(3553);
-        float partialTicks = mc.timer.renderPartialTicks;
-        double x = indicator.x + 1 - mc.getRenderManager().renderPosX;
-        double y = indicator.y - mc.getRenderManager().renderPosY + 1;
-        double z = indicator.z + 1 - mc.getRenderManager().renderPosZ;
+        IRenderManager renderManager = (IRenderManager) mc.getRenderManager();
+        double x = indicator.x + 1 - renderManager.renderPosX();
+        double y = indicator.y - renderManager.renderPosY() + 1;
+        double z = indicator.z + 1 - renderManager.renderPosZ();
         float scale = 0.065f;
         GlStateManager.translate(x, y + 1 + 0.5f - 1 / 2.0f, z);
         GL11.glNormal3f(0.0f, 1.0f, 0.0f);

@@ -7,6 +7,8 @@ import org.lwjgl.opengl.GL11;
 import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.NumberSetting;
+import top.fpsmaster.forge.api.IMinecraft;
+import top.fpsmaster.forge.api.IRenderManager;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -44,10 +46,11 @@ public class TNTTimer extends Module {
         GlStateManager.enableBlend();
         GL11.glBlendFunc(770, 771);
         GL11.glDisable(3553);
-        float partialTicks = mc.timer.renderPartialTicks;
-        double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks - mc.getRenderManager().renderPosX;
-        double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks - mc.getRenderManager().renderPosY;
-        double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks - mc.getRenderManager().renderPosZ;
+        float partialTicks = ((IMinecraft) mc).arch$getTimer().renderPartialTicks;
+        IRenderManager renderManager = (IRenderManager) mc.getRenderManager();
+        double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks - renderManager.renderPosX();
+        double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks - renderManager.renderPosY();
+        double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks - renderManager.renderPosZ();
         float scale = 0.065f;
         GlStateManager.translate(x, y + entity.height + 0.5f - entity.height / 2.0f, z);
         GL11.glNormal3f(0.0f, 1.0f, 0.0f);

@@ -5,6 +5,7 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.MultipleItemSetting;
 import top.fpsmaster.ui.click.modules.SettingRender;
+import top.fpsmaster.utils.Utility;
 import top.fpsmaster.utils.render.Render2DUtils;
 import top.fpsmaster.utils.world.ItemsUtil;
 
@@ -65,7 +66,7 @@ public class MultipleItemSettingRender extends SettingRender<MultipleItemSetting
     @Override
     public void mouseClick(float x, float y, float width, float height, float mouseX, float mouseY, int btn) {
         if(Render2DUtils.isHovered(x + 10 + xOffset + itemWidth - 15, y - 3,10,10,(int)mouseX,(int)mouseY) && btn == 0){
-            ItemStack heldItem = mc.thePlayer.getHeldItem();
+            ItemStack heldItem = Utility.mc.thePlayer.getHeldItem();
             if(heldItem != null){
                 this.setting.addItem(heldItem);
                 return;
