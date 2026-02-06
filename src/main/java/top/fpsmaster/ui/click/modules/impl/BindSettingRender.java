@@ -10,13 +10,13 @@ import top.fpsmaster.features.settings.impl.BindSetting;
 import top.fpsmaster.font.impl.UFontRenderer;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.SettingRender;
-import top.fpsmaster.utils.math.animation.ColorAnimation;
+import top.fpsmaster.utils.math.anim.ColorAnimator;
 
 import java.awt.*;
 import java.util.Locale;
 
 public class BindSettingRender extends SettingRender<BindSetting> {
-    ColorAnimation colorAnimation = new ColorAnimation();
+    ColorAnimator colorAnimation = new ColorAnimator();
 
     public BindSettingRender(Module module, BindSetting setting) {
         super(setting);

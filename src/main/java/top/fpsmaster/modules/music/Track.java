@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.util.ResourceLocation;
 import top.fpsmaster.modules.music.netease.Music;
 import top.fpsmaster.modules.music.netease.deserialize.MusicWrapper;
-import top.fpsmaster.utils.imaging.KMeansUtil;
 import top.fpsmaster.utils.io.HttpRequest;
 
 import java.awt.*;
@@ -18,8 +17,6 @@ public class Track {
     Long id;
     String name;
     String picUrl;
-    Color dominateColor;
-    Color fontColor = Color.WHITE;
     LinkedList<AbstractMusic> musics = new LinkedList<>();
     ResourceLocation coverResource;
     boolean loaded = false;
@@ -30,22 +27,6 @@ public class Track {
         this.picUrl = picUrl;
     }
 
-    public Color getDominateColor() {
-        return dominateColor;
-    }
-
-    public void setDominateColor(Color dominateColor) {
-        this.dominateColor = dominateColor;
-    }
-
-    public Color getFontColor() {
-        return fontColor;
-    }
-
-    public void setFontColor(Color fontColor) {
-        this.fontColor = fontColor;
-    }
-
     public void loadTrack() {
         coverResource = new ResourceLocation("music/track/" + id);
         ThreadDownloadImageData downloadImageData = new ThreadDownloadImageData(null, null, coverResource, null);
@@ -53,14 +34,6 @@ public class Track {
             BufferedImage bufferedImageIn = HttpRequest.downloadImage(picUrl);
             downloadImageData.setBufferedImage(bufferedImageIn);
             mc.getTextureManager().loadTexture(coverResource, downloadImageData);
-            dominateColor = KMeansUtil.getOneDominantColor(bufferedImageIn);
-            float[] hsb = new float[3];
-            Color.RGBtoHSB(dominateColor.getRed(), dominateColor.getGreen(), dominateColor.getBlue(), hsb);
-            if (hsb[2] < 0.5) {
-                fontColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1] * 0.1f, 0.8f));
-            } else {
-                fontColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1] * 0.1f, 0.2f));
-            }
         } catch (Exception ignored) {
         }
     }

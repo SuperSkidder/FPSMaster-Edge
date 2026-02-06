@@ -1,7 +1,5 @@
 package top.fpsmaster.modules.music;
 
-import top.fpsmaster.utils.math.animation.Animation;
-
 import java.util.ArrayList;
 
 public class Line {
@@ -13,7 +11,6 @@ public class Line {
     public float animation = 0f;
     public boolean finished = false;
     public String timeTick = null;
-    public Animation scaleAnimation = new Animation();
 
     public void addWord(Word word) {
         words.add(word);

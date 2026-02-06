@@ -20,13 +20,6 @@ public class StencilUtil {
         GL11.glColorMask(false, false, false, false);
     }
 
-    public static void end() {
-        Minecraft mc = Minecraft.getMinecraft();
-        GL11.glStencilFunc(GL11.GL_EQUAL, 1, 0xFF);
-        GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_KEEP);
-        GL11.glColorMask(true, true, true, true);
-    }
-
     public static void draw(Runnable start, Runnable end) {
         GL11.glEnable(GL11.GL_STENCIL_TEST);
         start();

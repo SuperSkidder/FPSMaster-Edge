@@ -7,15 +7,15 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.ui.click.modules.SettingRender;
-import top.fpsmaster.utils.math.animation.ColorAnimation;
-import top.fpsmaster.utils.math.animation.Type;
+import top.fpsmaster.utils.math.anim.ColorAnimator;
+import top.fpsmaster.utils.math.anim.Easings;
 
 import java.awt.*;
 import java.util.Locale;
 
 public class BooleanSettingRender extends SettingRender<BooleanSetting> {
     // animation
-    private final ColorAnimation box = new ColorAnimation(new Color(255, 255, 255, 0));
+    private final ColorAnimator box = new ColorAnimator(new Color(255, 255, 255, 0));
 
     public BooleanSettingRender(Module mod, BooleanSetting setting) {
         super(setting);
@@ -26,9 +26,9 @@ public class BooleanSettingRender extends SettingRender<BooleanSetting> {
     public void render(float x, float y, float width, float height, float mouseX, float mouseY, boolean custom) {
         box.update();
         if (setting.getValue()) {
-            box.start(box.getColor(), new Color(255, 255, 255), 0.2f, Type.EASE_IN_OUT_QUAD);
+            box.animateTo(new Color(255, 255, 255), 0.2f, Easings.QUAD_IN_OUT);
         } else {
-            box.start(box.getColor(), new Color(129, 129, 129), 0.2f, Type.EASE_IN_OUT_QUAD);
+            box.animateTo(new Color(129, 129, 129), 0.2f, Easings.QUAD_IN_OUT);
         }
         Rects.rounded(x + 14, y + 3, 6f, 6f, 3, box.getColor().getRGB());
         FPSMaster.fontManager.s16.drawString(

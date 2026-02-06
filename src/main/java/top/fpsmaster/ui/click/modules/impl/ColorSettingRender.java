@@ -13,7 +13,7 @@ import top.fpsmaster.features.settings.impl.ColorSetting;
 import top.fpsmaster.features.settings.impl.utils.CustomColor;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.SettingRender;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.anim.AnimMath;
 import top.fpsmaster.utils.system.OSUtil;
 import top.fpsmaster.utils.render.gui.GuiScale;
 import top.fpsmaster.utils.render.shader.GradientUtils;
@@ -158,7 +158,7 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
                     customColor.brightness, customColor.alpha);
         }
 
-        aHeight = expand ? (float) AnimationUtils.base(aHeight, 80.0, 0.2) : (float) AnimationUtils.base(aHeight, 0.0, 0.2);
+        aHeight = expand ? (float) AnimMath.base(aHeight, 80.0, 0.2) : (float) AnimMath.base(aHeight, 0.0, 0.2);
         this.height = aHeight + 20;
     }
 

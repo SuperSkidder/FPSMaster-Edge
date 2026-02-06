@@ -15,7 +15,7 @@ import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.features.settings.impl.ColorSetting;
 import top.fpsmaster.features.settings.impl.NumberSetting;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.anim.AnimMath;
 
 import java.awt.*;
 
@@ -62,8 +62,8 @@ public class Crosshair extends Module {
         boolean dotValue = dot.getValue();
 
         dyna = isMoving() ?
-                (float) AnimationUtils.base(dyna, dynamicValue, 0.2) :
-                (float) AnimationUtils.base(dyna, 0.0, 0.2);
+                (float) AnimMath.base(dyna, dynamicValue, 0.2) :
+                (float) AnimMath.base(dyna, 0.0, 0.2);
 
         Color col = color.getColor();
         if (Minecraft.getMinecraft().objectMouseOver != null && Minecraft.getMinecraft().objectMouseOver.entityHit != null) {

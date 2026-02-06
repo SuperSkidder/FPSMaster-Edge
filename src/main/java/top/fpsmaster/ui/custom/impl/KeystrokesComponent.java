@@ -6,7 +6,7 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.Keystrokes;
 import top.fpsmaster.font.impl.UFontRenderer;
 import top.fpsmaster.ui.custom.Component;
-import top.fpsmaster.utils.math.animation.ColorAnimation;
+import top.fpsmaster.utils.math.anim.ColorAnimator;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -61,14 +61,14 @@ public class KeystrokesComponent extends Component {
         private final int defaultYOffset;
         private int xOffset;
         private int yOffset;
-        private final ColorAnimation color;
+        private final ColorAnimator color;
 
         public Key(String name, int keyCode, int xOffset, int yOffset) {
             this.name = name;
             this.keyCode = keyCode;
             this.defaultXOffset = xOffset;
             this.defaultYOffset = yOffset;
-            this.color = new ColorAnimation();
+            this.color = new ColorAnimator();
             this.xOffset = defaultXOffset;
             this.yOffset = defaultYOffset;
         }

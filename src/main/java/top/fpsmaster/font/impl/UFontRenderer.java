@@ -12,11 +12,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
-
-import static top.fpsmaster.utils.render.Render2DUtils.intToColor;
 import static top.fpsmaster.utils.render.state.Alpha.apply;
-import static top.fpsmaster.utils.render.draw.Colors.toColor;
-import top.fpsmaster.utils.render.state.Alpha;
 
 public class UFontRenderer extends FontRenderer {
     private final int FONT_HEIGHT = 8;
@@ -66,22 +62,10 @@ public class UFontRenderer extends FontRenderer {
             colorCode[i] = (k & 255) << 16 | (l & 255) << 8 | (i1 & 255);
         }
 
-        if (path(res).equalsIgnoreCase("textures/font/ascii.png")) {
+        if (res.getResourcePath().equalsIgnoreCase("textures/font/ascii.png")) {
             stringCache = new StringCache(colorCode);
             stringCache.setDefaultFont(font, size, antiAlias);
         }
-    }
-
-    private static String path(ResourceLocation rl) {
-        try {
-            return (String) ResourceLocation.class.getMethod("getResourcePath").invoke(rl);
-        } catch (Exception ignored) {
-        }
-        try {
-            return (String) ResourceLocation.class.getMethod("getPath").invoke(rl);
-        } catch (Exception ignored) {
-        }
-        return "";
     }
 
     /**
@@ -89,7 +73,7 @@ public class UFontRenderer extends FontRenderer {
      */
     @Override
     public int drawStringWithShadow(String text, float x, float y, int color) {
-        Color color1 = intToColor(color);
+        Color color1 = Colors.toColor(color);
         this.drawString(text, x, y, new Color(color1.getRed(), color1.getGreen(), color1.getBlue(), color1.getAlpha()).getRGB(), true);
         return getStringWidth(text);
     }
@@ -155,12 +139,12 @@ public class UFontRenderer extends FontRenderer {
         color = apply(color);
         int i;
         if (dropShadow) {
-            if (intToColor(color).getAlpha() > 50) {
+            if (Colors.toColor(color).getAlpha() > 50) {
                 stringCache.renderString(
                         text,
                         x + 0.5f,
                         y + 0.5f,
-                        new Color(20, 20, 20, intToColor(color).getAlpha()).getRGB(),
+                        new Color(20, 20, 20, Colors.toColor(color).getAlpha()).getRGB(),
                         true
                 );
             }

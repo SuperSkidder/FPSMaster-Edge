@@ -1,7 +1,5 @@
 package top.fpsmaster.utils.math.anim;
 
-import top.fpsmaster.utils.math.animation.Type;
-
 public enum Easings implements Easing {
     LINEAR {
         @Override
@@ -227,31 +225,4 @@ public enum Easings implements Easing {
         }
     };
 
-    public static Easing fromLegacy(Type type) {
-        if (type == null) return LINEAR;
-        switch (type) {
-            case LINEAR:
-                return LINEAR;
-            case EASE_IN_QUAD:
-                return QUAD_IN;
-            case EASE_OUT_QUAD:
-                return QUAD_OUT;
-            case EASE_IN_OUT_QUAD:
-                return QUAD_IN_OUT;
-            case EASE_IN_ELASTIC:
-                return ELASTIC_IN;
-            case EASE_OUT_ELASTIC:
-                return ELASTIC_OUT;
-            case EASE_IN_OUT_ELASTIC:
-                return ELASTIC_IN_OUT;
-            case EASE_IN_BACK:
-                return BACK_IN;
-            case EASE_OUT_BACK:
-                return BACK_OUT;
-            case EASE_OUT_QUINT:
-                return QUINT_OUT;
-            default:
-                return LINEAR;
-        }
-    }
 }

@@ -62,7 +62,7 @@ public class MusicPlayer {
                 JLayerHelper.clip.stop();
                 JLayerHelper.clip.close();
             }
-            float v = Float.parseFloat(FPSMaster.configManager.configure.getOrCreate("volume", "1"));
+            float v = (float) FPSMaster.configManager.configure.volume;
             if (playThread != null && playThread.isAlive())
                 playThread.interrupt();
             playThread = new Thread(() -> {
@@ -85,7 +85,7 @@ public class MusicPlayer {
         MusicPlayer.volume = volume;
         if (JLayerHelper.clip == null) return;
         JLayerHelper.setVolume(volume);
-        FPSMaster.configManager.configure.set("volume", String.valueOf(volume));
+        FPSMaster.configManager.configure.volume = volume;
     }
 
     public float getPauseAt() {

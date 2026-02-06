@@ -27,12 +27,11 @@ jobs:
 
       - name: Build with Gradle Wrapper
         run: |
-          chmod +x ./v1.8.9/gradlew
-          cd v1.8.9
+          chmod +x ./gradlew
           ./gradlew build
 
-      - name: Upload v1.8.9 artifacts
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4.3.3
         with:
-          name: v1.8.9
-          path: v1.8.9/build/libs/
+          name: build-libs
+          path: build/libs/

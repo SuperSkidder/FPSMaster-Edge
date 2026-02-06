@@ -7,7 +7,7 @@ import top.fpsmaster.utils.render.draw.Rects;
 
 import net.minecraft.util.ResourceLocation;
 import top.fpsmaster.FPSMaster;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.anim.AnimMath;
 
 import java.awt.*;
 
@@ -38,9 +38,9 @@ public class MenuButton {
 
         // Handle alpha change based on hover
         if (Hover.is(x, y, width, height, (int) mouseX, (int) mouseY)) {
-            alpha = AnimationUtils.base(alpha, 200.0, 0.1);
+            alpha = AnimMath.base(alpha, 200.0, 0.1);
         } else {
-            alpha = AnimationUtils.base(alpha, 100.0, 0.1);
+            alpha = AnimMath.base(alpha, 100.0, 0.1);
         }
 
         // Draw the button rectangle

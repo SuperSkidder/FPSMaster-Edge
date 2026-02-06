@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.fpsmaster.event.EventDispatcher;
 import top.fpsmaster.event.events.EventSendChatMessage;
 import top.fpsmaster.features.impl.interfaces.BetterScreen;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.anim.AnimMath;
 import top.fpsmaster.utils.render.effects.Blur;
 
 import java.awt.*;
@@ -69,7 +69,7 @@ public abstract class MixinGuiScreen extends Gui {
             if (BetterScreen.using) {
                 if (BetterScreen.useBG.getValue()) {
                     if (BetterScreen.backgroundAnimation.getValue()) {
-                        arch$alpha = (float) AnimationUtils.base(arch$alpha, 170, 0.2f);
+                        arch$alpha = (float) AnimMath.base(arch$alpha, 170, 0.2f);
                     } else {
                         arch$alpha = 170;
                     }

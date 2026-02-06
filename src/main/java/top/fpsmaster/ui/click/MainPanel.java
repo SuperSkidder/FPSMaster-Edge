@@ -17,7 +17,7 @@ import top.fpsmaster.features.manager.Category;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.ui.click.component.ScrollContainer;
 import top.fpsmaster.ui.click.modules.ModuleRenderer;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.anim.AnimMath;
 import top.fpsmaster.utils.math.anim.AnimClock;
 import top.fpsmaster.utils.math.anim.Animator;
 import top.fpsmaster.utils.math.anim.BezierEasing;
@@ -137,7 +137,7 @@ public class MainPanel extends ScaledGuiScreen {
                 -1
         );
 
-        moduleListAlpha = (float) AnimationUtils.base(moduleListAlpha, 255.0, 0.1f);
+        moduleListAlpha = (float) AnimMath.base(moduleListAlpha, 255.0, 0.1f);
 
         float scale = (float) scaleAnimation.get();
         float centerX = guiWidth / 2f;
@@ -187,9 +187,9 @@ public class MainPanel extends ScaledGuiScreen {
         float categoryStartY = getCategoryStartY();
 
         if (Hover.is(x, (int) categoryBgY, categoryAnimation, categoryBgHeight, mouseX, mouseY)) {
-            categoryAnimation = (float) AnimationUtils.base(categoryAnimation, 100f, 0.15f);
+            categoryAnimation = (float) AnimMath.base(categoryAnimation, 100f, 0.15f);
         } else {
-            categoryAnimation = (float) AnimationUtils.base(categoryAnimation, 30f, 0.15f);
+            categoryAnimation = (float) AnimMath.base(categoryAnimation, 30f, 0.15f);
         }
 
         Rects.roundedImage(
@@ -234,7 +234,7 @@ public class MainPanel extends ScaledGuiScreen {
             if (m.category == curType) {
                 selection = drag
                         ? my
-                        : (float) AnimationUtils.base(selection, my, 0.2);
+                        : (float) AnimMath.base(selection, my, 0.2);
             }
 
             m.render(

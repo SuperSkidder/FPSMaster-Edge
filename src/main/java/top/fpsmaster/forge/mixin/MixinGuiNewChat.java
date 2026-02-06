@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.BetterChat;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
 
 import java.awt.*;
 import java.util.List;

@@ -9,8 +9,8 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.impl.interfaces.TargetDisplay;
 import top.fpsmaster.ui.custom.Component;
 import top.fpsmaster.utils.core.Utility;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
-import top.fpsmaster.utils.math.animation.ColorAnimation;
+import top.fpsmaster.utils.math.anim.AnimMath;
+import top.fpsmaster.utils.math.anim.ColorAnimator;
 
 import java.awt.*;
 
@@ -18,7 +18,7 @@ public class TargetHUDComponent extends Component {
 
     private float animation = 0f;
     private float healthPer = 0f;
-    private final ColorAnimation colorAnimation = new ColorAnimation();
+    private final ColorAnimator colorAnimation = new ColorAnimator();
 
     public TargetHUDComponent() {
         super(TargetDisplay.class);
@@ -42,13 +42,13 @@ public class TargetHUDComponent extends Component {
         }
 
         animation = (TargetDisplay.target.isDead || (System.currentTimeMillis() - TargetDisplay.lastHit > 5000 && target1 != Utility.mc.thePlayer))
-                ? (float) AnimationUtils.base(animation, 0.0, 0.1)
-                : (float) AnimationUtils.base(animation, 1, 0.1);
+                ? (float) AnimMath.base(animation, 0.0, 0.1)
+                : (float) AnimMath.base(animation, 1, 0.1);
 
         float health = target1.getHealth();
         float maxHealth = target1.getMaxHealth();
 
-        healthPer = (float) AnimationUtils.base(healthPer, (health / maxHealth), 0.1);
+        healthPer = (float) AnimMath.base(healthPer, (health / maxHealth), 0.1);
 
         if (TargetDisplay.targetHUD.getMode() == 0) {
             width = (30 + FPSMaster.fontManager.s16.getStringWidth(name));

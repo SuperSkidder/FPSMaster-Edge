@@ -27,9 +27,6 @@ public class MainMenu extends ScaledGuiScreen {
     private final MenuButton multiPlayer;
     private final MenuButton options;
     private final MenuButton exit;
-
-    private String info = "离线模式";
-
     private static final Animator startAnimation = new Animator();
     private static final Animator backgroundAnimation = new Animator();
     private final AnimClock animClock = new AnimClock();
@@ -111,12 +108,6 @@ public class MainMenu extends ScaledGuiScreen {
         float w = FPSMaster.fontManager.s16.getStringWidth("Copyright Mojang AB. Do not distribute!");
         FPSMaster.fontManager.s16.drawString("Copyright Mojang AB. Do not distribute!", guiWidth - w - 4, guiHeight - 14, Color.WHITE.getRGB());
 
-        // Display welcome message
-        String welcome = EnumChatFormatting.GREEN + FPSMaster.i18n.get("mainmenu.single");
-        FPSMaster.fontManager.s16.drawString(welcome, 4, guiHeight - 52, Color.WHITE.getRGB());
-
-        FPSMaster.fontManager.s16.drawString(info, 4, guiHeight - 40, Color.WHITE.getRGB());
-
         // Render client info
         Rects.fill(0f, 0f, 0f, 0f, -1);
         FPSMaster.fontManager.s16.drawString(FPSMaster.COPYRIGHT, 4, guiHeight - 14, Color.WHITE.getRGB());
@@ -138,10 +129,10 @@ public class MainMenu extends ScaledGuiScreen {
 
         if (mouseButton == 0) {
             if (Hover.is(guiWidth - 22, 13, 12, 12, mouseX, mouseY)) {
-                if (FPSMaster.configManager.configure.getOrCreate("background", "new").equals("classic")) {
-                    FPSMaster.configManager.configure.set("background", "new");
+                if ("classic".equals(FPSMaster.configManager.configure.background)) {
+                    FPSMaster.configManager.configure.background = "new";
                 } else {
-                    FPSMaster.configManager.configure.set("background", "classic");
+                    FPSMaster.configManager.configure.background = "classic";
                 }
             }
         }

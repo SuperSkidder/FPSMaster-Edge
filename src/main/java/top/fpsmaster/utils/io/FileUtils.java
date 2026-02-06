@@ -2,10 +2,17 @@ package top.fpsmaster.utils.io;
 
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.exception.FileException;
-import net.minecraft.client.Minecraft;
 import top.fpsmaster.modules.logger.ClientLogger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -22,119 +29,70 @@ public class FileUtils {
     public static boolean hasBackground = false;
     public static File fonts;
 
-    static {
-        if (net.minecraft.client.Minecraft.getMinecraft() == null) {
-            ClientLogger.error("FileUtils", "Minecraft provider is not initialized");
-            cache = file(new File("D:\\Code\\FPSMaster"), ".cache");
-            dir = file(new File("D:\\Code\\FPSMaster"), "FPSMaster " + FPSMaster.EDITION);
-        } else {
-            cache = file(Minecraft.getMinecraft().mcDataDir, ".cache");
-            dir = file(Minecraft.getMinecraft().mcDataDir, "FPSMaster " + FPSMaster.EDITION);
-        }
-        fonts = file(dir, "fonts");
+    private static boolean initialized;
 
-        fpsmasterCache = file(cache, "FPSMasterClient");
-        netease = file(cache, "netease");
-        music = file(netease, "songs");
-        artists = file(netease, "artists");
-        omaments = file(cache, "omaments");
-        background = new File(dir, "background.png");
-        if (background.exists()) {
-            hasBackground = true;
+    public static synchronized void init(File dataDir) {
+        if (initialized) {
+            return;
         }
+        if (dataDir == null) {
+            throw new IllegalStateException("FileUtils init requires a valid mcDataDir");
+        }
+        cache = ensureDir(new File(dataDir, ".cache"));
+        dir = ensureDir(new File(dataDir, "FPSMaster " + FPSMaster.EDITION));
+        fonts = ensureDir(new File(dir, "fonts"));
+
+        fpsmasterCache = ensureDir(new File(cache, "FPSMasterClient"));
+        netease = ensureDir(new File(cache, "netease"));
+        music = ensureDir(new File(netease, "songs"));
+        artists = ensureDir(new File(netease, "artists"));
+        omaments = ensureDir(new File(cache, "omaments"));
+        background = new File(dir, "background.png");
+        hasBackground = background.exists();
+        initialized = true;
     }
 
-    public static File file(File parent, String child) {
-        File file = new File(parent, child);
-        if (!file.exists()) {
-            file.mkdirs();
+    private static File ensureDir(File file) {
+        if (!file.exists() && !file.mkdirs()) {
+            ClientLogger.error("FileUtils", "failed to create directory: " + file.getAbsolutePath());
         }
         return file;
     }
 
     public static void saveFileBytes(String s, byte[] bytes) throws FileException {
         File file = new File(dir, s);
-        try {
-            if (!file.exists()) {
-                if (!file.createNewFile()) {
-                    throw new FileException("Failed to create file: " + s);
-                }
-            }
-            try (FileOutputStream fOut = new FileOutputStream(file)) {
-                fOut.write(bytes);
-                fOut.flush();
-            }
-        } catch (IOException e) {
-            throw new FileException("Failed to save file bytes: " + s, e);
-        }
+        writeBytes(file, bytes);
     }
 
     public static void saveFile(String name, String content) throws FileException {
-        File file = new File(dir, name);
-        saveAbsoluteFile(file.getAbsolutePath(), content);
+        writeString(new File(dir, name), content);
     }
 
     private static void saveAbsoluteFile(String name, String content) throws FileException {
-        File file = new File(name);
-        try {
-            if (!file.exists()) {
-                if (!file.createNewFile()) {
-                    ClientLogger.error("FileUtils", "failed to create " + name);
-                    throw new FileException("Failed to create file: " + name);
-                }
-            }
-            try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8))) {
-                bw.write(content);
-                bw.flush();
-            }
-        } catch (IOException e) {
-            throw new FileException("Failed to save file: " + name, e);
-        }
+        writeString(new File(name), content);
     }
 
     public static void saveTempValue(String name, String value) throws FileException {
-        File dir = new File(fpsmasterCache, name + ".tmp");
-        saveAbsoluteFile(dir.getAbsolutePath(), value);
+        File file = new File(fpsmasterCache, name + ".tmp");
+        writeString(file, value);
     }
 
-    public static String readTempValue(String name) throws FileException {
-        File dir = new File(fpsmasterCache, name + ".tmp");
-        if (!dir.exists()) {
-            return "";
-        }
-        try {
-            return readAbsoluteFile(dir.getAbsolutePath());
-        } catch (Exception e) {
-            throw new FileException("Failed to read temp value: " + name, e);
-        }
-    }
 
     public static void release(String file) {
-        File f = new File(dir, "file.lang").getAbsoluteFile();
         ClientLogger.info("release " + file);
         try {
-            f.createNewFile();
-            try (InputStream resourceAsStream = FileUtils.class.getResourceAsStream("/assets/minecraft/client/lang/" + file + ".lang")) {
-                if (resourceAsStream == null) {
-                    ClientLogger.error("An error occurred while loading language file: " + file + ".lang");
-                    return;
-                }
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8))) {
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line).append("\n");
-                    }
-                    try {
-                        saveFile(file + ".lang", sb.toString());
-                    } catch (FileException e) {
-                        ClientLogger.error("Failed to save language file: " + file + ".lang");
-                        throw new IOException("Failed to save language file", e);
-                    }
-                }
-            }
+            releaseResource("/assets/minecraft/client/lang/" + file + ".lang", new File(dir, file + ".lang"));
         } catch (IOException e) {
             ClientLogger.error("An error occurred while releasing language file: " + file + ".lang");
+            e.printStackTrace();
+        }
+    }
+
+    public static void releaseFont(String fileName) {
+        try {
+            releaseResource("/assets/minecraft/client/fonts/" + fileName, new File(fonts, fileName));
+        } catch (IOException e) {
+            ClientLogger.error("Failed to release font: " + fileName);
             e.printStackTrace();
         }
     }
@@ -150,34 +108,96 @@ public class FileUtils {
     }
 
     public static String readFile(String name) throws FileException {
-        File file = new File(dir, name);
-        return readAbsoluteFile(file.getAbsolutePath());
+        return readString(new File(dir, name));
     }
 
     public static String readAbsoluteFile(String name) throws FileException {
-        File file = new File(name);
-        StringBuilder result = new StringBuilder();
         try {
-            if (!file.exists()) {
-                if (!file.createNewFile()) {
-                    throw new FileException("Failed to create file: " + name);
-                }
-            }
-            try (FileInputStream fIn = new FileInputStream(file);
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fIn, StandardCharsets.UTF_8))) {
-                    String str;
-                    while ((str = bufferedReader.readLine()) != null) {
-                        result.append(str).append(System.lineSeparator());
-                    }
-                }
-        } catch (IOException e) {
-            throw new FileException("Failed to read file: " + name, e);
+            return readString(new File(name));
+        } catch (FileException e) {
+            throw e;
         }
-        return result.toString();
     }
 
     public static String fixName(String s) {
         return s.replaceAll("[\\\\/:*?\"<>|]", "_");
+    }
+
+    private static void writeBytes(File file, byte[] bytes) throws FileException {
+        ensureParent(file);
+        try {
+            if (!file.exists() && !file.createNewFile()) {
+                throw new FileException("Failed to create file: " + file.getAbsolutePath());
+            }
+            try (FileOutputStream fOut = new FileOutputStream(file)) {
+                fOut.write(bytes);
+                fOut.flush();
+            }
+        } catch (IOException e) {
+            throw new FileException("Failed to save file bytes: " + file.getAbsolutePath(), e);
+        }
+    }
+
+    private static void writeString(File file, String content) throws FileException {
+        ensureParent(file);
+        try {
+            if (!file.exists() && !file.createNewFile()) {
+                ClientLogger.error("FileUtils", "failed to create " + file.getAbsolutePath());
+                throw new FileException("Failed to create file: " + file.getAbsolutePath());
+            }
+            try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8))) {
+                bw.write(content);
+                bw.flush();
+            }
+        } catch (IOException e) {
+            throw new FileException("Failed to save file: " + file.getAbsolutePath(), e);
+        }
+    }
+
+    private static String readString(File file) throws FileException {
+        ensureParent(file);
+        if (!file.exists()) {
+            try {
+                if (!file.createNewFile()) {
+                    throw new FileException("Failed to create file: " + file.getAbsolutePath());
+                }
+            } catch (IOException e) {
+                throw new FileException("Failed to create file: " + file.getAbsolutePath(), e);
+            }
+        }
+        StringBuilder result = new StringBuilder();
+        try (FileInputStream fIn = new FileInputStream(file);
+             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fIn, StandardCharsets.UTF_8))) {
+            String str;
+            while ((str = bufferedReader.readLine()) != null) {
+                result.append(str).append(System.lineSeparator());
+            }
+        } catch (IOException e) {
+            throw new FileException("Failed to read file: " + file.getAbsolutePath(), e);
+        }
+        return result.toString();
+    }
+
+    private static void ensureParent(File file) {
+        File parent = file.getParentFile();
+        if (parent != null && !parent.exists() && !parent.mkdirs()) {
+            ClientLogger.error("FileUtils", "failed to create directory: " + parent.getAbsolutePath());
+        }
+    }
+
+    private static void releaseResource(String resourcePath, File target) throws IOException {
+        if (target.exists()) {
+            return;
+        }
+        try (InputStream resourceAsStream = FileUtils.class.getResourceAsStream(resourcePath)) {
+            if (resourceAsStream == null) {
+                ClientLogger.error("Resource not found: " + resourcePath);
+                return;
+            }
+            ensureParent(target);
+            Files.copy(resourceAsStream, target.toPath());
+            ClientLogger.info("Released resource: " + target.getName());
+        }
     }
 }
 

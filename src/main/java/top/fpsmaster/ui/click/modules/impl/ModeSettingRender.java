@@ -10,7 +10,7 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.ModeSetting;
 import top.fpsmaster.ui.click.modules.SettingRender;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.anim.AnimMath;
 
 import java.awt.*;
 import java.util.Locale;
@@ -63,7 +63,7 @@ public class ModeSettingRender extends SettingRender<ModeSetting> {
         );
         GL11.glPopMatrix();
         if (expand) {
-            expandH = (float) AnimationUtils.base(expandH, setting.getModesSize() * 14, 0.2);
+            expandH = (float) AnimMath.base(expandH, setting.getModesSize() * 14, 0.2);
             for (int i = 1; i <= setting.getModesSize(); i++) {
                 if (Hover.is(x + 20 + fw, y + 4 + i * 14, maxWidth, 16f, (int) mouseX, (int) mouseY)) {
                     FPSMaster.fontManager.s16.drawString(
@@ -78,7 +78,7 @@ public class ModeSettingRender extends SettingRender<ModeSetting> {
                 }
             }
         } else {
-            expandH = (float) AnimationUtils.base(expandH, 0.0, 0.2);
+            expandH = (float) AnimMath.base(expandH, 0.0, 0.2);
         }
         this.height = 24 + expandH;
     }

@@ -24,12 +24,12 @@ public class FPSMaster {
     public boolean hasOptifine;
 
     public static final String EDITION = "Edge";
-    public static final String COPYRIGHT = "Copyright ©2020-2025  FPSMaster Team  All Rights Reserved.";
+    public static final String COPYRIGHT = "Copyright ©2020-2026  FPSMaster Team  All Rights Reserved.";
 
     public static FPSMaster INSTANCE = new FPSMaster();
 
     public static String CLIENT_NAME = "FPSMaster";
-    public static String CLIENT_VERSION = "4.0.0";
+    public static String CLIENT_VERSION = "1.0.0";
 
     public static ModuleManager moduleManager = new ModuleManager();
     public static FontManager fontManager = new FontManager();
@@ -40,9 +40,6 @@ public class FPSMaster {
     public static Language i18n = new Language();
     public static ClientThreadPool async = new ClientThreadPool(100);
     public static boolean development = false;
-    public static boolean isLatest = true;
-    public static boolean updateFailed = false;
-    public static String latest = "";
 
     private static void checkDevelopment() {
         try {
@@ -60,6 +57,7 @@ public class FPSMaster {
     private void initializeFonts() {
         ClientLogger.info("Initializing Fonts...");
 
+        FileUtils.releaseFont("NotoSansSC-Regular.ttf");
         fontManager.load();
     }
 
@@ -75,31 +73,9 @@ public class FPSMaster {
     private void initializeConfigures() throws Exception {
         ClientLogger.info("Initializing Config...");
         configManager.loadConfig("default");
-        MusicPlayer.setVolume(Float.parseFloat(configManager.configure.getOrCreate("volume", "1")));
-        NeteaseApi.cookies = FileUtils.readTempValue("cookies");
+        MusicPlayer.setVolume((float) configManager.configure.volume);
     }
 
-    private void initializeMusic() {
-        ClientLogger.info("Checking music cache...");
-        long dirSize = FileUtils.getDirSize(FileUtils.artists);
-        if (dirSize > 1024) {
-            if (FileUtils.artists.delete()) {
-                ClientLogger.info("Cleared img cache");
-            } else {
-                ClientLogger.error("Clear img cache failed");
-            }
-        }
-        ClientLogger.info("Found image: " + dirSize + "mb");
-        long dirSize1 = FileUtils.getDirSize(FileUtils.music);
-        if (dirSize1 > 2048) {
-            if (FileUtils.music.delete()) {
-                ClientLogger.warn("Cleared music cache");
-            } else {
-                ClientLogger.error("Clear music cache failed");
-            }
-        }
-        ClientLogger.info("Found music: " + dirSize1 + "mb");
-    }
 
     private void initializeComponents() {
         ClientLogger.info("Initializing component...");
@@ -125,22 +101,15 @@ public class FPSMaster {
         }
     }
 
-    private void checkUpdate() {
-        isLatest = true;
-        updateFailed = false;
-        latest = GitInfo.getCommitId();
-    }
-
     public void initialize() {
         try {
+            FileUtils.init(net.minecraft.client.Minecraft.getMinecraft().mcDataDir);
             initializeFonts();
-            initializeMusic();
             initializeModules();
             initializeComponents();
             initializeConfigures();
             initializeCommands();
             initializeLang();
-            checkUpdate();
             checkOptifine();
         } catch (Exception e) {
             ExceptionHandler.handle(e);

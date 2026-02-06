@@ -13,9 +13,9 @@ import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.*;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.impl.*;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
-import top.fpsmaster.utils.math.animation.ColorAnimation;
-import top.fpsmaster.utils.math.animation.Type;
+import top.fpsmaster.utils.math.anim.AnimMath;
+import top.fpsmaster.utils.math.anim.ColorAnimator;
+import top.fpsmaster.utils.math.anim.Easings;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -26,14 +26,14 @@ public class ModuleRenderer extends ValueRender {
     private float settingHeight = 0f;
     private float border = 0f;
     private boolean expand = false;
-    public ColorAnimation content;
-    ColorAnimation background = new ColorAnimation();
-    ColorAnimation option = new ColorAnimation();
+    public ColorAnimator content;
+    ColorAnimator background = new ColorAnimator();
+    ColorAnimator option = new ColorAnimator();
     float optionX = 0;
 
     public ModuleRenderer(Module module) {
         this.mod = module;
-        content = new ColorAnimation(module.isEnabled() ? new Color(66, 66, 66) : new Color(40, 40, 40));
+        content = new ColorAnimator(module.isEnabled() ? new Color(66, 66, 66) : new Color(40, 40, 40));
         module.settings.forEach(setting -> {
             if (setting instanceof BooleanSetting) {
                 settingsRenderers.add(new BooleanSettingRender(module, (BooleanSetting) setting));
@@ -58,18 +58,18 @@ public class ModuleRenderer extends ValueRender {
         content.update();
         background.update();
         border = Hover.is(x + 5, y, width - 10, height, (int) mouseX, (int) mouseY)
-                ? (float) AnimationUtils.base(border, 200.0, 0.3)
-                : (float) AnimationUtils.base(border, 30.0, 0.3);
+                ? (float) AnimMath.base(border, 200.0, 0.3)
+                : (float) AnimMath.base(border, 30.0, 0.3);
         option.update();
 
         if (mod.isEnabled()) {
-            content.start(content.getColor(), new Color(255, 255, 255), 0.2f, Type.EASE_IN_OUT_QUAD);
-            option.start(option.getColor(), new Color(89, 101, 241), 0.2f, Type.EASE_IN_OUT_QUAD);
-            optionX = (float) AnimationUtils.base(optionX, 10, 0.2f);
+            content.animateTo(new Color(255, 255, 255), 0.2f, Easings.QUAD_IN_OUT);
+            option.animateTo(new Color(89, 101, 241), 0.2f, Easings.QUAD_IN_OUT);
+            optionX = (float) AnimMath.base(optionX, 10, 0.2f);
         } else {
-            content.start(content.getColor(), new Color(156, 156, 156), 0.2f, Type.EASE_IN_OUT_QUAD);
-            option.start(option.getColor(), new Color(255, 255, 255), 0.2f, Type.EASE_IN_OUT_QUAD);
-            optionX = (float) AnimationUtils.base(optionX, 0, 0.2f);
+            content.animateTo(new Color(156, 156, 156), 0.2f, Easings.QUAD_IN_OUT);
+            option.animateTo(new Color(255, 255, 255), 0.2f, Easings.QUAD_IN_OUT);
+            optionX = (float) AnimMath.base(optionX, 0, 0.2f);
         }
 
         Images.draw(
@@ -166,7 +166,7 @@ public class ModuleRenderer extends ValueRender {
             }
         }
 
-        settingHeight = (float) AnimationUtils.base(settingHeight, settingsHeight, 0.2);
+        settingHeight = (float) AnimMath.base(settingHeight, settingsHeight, 0.2);
         this.height = settingHeight;
     }
 

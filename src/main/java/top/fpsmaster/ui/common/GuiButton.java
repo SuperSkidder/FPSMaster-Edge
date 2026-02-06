@@ -4,7 +4,7 @@ import top.fpsmaster.utils.render.draw.Hover;
 import top.fpsmaster.utils.render.draw.Rects;
 
 import top.fpsmaster.FPSMaster;
-import top.fpsmaster.utils.math.animation.ColorAnimation;
+import top.fpsmaster.utils.math.anim.ColorAnimator;
 
 import java.awt.*;
 
@@ -18,7 +18,7 @@ public class GuiButton {
     private float height = 0f;
     Color color;
     Color hoverColor;
-    private final ColorAnimation btnColor = new ColorAnimation(new Color(113, 127, 254));
+    private final ColorAnimator btnColor = new ColorAnimator(new Color(113, 127, 254));
 
 
     public GuiButton(String text, Runnable runnable, Color color, Color hoverColor) {

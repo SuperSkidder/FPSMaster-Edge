@@ -15,7 +15,7 @@ import top.fpsmaster.font.impl.UFontRenderer;
 import net.minecraft.client.Minecraft;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.utils.core.Utility;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.anim.AnimMath;
 
 import java.awt.*;
 
@@ -96,7 +96,7 @@ public class Component {
             boolean drag = FPSMaster.componentsManager.dragLock.equals(mod.name);
 
             alpha = (float) ((Hover.is(rX, rY, scaledWidth, scaledHeight, mouseX, mouseY) || drag) ?
-                    AnimationUtils.base(alpha, 1f, 0.2f) : AnimationUtils.base(alpha, 0.0f, 0.2f));
+                    AnimMath.base(alpha, 1f, 0.2f) : AnimMath.base(alpha, 0.0f, 0.2f));
 
             Rects.fill(rX - 2, rY - 2, scaledWidth + 4, scaledHeight + 4, new Color(0, 0, 0, (int) (alpha * 80)));
             draw(rX, rY);

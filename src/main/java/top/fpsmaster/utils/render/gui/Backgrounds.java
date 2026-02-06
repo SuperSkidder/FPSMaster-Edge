@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL20;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.ui.screens.mainmenu.MainMenu;
 import top.fpsmaster.utils.io.FileUtils;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.anim.AnimMath;
 import top.fpsmaster.utils.render.draw.Images;
 import top.fpsmaster.utils.render.draw.Rects;
 import top.fpsmaster.utils.render.shader.GLSLSandboxShader;
@@ -43,11 +43,11 @@ public class Backgrounds {
             Images.draw(textureLocation, 0f, 0f, guiWidth, guiHeight, -1);
             Rects.fill(0f, 0f, guiWidth, guiHeight, new Color(22, 22, 22, 50));
         } else {
-            if (OSUtil.supportShader() && !FPSMaster.configManager.configure.getOrCreate("background", "new").equals("classic")) {
+            if (OSUtil.supportShader() && !"classic".equals(FPSMaster.configManager.configure.background)) {
                 if (Minecraft.getMinecraft().currentScreen instanceof MainMenu) {
-                    animation = (float) AnimationUtils.base(animation, 1.0f, 0.05f);
+                    animation = (float) AnimMath.base(animation, 1.0f, 0.05f);
                 } else {
-                    animation = (float) AnimationUtils.base(animation, 0.0f, 0.05f);
+                    animation = (float) AnimMath.base(animation, 0.0f, 0.05f);
                 }
                 GlStateManager.disableCull();
                 shader.useShader(guiWidth, guiHeight, mouseX, mouseY, (System.currentTimeMillis() - initTime) / 1000f, animation);

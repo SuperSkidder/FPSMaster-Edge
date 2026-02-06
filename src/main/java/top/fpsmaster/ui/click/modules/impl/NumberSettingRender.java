@@ -9,7 +9,7 @@ import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.NumberSetting;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.SettingRender;
-import top.fpsmaster.utils.math.animation.AnimationUtils;
+import top.fpsmaster.utils.math.anim.AnimMath;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -33,7 +33,7 @@ public class NumberSettingRender extends SettingRender<NumberSetting> {
         );
         Rects.rounded(x + 16 + fw, y + 3, 160f, 6f, new Color(0,0,0,80));
         float percent = (setting.getValue().floatValue() - setting.min.floatValue()) / (setting.max.floatValue() - setting.min.floatValue());
-        aWidth = (float) AnimationUtils.base(aWidth, 160 * percent, 0.2);
+        aWidth = (float) AnimMath.base(aWidth, 160 * percent, 0.2);
         Rects.rounded(x + 16 + fw, y + 3, aWidth, 6f, -1);
         FPSMaster.fontManager.s16.drawString(
                 df.format(setting.getValue()),
