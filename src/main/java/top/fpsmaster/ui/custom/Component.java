@@ -136,7 +136,7 @@ public class Component {
     }
 
     public void scaleUp() {
-        if (scale < 2.5f) scale = (int) (scale * 10 + 1) / 10f;
+        if (scale < 4.5f) scale = (int) (scale * 10 + 1) / 10f;
     }
 
     public void scaleDown() {
@@ -245,12 +245,12 @@ public class Component {
 
     public float getStringWidth(int fontSize, String name) {
         UFontRenderer font = FPSMaster.fontManager.getFont(fontSize);
-        return mod.betterFont.getValue() ? font.getStringWidth(name) : Minecraft.getMinecraft().fontRendererObj.getStringWidth(name);
+        return mod.betterFont.getValue() ? font.getStringWidth(name) : (Minecraft.getMinecraft().fontRendererObj.getStringWidth(name));
     }
 
     public float getStringHeight(int fontSize) {
         UFontRenderer font = FPSMaster.fontManager.getFont(fontSize);
-        return mod.betterFont.getValue() ? font.getHeight() : Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
+        return mod.betterFont.getValue() ? font.getHeight() : (Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT);
     }
 }
 

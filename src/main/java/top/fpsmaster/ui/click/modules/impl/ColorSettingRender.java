@@ -14,6 +14,7 @@ import top.fpsmaster.features.settings.impl.utils.CustomColor;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.SettingRender;
 import top.fpsmaster.utils.math.anim.AnimMath;
+import top.fpsmaster.utils.render.gui.UiScale;
 import top.fpsmaster.utils.system.OSUtil;
 import top.fpsmaster.utils.render.gui.GuiScale;
 import top.fpsmaster.utils.render.shader.GradientUtils;
@@ -60,7 +61,7 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
                         Color.getHSBColor(customColor.hue, 0f, 1f),
                         Color.getHSBColor(customColor.hue, 1f, 0f),
                         Color.getHSBColor(customColor.hue, 1f, 1f),
-                        GuiScale.getFixedScale(),
+                        UiScale.getScale(),
                         () -> Rects.roundedImage(
                                 x + tW + 26, y + 16, 80f, max(aHeight, 1f), 4,
                                 new Color(255, 255, 255)

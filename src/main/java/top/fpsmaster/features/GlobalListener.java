@@ -19,6 +19,7 @@ import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.ui.notification.NotificationManager;
 import top.fpsmaster.utils.core.Utility;
 import top.fpsmaster.utils.render.StencilUtil;
+import top.fpsmaster.utils.render.draw.Circles;
 import top.fpsmaster.utils.render.shader.KawaseBlur;
 
 import static top.fpsmaster.utils.core.Utility.mc;
@@ -86,8 +87,11 @@ public class GlobalListener {
             KawaseBlur.renderBlur(3, 3);
             StencilUtil.uninitStencilBuffer();
         }
+
         FPSMaster.componentsManager.draw((int) mouseX, (int) mouseY);
+
         NotificationManager.drawNotifications();
+
     }
 
 }

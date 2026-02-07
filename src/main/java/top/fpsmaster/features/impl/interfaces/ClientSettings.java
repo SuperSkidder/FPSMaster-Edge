@@ -24,34 +24,39 @@ public class ClientSettings extends InterfaceModule {
     public static ModeSetting language = new ModeSetting("Language", 1, "English", "Chinese");
     public static BooleanSetting blur = new BooleanSetting("blur", false);
     public static BindSetting keyBind = new BindSetting("ClickGuiKey", Keyboard.KEY_RSHIFT);
+    public static BooleanSetting fixedScaleEnabled = new BooleanSetting("FixedScaleEnabled", true);
     private static final double[] SCALE_VALUES = new double[]{
             0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 2.5, 3.0
     };
     public static ModeSetting fixedScale = new ModeSetting(
             "FixedScale",
             2,
+            () -> fixedScaleEnabled.getValue(),
             "0.5x", "0.75x", "1x", "1.25x", "1.5x", "2x", "2.5x", "3x"
     );
     public static BooleanSetting clientCommand = new BooleanSetting("Command", true);
     public static final TextSetting prefix = new TextSetting("prefix", "#", () -> clientCommand.getValue());
     
     public static boolean isFixedScaleEnabled() {
-        return true;
+        return fixedScaleEnabled.getValue();
     }
 
     public static double getUiScale() {
         ScaledResolution scaledResolution = new ScaledResolution(mc);
-        return scaledResolution.getScaleFactor();
-//        int index = fixedScale.getValue();
-//        if (index < 0 || index >= SCALE_VALUES.length) {
-//            return 2.0;
-//        }
-//        return SCALE_VALUES[index] * 2;
+        int vanillaScale = scaledResolution.getScaleFactor();
+        if (!fixedScaleEnabled.getValue()) {
+            return vanillaScale;
+        }
+        int index = fixedScale.getValue();
+        if (index < 0 || index >= SCALE_VALUES.length) {
+            return vanillaScale;
+        }
+        return vanillaScale * SCALE_VALUES[index];
     }
 
     public ClientSettings() {
         super("ClientSettings", Category.Utility);
-        addSettings(language, keyBind, fixedScale, blur, clientCommand, prefix);
+        addSettings(language, keyBind, fixedScaleEnabled, fixedScale, blur, clientCommand, prefix);
         EventDispatcher.registerListener(this);
         // get system language
         Locale locale = Locale.getDefault();

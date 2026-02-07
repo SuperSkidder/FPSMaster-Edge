@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
-import top.fpsmaster.features.impl.interfaces.ClientSettings;
 import top.fpsmaster.utils.core.Utility;
 
 import java.awt.*;
@@ -20,15 +19,14 @@ public class GradientUtils extends Utility {
     }
 
 
-    public static void applyGradient(float x, float y, float width, float height, float alpha, Color bottomLeft, Color topLeft, Color bottomRight, Color topRight, int scale, Runnable content) {
+    public static void applyGradient(float x, float y, float width, float height, float alpha, Color bottomLeft, Color topLeft, Color bottomRight, Color topRight, float scale, Runnable content) {
         GlStateManager.color(1, 1, 1, 1);
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         gradientMaskShader.init();
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
 
-        int factor = sr.getScaleFactor();
-        factor = Math.max(1, Math.round(factor * scale));
+        float factor = scale;
         gradientMaskShader.setUniformf("location", x * factor, (Minecraft.getMinecraft().displayHeight - (height * factor)) - (y * factor));
         gradientMaskShader.setUniformf("rectSize", width * factor, height * factor);
         gradientMaskShader.setUniformf("alpha", alpha);

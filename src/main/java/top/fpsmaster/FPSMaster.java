@@ -19,6 +19,8 @@ import top.fpsmaster.utils.io.FileUtils;
 
 import java.io.File;
 
+import static top.fpsmaster.utils.core.Utility.mc;
+
 public class FPSMaster {
 
     public boolean hasOptifine;
@@ -63,6 +65,7 @@ public class FPSMaster {
 
     private void initializeLang() throws FileException {
         ClientLogger.info("Initializing I18N...");
+        i18n.init();
         if (ClientSettings.language.getValue() == 1) {
             i18n.read("zh_cn");
         } else {
@@ -103,7 +106,7 @@ public class FPSMaster {
 
     public void initialize() {
         try {
-            FileUtils.init(net.minecraft.client.Minecraft.getMinecraft().mcDataDir);
+            FileUtils.init(mc.mcDataDir);
             initializeFonts();
             initializeModules();
             initializeComponents();

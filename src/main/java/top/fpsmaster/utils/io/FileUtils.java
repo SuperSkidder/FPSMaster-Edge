@@ -3,6 +3,7 @@ package top.fpsmaster.utils.io;
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.exception.FileException;
 import top.fpsmaster.modules.logger.ClientLogger;
+import top.fpsmaster.utils.core.Utility;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,15 +17,9 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
-public class FileUtils {
+public class FileUtils extends Utility {
 
-    public static File fpsmasterCache;
-    public static File netease;
     public static File dir;
-    public static File cache;
-    public static File music;
-    public static File artists;
-    public static File omaments;
     public static File background;
     public static boolean hasBackground = false;
     public static File fonts;
@@ -38,15 +33,8 @@ public class FileUtils {
         if (dataDir == null) {
             throw new IllegalStateException("FileUtils init requires a valid mcDataDir");
         }
-        cache = ensureDir(new File(dataDir, ".cache"));
         dir = ensureDir(new File(dataDir, "FPSMaster " + FPSMaster.EDITION));
         fonts = ensureDir(new File(dir, "fonts"));
-
-        fpsmasterCache = ensureDir(new File(cache, "FPSMasterClient"));
-        netease = ensureDir(new File(cache, "netease"));
-        music = ensureDir(new File(netease, "songs"));
-        artists = ensureDir(new File(netease, "artists"));
-        omaments = ensureDir(new File(cache, "omaments"));
         background = new File(dir, "background.png");
         hasBackground = background.exists();
         initialized = true;
@@ -72,16 +60,12 @@ public class FileUtils {
         writeString(new File(name), content);
     }
 
-    public static void saveTempValue(String name, String value) throws FileException {
-        File file = new File(fpsmasterCache, name + ".tmp");
-        writeString(file, value);
-    }
-
 
     public static void release(String file) {
         ClientLogger.info("release " + file);
         try {
-            releaseResource("/assets/minecraft/client/lang/" + file + ".lang", new File(dir, file + ".lang"));
+            File target = new File(dir, file + ".lang");
+            releaseResource("/assets/minecraft/client/lang/" + file + ".lang", target);
         } catch (IOException e) {
             ClientLogger.error("An error occurred while releasing language file: " + file + ".lang");
             e.printStackTrace();
@@ -186,7 +170,7 @@ public class FileUtils {
     }
 
     private static void releaseResource(String resourcePath, File target) throws IOException {
-        if (target.exists()) {
+        if (target.exists() && target.length() > 0) {
             return;
         }
         try (InputStream resourceAsStream = FileUtils.class.getResourceAsStream(resourcePath)) {
@@ -195,11 +179,10 @@ public class FileUtils {
                 return;
             }
             ensureParent(target);
-            Files.copy(resourceAsStream, target.toPath());
+            Files.copy(resourceAsStream, target.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
             ClientLogger.info("Released resource: " + target.getName());
         }
     }
 }
-
 
 

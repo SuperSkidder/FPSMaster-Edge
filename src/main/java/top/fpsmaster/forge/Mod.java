@@ -9,6 +9,7 @@ public class Mod {
     public void init(FMLInitializationEvent event) {
         FPSMaster.INSTANCE.initialize();
     }
+
 }
 
 

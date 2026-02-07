@@ -14,15 +14,12 @@ public class GuiScale {
 
     public static int getFixedScale() {
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        if (ClientSettings.isFixedScaleEnabled()) {
-            return sr.getScaleFactor();
-        }
-        return 2;
+        return sr.getScaleFactor();
     }
 
     public static float[] getFixedBounds() {
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        int scaleFactor = ClientSettings.isFixedScaleEnabled() ? sr.getScaleFactor() : 2;
+        int scaleFactor = sr.getScaleFactor();
         float guiWidth = sr.getScaledWidth() / 2f * scaleFactor;
         float guiHeight = sr.getScaledHeight() / 2f * scaleFactor;
         return new float[]{guiWidth, guiHeight};

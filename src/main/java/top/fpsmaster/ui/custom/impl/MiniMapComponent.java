@@ -25,6 +25,7 @@ public class MiniMapComponent extends Component {
         this.y = 0.3f;
         this.width = 75f;
         this.height = 75f;
+        allowScale = true;
     }
 
     @Override

@@ -62,7 +62,7 @@ public class PotionDisplayComponent extends Component {
             GL11.glTranslatef(-(int) (x + 8), -(int) (dY + 8), 0);
 
             dY += (index * mod.spacing.getValue().intValue() * 2 + POTION_HEIGHT) * scale;
-            this.width = width + 12;
+            this.width = width + 12 * scale;
             index++;
         }
 

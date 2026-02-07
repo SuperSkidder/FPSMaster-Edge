@@ -22,6 +22,7 @@ public class TargetHUDComponent extends Component {
 
     public TargetHUDComponent() {
         super(TargetDisplay.class);
+        allowScale = true;
     }
 
     @Override

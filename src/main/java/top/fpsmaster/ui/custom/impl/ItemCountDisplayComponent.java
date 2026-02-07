@@ -35,7 +35,7 @@ public class ItemCountDisplayComponent extends Component {
                         ItemsUtil.getItemStack(Items.golden_apple),
                         ItemsUtil.getItemStack(Items.arrow),
                 });
-
+        allowScale = true;
     }
 
     @Override
@@ -58,11 +58,15 @@ public class ItemCountDisplayComponent extends Component {
                     })
                     .collect(Collectors.toList())
                     .forEach((stack) -> count.addAndGet(stack.stackSize));
-            float xOffset = x + index * (ITEM_WIDTH + mod.spacing.getValue().intValue());
-            float textOffset = xOffset + 8f - (getStringWidth(20,String.valueOf(count)) / 2);
+            float xOffset = x + index * (ITEM_WIDTH + mod.spacing.getValue().intValue()) * scale;
+            float textOffset = xOffset + (8f - (getStringWidth(20,String.valueOf(count)) / 2)) * scale;
             drawRect(xOffset,y,ITEM_WIDTH,DISPLAY_HEIGHT, mod.backgroundColor.getColor());
-            ItemsUtil.renderItem(itemStack, xOffset, y);
-            drawString(20, String.valueOf(count), textOffset, y + ITEM_WIDTH, -1);
+            GlStateManager.translate(xOffset, y, 0);
+            GlStateManager.scale(scale, scale, 0);
+            ItemsUtil.renderItem(itemStack, 0, 0);
+            GlStateManager.scale(1/scale, 1/scale, 0);
+            GlStateManager.translate(-xOffset, -y, 0);
+            drawString(20, String.valueOf(count), textOffset, y + ITEM_WIDTH * scale, -1);
             index++;
         }
         width = index * (ITEM_WIDTH + mod.spacing.getValue().intValue());

@@ -16,6 +16,7 @@ public class ArmorDisplayComponent extends Component {
 
     public ArmorDisplayComponent() {
         super(ArmorDisplay.class);
+        allowScale = true;
     }
 
     @Override

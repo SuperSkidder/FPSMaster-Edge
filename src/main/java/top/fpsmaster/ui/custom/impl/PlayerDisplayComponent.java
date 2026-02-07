@@ -17,6 +17,7 @@ public class PlayerDisplayComponent extends Component {
 
     public PlayerDisplayComponent() {
         super(PlayerDisplay.class);
+        allowScale = true;
     }
 
     @Override

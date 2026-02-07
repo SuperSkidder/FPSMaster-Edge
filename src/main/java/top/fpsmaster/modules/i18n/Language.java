@@ -9,7 +9,7 @@ import java.util.Map;
 public class Language {
     private final Map<String, String> prompts = new HashMap<>();
 
-    public Language() {
+    public void init() {
         FileUtils.release("en_us");
         FileUtils.release("zh_cn");
     }

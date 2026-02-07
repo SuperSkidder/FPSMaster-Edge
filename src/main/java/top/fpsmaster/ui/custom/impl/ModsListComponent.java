@@ -35,13 +35,13 @@ public class ModsListComponent extends Component {
         ModsList modlist = (ModsList) mod;
         if (modlist.showLogo.getValue()) {
             float stringWidth = getStringWidth(36, modlist.text.getValue());
-            drawString(36, modlist.text.getValue(), (float) (x + 0.5 + width - stringWidth), y + 0.5f, new Color(0, 0, 0, 100).getRGB());
-            drawString(36, modlist.text.getValue(), x + width - stringWidth, y, new Color(113, 127, 254).getRGB());
-            modY = 20f;
+            drawString(36, modlist.text.getValue(), (float) (x +(0.5 + width - stringWidth)*scale), y + 0.5f, new Color(0, 0, 0, 100).getRGB());
+            drawString(36, modlist.text.getValue(), x + (width - stringWidth) * scale, y, new Color(113, 127, 254).getRGB());
+            modY = 18f * scale;
         }
 
         float maxWidth = 40f;
-        x += this.width;
+        x += this.width * scale;
         if (Minecraft.getMinecraft().thePlayer.ticksExisted % 20 == 0)
             modules = FPSMaster.moduleManager.modules.stream()
                     .sorted((m1, m2) -> {
@@ -70,15 +70,13 @@ public class ModsListComponent extends Component {
                 name = module.name;
             }
 
-            float textWidth = mod.betterFont.getValue()
-                    ? font.getStringWidth(name)
-                    : Minecraft.getMinecraft().fontRendererObj.getStringWidth(name);
+            float textWidth = getStringWidth(18,name);
 
             if (maxWidth < textWidth) {
                 maxWidth = textWidth + 5;
             }
             if(modlist.bg.getValue()) {
-                Rects.fill(x - textWidth - 4, y + modY, textWidth + 4, MODULE_HEIGHT + modlist.spacing.getValue().intValue() , modlist.backgroundColor.getColor());
+                drawRect(x - textWidth - 4, y + modY, textWidth + 4, MODULE_HEIGHT + modlist.spacing.getValue().intValue() , modlist.backgroundColor.getColor());
             }
             Color color = modlist.color.getColor();
             if (modlist.rainbow.getValue()) {
@@ -86,17 +84,10 @@ public class ModsListComponent extends Component {
             }
             //text y position centered offset
             int yOffset;
-            if (mod.betterFont.getValue()) {
-                yOffset = (int) ((MODULE_HEIGHT - font.getHeight()) / 2);
-                font.drawStringWithShadow(name, x - textWidth - 2, y + modY + yOffset, color.getRGB());
-            } else {
-                // Problem: yOffset = (BG_HEIGHT - mc.fontRendererObj.FONT_HEIGHT) / 2;
-                // this is the only way to center the text y position
-                yOffset = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT / 2;
-                Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(name, x - textWidth - 2, y + modY + yOffset, color.getRGB());
-            }
+            yOffset = (int) ((- getStringHeight(18)) / 2);
+            drawString(18,name, x - (textWidth + 2)*scale, y + modY + yOffset, color.getRGB());
             index++;
-            modY += MODULE_HEIGHT + modlist.spacing.getValue().intValue();
+            modY += (getStringHeight(18)+ modlist.spacing.getValue().intValue()) * scale;
         }
 
         this.width = maxWidth;

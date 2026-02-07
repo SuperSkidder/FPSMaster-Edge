@@ -18,6 +18,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import top.fpsmaster.modules.logger.ClientLogger;
+import top.fpsmaster.utils.core.Utility;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -31,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class HttpRequest {
+public final class HttpRequest extends Utility {
     // Shared thread-safe HTTP client
     private static final CloseableHttpClient HTTP_CLIENT = HttpClients.createDefault();
     // Default timeout settings (15 seconds)
