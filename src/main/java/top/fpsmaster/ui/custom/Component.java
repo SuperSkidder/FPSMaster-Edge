@@ -211,7 +211,7 @@ public class Component {
 
         if (mod.bg.getValue()) {
             if (mod.rounded.getValue()) {
-                Rects.roundedImage(x, y, scaledWidth, scaledHeight, mod.roundRadius.getValue().intValue(), color);
+                Rects.roundedImage(Math.round(x), Math.round(y), Math.round(scaledWidth), Math.round(scaledHeight), mod.roundRadius.getValue().intValue(), color);
             } else {
                 Rects.fill(x, y, scaledWidth, scaledHeight, color);
             }

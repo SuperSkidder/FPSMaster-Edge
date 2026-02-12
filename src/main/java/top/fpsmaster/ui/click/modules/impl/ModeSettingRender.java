@@ -34,10 +34,10 @@ public class ModeSettingRender extends SettingRender<ModeSetting> {
         float maxWidth = 80f;
         maxWidth = Math.max(maxWidth, fw + 10);
         Rects.roundedBorder(
-                x + 16 + fw,
-                y + 4,
-                maxWidth,
-                16 + expandH,
+                Math.round(x + 16 + fw),
+                Math.round(y + 4),
+                Math.round(maxWidth),
+                Math.round(16 + expandH),
                 3,
                 0.5f,
                 new Color(52, 52, 52).getRGB(),

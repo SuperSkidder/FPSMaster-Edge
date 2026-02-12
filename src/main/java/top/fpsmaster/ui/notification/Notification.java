@@ -62,19 +62,19 @@ public class Notification {
 
         // Draw the notification background with animation effect
         Rects.rounded(
-                (float) (x - (width * animation.get() / 100f)),
-                positionY,
-                width,
-                height,
+                Math.round((float) (x - (width * animation.get() / 100f))),
+                Math.round(positionY),
+                Math.round(width),
+                Math.round(height),
                 new Color(0, 0, 0, 100)
         );
 
         // Draw the foreground (white bar) to indicate the notification duration
         Rects.rounded(
-                (float) (x - (width * animation.get() / 100f)),
-                positionY,
-                width * Math.min(1f, (float) (System.currentTimeMillis() - startTime) / (1000f * displayTime)),
-                height,
+                Math.round((float) (x - (width * animation.get() / 100f))),
+                Math.round(positionY),
+                Math.round(width * Math.min(1f, (float) (System.currentTimeMillis() - startTime) / (1000f * displayTime))),
+                Math.round(height),
                 new Color(255, 255, 255, 100)
         );
 

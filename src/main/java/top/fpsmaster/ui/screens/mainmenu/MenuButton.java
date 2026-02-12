@@ -44,7 +44,7 @@ public class MenuButton {
         }
 
         // Draw the button rectangle
-        Rects.rounded(x, y, width, height, new Color(0, 0, 0, Colors.clamp(alpha)).getRGB());
+        Rects.rounded(Math.round(x), Math.round(y), Math.round(width), Math.round(height), new Color(0, 0, 0, Colors.clamp(alpha)).getRGB());
 
         // Draw text or icon
         if (!text.equals("settings")) {

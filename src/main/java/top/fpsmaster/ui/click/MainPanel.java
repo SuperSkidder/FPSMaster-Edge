@@ -194,20 +194,20 @@ public class MainPanel extends ScaledGuiScreen {
         }
 
         Rects.roundedImage(
-                x + categoryAnimation / 50f,
-                categoryBgY,
-                categoryAnimation,
-                categoryBgHeight,
+                Math.round(x + categoryAnimation / 50f),
+                Math.round(categoryBgY),
+                Math.round(categoryAnimation),
+                Math.round(categoryBgHeight),
                 20,
                 new Color(0, 0, 0, 200)
         );
 
         float my = categoryStartY;
         Rects.roundedImage(
-                x + 4 + categoryAnimation / 50f,
-                selection - 6,
-                categoryAnimation - 8,
-                22f,
+                Math.round(x + 4 + categoryAnimation / 50f),
+                Math.round(selection - 6),
+                Math.round(categoryAnimation - 8),
+                22,
                 20,
                 new Color(255, 255, 255)
         );

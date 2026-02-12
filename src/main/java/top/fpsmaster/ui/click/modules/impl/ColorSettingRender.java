@@ -43,10 +43,10 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
                 FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
                 x + 10, y + 3, new Color(162, 162, 162).getRGB()
         );
-        Rects.rounded(x + tW + 26, y + 1, 80f, 14f, new Color(39, 39, 39));
+        Rects.rounded(Math.round(x + tW + 26), Math.round(y + 1), 80, 14, new Color(39, 39, 39));
 
         CustomColor customColor = setting.getValue();
-        Rects.rounded(x + tW + 27, y + 2, 12f, 12f, customColor.getRGB());
+        Rects.rounded(Math.round(x + tW + 27), Math.round(y + 2), 12, 12, customColor.getRGB());
 
         FPSMaster.fontManager.s16.drawString(
                 "#" + Integer.toHexString(setting.getRGB()).toUpperCase(Locale.getDefault()),
@@ -63,7 +63,7 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
                         Color.getHSBColor(customColor.hue, 1f, 1f),
                         UiScale.getScale(),
                         () -> Rects.roundedImage(
-                                x + tW + 26, y + 16, 80f, max(aHeight, 1f), 4,
+                                Math.round(x + tW + 26), Math.round(y + 16), 80, Math.round(max(aHeight, 1f)), 4,
                                 new Color(255, 255, 255)
                         )
                 );
@@ -153,10 +153,11 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
             }
 
             // Apply the modified color
-            customColor.setColor(hue, saturation, brightness, alpha);
+            if (hue != customColor.hue || saturation != customColor.saturation || brightness != customColor.brightness || alpha != customColor.alpha) {
+                setting.setColor(hue, saturation, brightness, alpha);
+            }
         } else {
-            customColor.setColor(customColor.hue, customColor.saturation,
-                    customColor.brightness, customColor.alpha);
+            // Keep value stable; no-op
         }
 
         aHeight = expand ? (float) AnimMath.base(aHeight, 80.0, 0.2) : (float) AnimMath.base(aHeight, 0.0, 0.2);

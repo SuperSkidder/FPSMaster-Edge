@@ -1,5 +1,7 @@
 package top.fpsmaster.ui.click.component;
 
+import lombok.Getter;
+import lombok.Setter;
 import top.fpsmaster.utils.render.draw.Hover;
 import top.fpsmaster.utils.render.draw.Rects;
 
@@ -12,8 +14,10 @@ import top.fpsmaster.utils.math.anim.Easings;
 import java.awt.*;
 
 public class ScrollContainer {
-    private float wheel = 0f;
-    private float wheel_anim = 0f;
+    private float wheel = 0f; // 带动画的位置
+    private float wheel_anim = 0f; // 真实滚动到的位置
+    @Getter
+    @Setter
     private float height = 0f;
     private final Animator wheelAnimator = new Animator();
     private final AnimClock animClock = new AnimClock();
@@ -36,10 +40,10 @@ public class ScrollContainer {
             float sY = y - scrollPercent * (height - sHeight);
             float sX = x + width + 1 - (float) scrollExpand;
             Rects.rounded(
-                sX,
-                sY,
-                1f + (float) scrollExpand,
-                sHeight,
+                Math.round(sX),
+                Math.round(sY),
+                Math.round(1f + (float) scrollExpand),
+                Math.round(sHeight),
                 1,
                 new Color(255, 255, 255, 100).getRGB()
             );
@@ -96,16 +100,8 @@ public class ScrollContainer {
         wheel = (float) wheelAnimator.get();
     }
 
-    public void setHeight(float height) {
-        this.height = height;
-    }
-
-    public float getHeight() {
-        return this.height;
-    }
-
-    public float getScroll() {
-        return wheel;
+    public int getScroll() {
+        return (int)wheel;
     }
 
     public float getRealScroll() {

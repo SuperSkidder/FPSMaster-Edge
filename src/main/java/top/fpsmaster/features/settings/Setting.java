@@ -3,11 +3,16 @@ package top.fpsmaster.features.settings;
 import top.fpsmaster.event.EventDispatcher;
 import top.fpsmaster.event.events.EventValueChange;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 public class Setting<T> {
 
     public String name;
     public T value;
     public VisibleCondition visible;
+
+    private final List<ChangeListener<T>> changeListeners = new CopyOnWriteArrayList<>();
 
     public Setting(String name, T value) {
         this.name = name;
@@ -23,6 +28,25 @@ public class Setting<T> {
         return visible == null || visible.isVisible();
     }
 
+    @FunctionalInterface
+    public interface ChangeListener<T> {
+        void onValueChanged(Setting<T> setting, T oldValue, T newValue);
+    }
+
+    public void addChangeListener(ChangeListener<T> listener) {
+        if (listener != null) {
+            changeListeners.add(listener);
+        }
+    }
+
+    public void removeChangeListener(ChangeListener<T> listener) {
+        changeListeners.remove(listener);
+    }
+
+    public void clearChangeListeners() {
+        changeListeners.clear();
+    }
+
     // Functional interface to represent the visibility check (similar to the Kotlin lambda)
     public interface VisibleCondition {
         boolean isVisible();
@@ -33,10 +57,27 @@ public class Setting<T> {
     }
 
     public void setValue(T value) {
-        EventValueChange event = new EventValueChange(this, this.value, value);
+        T oldValue = this.value;
+        EventValueChange event = new EventValueChange(this, oldValue, value);
         EventDispatcher.dispatchEvent(event);
         if (!event.isCanceled()) {
             this.value = value;
+            notifyChangeListeners(oldValue, value);
+        }
+    }
+
+    public void notifyValueChanged() {
+        EventDispatcher.dispatchEvent(new EventValueChange(this, this.value, this.value));
+        notifyChangeListeners(this.value, this.value);
+    }
+
+    private void notifyChangeListeners(T oldValue, T newValue) {
+        for (ChangeListener<T> listener : changeListeners) {
+            try {
+                listener.onValueChanged(this, oldValue, newValue);
+            } catch (Throwable ignored) {
+                // Listener failures must not break setting updates.
+            }
         }
     }
 }

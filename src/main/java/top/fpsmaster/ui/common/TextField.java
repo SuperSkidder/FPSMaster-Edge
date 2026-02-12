@@ -438,7 +438,7 @@ public class TextField extends Gui {
             this.height = height;
             this.xPosition = x;
             this.yPosition = y;
-            Rects.rounded(this.xPosition, this.yPosition, this.width, this.height, backGroundColor);
+            Rects.rounded(Math.round(this.xPosition), Math.round(this.yPosition), Math.round(this.width), Math.round(this.height), backGroundColor);
             int i = fontColor;
             int j = this.cursorPosition - this.lineScrollOffset;
             int k = this.selectionEnd - this.lineScrollOffset;

@@ -148,8 +148,8 @@ public class GuiMultiplayer extends ScaledGuiScreen {
         UFontRenderer font = FPSMaster.fontManager.s18;
         title.drawCenteredString("多人游戏", guiWidth / 2f, 16, -1);
 
-        Rects.rounded((guiWidth - 180) / 2f, 30, 180, 24, 3, new Color(0, 0, 0, 80).getRGB());
-        Rects.rounded((guiWidth - 176) / 2f, 32, 176, 20, 3, -1);
+        Rects.rounded(Math.round((guiWidth - 180) / 2f), 30, 180, 24, 3, new Color(0, 0, 0, 80).getRGB());
+        Rects.rounded(Math.round((guiWidth - 176) / 2f), 32, 176, 20, 3, -1);
         FPSMaster.fontManager.s16.drawCenteredString("服务器列表", guiWidth / 2f, 36, new Color(50, 50, 50).getRGB());
 
         GL11.glPushMatrix();
@@ -157,18 +157,18 @@ public class GuiMultiplayer extends ScaledGuiScreen {
         Scissor.apply((guiWidth - 400) / 2f, 60f, 400f, guiHeight - 120);
         scrollContainer.draw((guiWidth - 400) / 2f, 60, 396, guiHeight - 120, mouseX, mouseY, () -> {
             float y = 70 + scrollContainer.getScroll();
-            Rects.rounded((guiWidth - 400) / 2f, y - 10, 400, guiHeight - y, 5, new Color(0, 0, 0, 100).getRGB());
+            Rects.rounded(Math.round((guiWidth - 400) / 2f), Math.round(y - 10), 400, Math.round(guiHeight - y), 5, new Color(0, 0, 0, 100).getRGB());
             for (ServerListEntry server : serverListDisplay) {
                 if (server.getServerData() == null) {
                     return;
                 }
-                Rects.rounded((guiWidth - 340) / 2f, y, 340, 54, new Color(0, 0, 0, 120));
+                Rects.rounded(Math.round((guiWidth - 340) / 2f), Math.round(y), 340, 54, new Color(0, 0, 0, 120));
                 if (Hover.is((guiWidth - 340) / 2f, y, 340, 54, mouseX, mouseY)) {
-                    Rects.rounded((guiWidth - 340) / 2f, y, 340, 54, new Color(0, 0, 0, 50));
+                    Rects.rounded(Math.round((guiWidth - 340) / 2f), Math.round(y), 340, 54, new Color(0, 0, 0, 50));
                 }
 
                 if (selectedServer != null && selectedServer == server.getServerData()) {
-                    Rects.rounded((guiWidth - 340) / 2f, y, 340, 54, new Color(255, 255, 255, 50));
+                    Rects.rounded(Math.round((guiWidth - 340) / 2f), Math.round(y), 340, 54, new Color(255, 255, 255, 50));
                 }
                 server.drawEntry(0, (int) ((guiWidth - 340) / 2), (int) y, 340, 54, mouseX, mouseY, false);
                 y += 58;

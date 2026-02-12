@@ -47,38 +47,38 @@ public class Rects {
         GlStateManager.disableBlend();
     }
 
-    public static void rounded(float x, float y, float width, float height, int radius, Color color) {
+    public static void rounded(int x, int y, int width, int height, int radius, Color color) {
         rounded(x, y, width, height, radius, color.getRGB());
     }
 
-    public static void rounded(float x, float y, float width, float height, Color color) {
+    public static void rounded(int x, int y, int width, int height, Color color) {
         rounded(x, y, width, height, 3, color.getRGB());
     }
 
-    public static void rounded(float x, float y, float width, float height, int radius, int color) {
+    public static void rounded(int x, int y, int width, int height, int radius, int color) {
         rounded(x, y, width, height, radius, color, false);
     }
 
-    public static void rounded(float x, float y, float width, float height, int color) {
+    public static void rounded(int x, int y, int width, int height, int color) {
         rounded(x, y, width, height, 3, color, false);
     }
 
-    public static void roundedBorder(float x, float y, float width, float height, int radius, float lineWidth, int fill, int border) {
-        rounded(x - lineWidth, y - lineWidth, width + lineWidth * 2, height + lineWidth * 2, radius + 2, border, false);
+    public static void roundedBorder(int x, int y, int width, int height, int radius, float lineWidth, int fill, int border) {
+        rounded(Math.round(x - lineWidth), Math.round(y - lineWidth), Math.round(width + lineWidth * 2), Math.round(height + lineWidth * 2), radius + 2, border, false);
         rounded(x, y, width, height, radius, fill, false);
     }
 
-    public static void roundedImage(float x, float y, float width, float height, int radius, Color color) {
+    public static void roundedImage(int x, int y, int width, int height, int radius, Color color) {
         try {
-            ResourceLocation mask = AWTUtils.generateRoundImage((int) width, (int) height, radius);
+            ResourceLocation mask = AWTUtils.generateRoundImage(width, height, radius);
             Images.draw(mask, x, y, width, height, color.getRGB(), false);
         } catch (IllegalArgumentException e) {
             fill(x, y, width, height, color);
         }
     }
 
-    public static void rounded(float x, float y, float width, float height, int radius, int color, boolean rawImage) {
-        radius = (int) Math.min(Math.min(height, width) / 2, radius);
+    public static void rounded(int x, int y, int width, int height, int radius, int color, boolean rawImage) {
+        radius = Math.min(Math.min(height, width) / 2, radius);
         if (width < radius * 2 || radius < 1) {
             fill(x, y, width, height, color);
             return;

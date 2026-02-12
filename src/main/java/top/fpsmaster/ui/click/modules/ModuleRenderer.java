@@ -83,10 +83,10 @@ public class ModuleRenderer extends ValueRender {
         GlStateManager.disableBlend();
 
         Rects.rounded(
-                x + 5,
-                y + 40,
-                width - 10,
-                settingHeight,
+                Math.round(x + 5),
+                Math.round(y + 40),
+                Math.round(width - 10),
+                Math.round(settingHeight),
                 10,
                 new Color(100, 100, 100, 60).getRGB()
         );

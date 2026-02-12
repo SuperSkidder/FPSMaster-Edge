@@ -45,7 +45,7 @@ public class GuiButton {
             btnColor.base(color);
         }
 
-        Rects.rounded(x, y, width, height, btnColor.getColor());
+        Rects.rounded(Math.round(x), Math.round(y), Math.round(width), Math.round(height), btnColor.getColor());
         FPSMaster.fontManager.s18.drawCenteredString(
                 FPSMaster.i18n.get(text),
                 x + width / 2,

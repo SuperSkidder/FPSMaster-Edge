@@ -34,14 +34,14 @@ public class BindSettingRender extends SettingRender<BindSetting> {
         float width1 = 10 + s16b.getStringWidth(keyName);
         if (Hover.is(x + 15 + fw, y, width1, 14f, (int) mouseX, (int) mouseY)) {
             Rects.rounded(
-                x + 14.5f + fw,
-                y - 0.5f,
-                width1 + 1,
-                13f,
+                Math.round(x + 14.5f + fw),
+                Math.round(y - 0.5f),
+                Math.round(width1 + 1),
+                13,
                 new Color(0,0,0,80)
             );
         }
-        Rects.rounded(x + 15 + fw, y, width1, 12f, colorAnimation.getColor());
+        Rects.rounded(Math.round(x + 15 + fw), Math.round(y), Math.round(width1), 12, colorAnimation.getColor());
         s16b.drawString(keyName, x + 18 + fw, y + 2, new Color(234, 234, 234).getRGB());
         if (MainPanel.bindLock.equals(setting.name)) {
             colorAnimation.base(new Color(255,255,255,80));

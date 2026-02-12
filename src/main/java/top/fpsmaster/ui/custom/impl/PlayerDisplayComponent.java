@@ -34,12 +34,12 @@ public class PlayerDisplayComponent extends Component {
                 float hX = s16.getStringWidth(healthText);
                 float nX = s16.getStringWidth(entity.getDisplayName().getFormattedText());
 
-                Rects.rounded(x, y + i * 16, 10 + hX + nX, 14f, new Color(0, 0, 0, 60));
+                Rects.rounded(Math.round(x), Math.round(y + i * 16), Math.round(10 + hX + nX), 14, new Color(0, 0, 0, 60));
                 Rects.rounded(
-                        x,
-                        y + i * 16,
-                        (10 + hX + nX) * ((EntityPlayer) entity).getHealth() / ((EntityPlayer) entity).getMaxHealth(),
-                        14f,
+                        Math.round(x),
+                        Math.round(y + i * 16),
+                        Math.round((10 + hX + nX) * ((EntityPlayer) entity).getHealth() / ((EntityPlayer) entity).getMaxHealth()),
+                        14,
                         new Color(0, 0, 0, 60)
                 );
 

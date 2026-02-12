@@ -35,15 +35,15 @@ public class Render2D {
     }
 
     public static void rounded(float x, float y, float width, float height, int radius, int color) {
-        Rects.rounded(x, y, width, height, radius, color);
+        Rects.rounded(Math.round(x), Math.round(y), Math.round(width), Math.round(height), radius, color);
     }
 
     public static void rounded(float x, float y, float width, float height, int radius, Color color) {
-        Rects.rounded(x, y, width, height, radius, color);
+        Rects.rounded(Math.round(x), Math.round(y), Math.round(width), Math.round(height), radius, color);
     }
 
     public static void roundedBorder(float x, float y, float width, float height, int radius, float lineWidth, int fill, int border) {
-        Rects.roundedBorder(x, y, width, height, radius, lineWidth, fill, border);
+        Rects.roundedBorder(Math.round(x), Math.round(y), Math.round(width), Math.round(height), radius, lineWidth, fill, border);
     }
 
     public static void image(ResourceLocation res, float x, float y, float width, float height, int color) {
@@ -59,7 +59,7 @@ public class Render2D {
     }
 
     public static void roundedImage(float x, float y, float width, float height, int radius, Color color) {
-        Rects.roundedImage(x, y, width, height, radius, color);
+        Rects.roundedImage(Math.round(x), Math.round(y), Math.round(width), Math.round(height), radius, color);
     }
 
     public static void playerHead(AbstractClientPlayer player, float x, float y, int w, int h) {

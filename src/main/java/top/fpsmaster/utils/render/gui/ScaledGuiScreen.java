@@ -17,11 +17,7 @@ public class ScaledGuiScreen extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        updateBaseMetrics();
-        scaleFactor = (float) ClientSettings.getUiScale();
-        if (scaleFactor <= 0) {
-            scaleFactor = 1.0f;
-        }
+        refreshScaleAndMetrics();
         float effectiveScale = scaleFactor;
         UiScale.begin(effectiveScale);
         GL11.glPushMatrix();
@@ -37,12 +33,12 @@ public class ScaledGuiScreen extends GuiScreen {
     @Override
     public void onResize(Minecraft mcIn, int w, int h) {
         super.onResize(mcIn, w, h);
-        updateBaseMetrics();
+        refreshScaleAndMetrics();
     }
 
     @Override
     public void initGui() {
-        updateBaseMetrics();
+        refreshScaleAndMetrics();
         super.initGui();
     }
 
@@ -54,8 +50,16 @@ public class ScaledGuiScreen extends GuiScreen {
 
     @Override
     public void handleMouseInput() throws IOException {
-        updateBaseMetrics();
+        refreshScaleAndMetrics();
         super.handleMouseInput();
+    }
+
+    private void refreshScaleAndMetrics() {
+        scaleFactor = (float) ClientSettings.getUiScale();
+        if (scaleFactor <= 0) {
+            scaleFactor = 1.0f;
+        }
+        updateBaseMetrics();
     }
 
     private void updateBaseMetrics() {

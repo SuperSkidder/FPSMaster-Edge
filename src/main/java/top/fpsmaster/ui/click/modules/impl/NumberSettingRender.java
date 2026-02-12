@@ -31,10 +31,10 @@ public class NumberSettingRender extends SettingRender<NumberSetting> {
                 FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
                 x + 10, y + 2, new Color(162, 162, 162).getRGB()
         );
-        Rects.rounded(x + 16 + fw, y + 3, 160f, 6f, new Color(0,0,0,80));
+        Rects.rounded(Math.round(x + 16 + fw), Math.round(y + 3), 160, 6, new Color(0,0,0,80));
         float percent = (setting.getValue().floatValue() - setting.min.floatValue()) / (setting.max.floatValue() - setting.min.floatValue());
         aWidth = (float) AnimMath.base(aWidth, 160 * percent, 0.2);
-        Rects.rounded(x + 16 + fw, y + 3, aWidth, 6f, -1);
+        Rects.rounded(Math.round(x + 16 + fw), Math.round(y + 3), Math.round(aWidth), 6, -1);
         FPSMaster.fontManager.s16.drawString(
                 df.format(setting.getValue()),
                 x + fw + 20 + 160,

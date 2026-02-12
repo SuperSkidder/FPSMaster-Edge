@@ -21,9 +21,25 @@ public class MultipleItemSetting extends Setting<ArrayList<ItemStack>> {
         }
     }
 
+    public void addItemAndNotify(ItemStack itemStack) {
+        int before = this.getValue().size();
+        addItem(itemStack);
+        if (this.getValue().size() != before) {
+            notifyValueChanged();
+        }
+    }
+
     public void removeItem(int index) {
         ItemStack itemStack = this.getValue().get(index);
         this.getValue().remove(itemStack);
+    }
+
+    public void removeItemAndNotify(int index) {
+        if (index < 0 || index >= this.getValue().size()) {
+            return;
+        }
+        removeItem(index);
+        notifyValueChanged();
     }
 
 }

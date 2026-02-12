@@ -66,8 +66,8 @@ public class TargetHUDComponent extends Component {
 
             // Draw elements if animation is greater than 1
             if (animation > 0.05) {
-                Rects.rounded(x, y, width, height, new Color(0, 0, 0, (int) animation * 80));
-                Rects.rounded(x, y, healthPer * width, height, colorAnimation.getColor());
+                Rects.rounded(Math.round(x), Math.round(y), Math.round(width), Math.round(height), new Color(0, 0, 0, (int) animation * 80));
+                Rects.rounded(Math.round(x), Math.round(y), Math.round(healthPer * width), Math.round(height), colorAnimation.getColor());
                 FPSMaster.fontManager.s16.drawStringWithShadow(name, x + 27, y + 5, -1);
                 Images.playerHead((AbstractClientPlayer) target1, x + 5, y + 5, 20, 20);
             }
@@ -86,8 +86,8 @@ public class TargetHUDComponent extends Component {
 
             // Draw elements if animation is greater than 1
             if (animation > 0.05) {
-                Rects.roundedImage(x, y, width, height, 8, new Color(0, 0, 0, (int) (animation * 120)));
-                Rects.roundedImage(x + 10, y + 30, healthPer * (width - 20), 4, 2, colorAnimation.getColor());
+                Rects.roundedImage(Math.round(x), Math.round(y), Math.round(width), Math.round(height), 8, new Color(0, 0, 0, (int) (animation * 120)));
+                Rects.roundedImage(Math.round(x + 10), Math.round(y + 30), Math.round(healthPer * (width - 20)), 4, 2, colorAnimation.getColor());
                 FPSMaster.fontManager.s18.drawStringWithShadow(name, x + 24, y + 8, new Color(255, 255, 255, (int) (animation * 255)).getRGB());
                 Images.playerHead((AbstractClientPlayer) target1, x + 10, y + 8, 12, 12);
             }

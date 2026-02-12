@@ -65,7 +65,7 @@ public class FileUtils extends Utility {
         ClientLogger.info("release " + file);
         try {
             File target = new File(dir, file + ".lang");
-            releaseResource("/assets/minecraft/client/lang/" + file + ".lang", target);
+            releaseResource("/assets/minecraft/client/lang/" + file + ".lang", target, true);
         } catch (IOException e) {
             ClientLogger.error("An error occurred while releasing language file: " + file + ".lang");
             e.printStackTrace();
@@ -74,7 +74,7 @@ public class FileUtils extends Utility {
 
     public static void releaseFont(String fileName) {
         try {
-            releaseResource("/assets/minecraft/client/fonts/" + fileName, new File(fonts, fileName));
+            releaseResource("/assets/minecraft/client/fonts/" + fileName, new File(fonts, fileName), false);
         } catch (IOException e) {
             ClientLogger.error("Failed to release font: " + fileName);
             e.printStackTrace();
@@ -169,8 +169,8 @@ public class FileUtils extends Utility {
         }
     }
 
-    private static void releaseResource(String resourcePath, File target) throws IOException {
-        if (target.exists() && target.length() > 0) {
+    private static void releaseResource(String resourcePath, File target, boolean override) throws IOException {
+        if (target.exists() && target.length() > 0 && !override) {
             return;
         }
         try (InputStream resourceAsStream = FileUtils.class.getResourceAsStream(resourcePath)) {

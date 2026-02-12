@@ -30,6 +30,18 @@ public class ColorSetting extends Setting<CustomColor> {
     public Color getColor() {
         return getValue().getColor();
     }
+
+    public void setColor(float hue, float saturation, float brightness, float alpha) {
+        CustomColor v = getValue();
+        v.setColor(hue, saturation, brightness, alpha);
+        notifyValueChanged();
+    }
+
+    public void setColor(Color color) {
+        CustomColor v = getValue();
+        v.setColor(color);
+        notifyValueChanged();
+    }
 }
 
 

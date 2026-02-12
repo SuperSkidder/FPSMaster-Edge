@@ -42,6 +42,7 @@ public class MainMenu extends ScaledGuiScreen {
     @Override
     public void initGui() {
         super.initGui();
+        Backgrounds.initGui();
         animClock.reset();
         if (firstBoot == 0) {
             // Check Java Version
@@ -70,7 +71,7 @@ public class MainMenu extends ScaledGuiScreen {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        Backgrounds.draw((int) (guiHeight * scaleFactor), (int) (guiHeight * scaleFactor), mouseX, mouseY, partialTicks, (int) zLevel);
+        Backgrounds.draw((int) (guiWidth * scaleFactor), (int) (guiHeight * scaleFactor), mouseX, mouseY, partialTicks, (int) zLevel);
         double dt = animClock.tick();
         if (!startAnimation.isRunning() && startAnimation.get() == 0.0) {
             startAnimation.start(0, 1.1, 1.5f, Easings.QUINT_OUT);
@@ -86,13 +87,13 @@ public class MainMenu extends ScaledGuiScreen {
 
         // Display user info and avatar
         float stringWidth = FPSMaster.fontManager.s16.getStringWidth(mc.getSession().getUsername());
-        Rects.rounded(10f, 10f, 30 + stringWidth, 20f, new Color(0, 0, 0, 60));
+        Rects.rounded(10, 10, Math.round(30 + stringWidth), 20, new Color(0, 0, 0, 60));
         Images.draw(new ResourceLocation("client/gui/screen/avatar.png"), 14f, 15f, 10f, 10f, -1);
         FPSMaster.fontManager.s16.drawString(mc.getSession().getUsername(), 28, 16, Color.WHITE.getRGB());
 
 
-        // background theme button
-        Rects.rounded(guiWidth - 22, 13, 12, 12, new Color(0, 0, 0, 60));
+        // background selector button
+        Rects.rounded(Math.round(guiWidth - 22), 13, 12, 12, new Color(0, 0, 0, 60));
         Images.draw(new ResourceLocation("client/gui/screen/theme.png"), guiWidth - 20, 15f, 8f, 8f, -1);
 
 
@@ -129,11 +130,7 @@ public class MainMenu extends ScaledGuiScreen {
 
         if (mouseButton == 0) {
             if (Hover.is(guiWidth - 22, 13, 12, 12, mouseX, mouseY)) {
-                if ("classic".equals(FPSMaster.configManager.configure.background)) {
-                    FPSMaster.configManager.configure.background = "new";
-                } else {
-                    FPSMaster.configManager.configure.background = "classic";
-                }
+                mc.displayGuiScreen(new BackgroundSelector());
             }
         }
     }
