@@ -16,6 +16,7 @@ import top.fpsmaster.ui.click.modules.impl.*;
 import top.fpsmaster.utils.math.anim.AnimMath;
 import top.fpsmaster.utils.math.anim.ColorAnimator;
 import top.fpsmaster.utils.math.anim.Easings;
+import top.fpsmaster.utils.render.gui.ScaledGuiScreen;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -168,26 +169,17 @@ public class ModuleRenderer extends ValueRender {
 
         settingHeight = (float) AnimMath.base(settingHeight, settingsHeight, 0.2);
         this.height = settingHeight;
-    }
 
-    @Override
-    public void mouseClick(float x, float y, float width, float height, float mouseX, float mouseY, int btn) {
-        float settingsHeight = 0f;
-        if (expand) {
-            for (SettingRender<?> settingsRenderer : settingsRenderers) {
-                if (settingsRenderer.setting.getVisible()) {
-                    settingsRenderer.mouseClick(x + 5, y + 40 + settingsHeight, width - 10, 12f, mouseX, mouseY, btn);
-                    settingsHeight += settingsRenderer.height + 6;
+        ScaledGuiScreen screen = ScaledGuiScreen.getActiveScreen();
+        if (screen != null) {
+            ScaledGuiScreen.ConsumedClick click = screen.consumeClickInBounds(x + 5, y, width - 10, 40f);
+            if (click != null) {
+                if (click.button == 0) {
+                    mod.toggle();
+                } else if (click.button == 1) {
+                    expand = !expand;
+                    MainPanel.curModule = null;
                 }
-            }
-        }
-
-        if (Hover.is(x + 5, y, width - 10, 40f, (int) mouseX, (int) mouseY)) {
-            if (btn == 0) {
-                mod.toggle();
-            } else if (btn == 1) {
-                expand = !expand;
-                MainPanel.curModule = null;
             }
         }
     }

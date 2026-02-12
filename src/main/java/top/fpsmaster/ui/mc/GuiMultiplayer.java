@@ -179,14 +179,16 @@ public class GuiMultiplayer extends ScaledGuiScreen {
         GL11.glPopMatrix();
 
 
-        join.render((guiWidth - 400) / 2f + 20, guiHeight - 56, 380f / 3 - 20, 20, mouseX, mouseY);
-        connect.render((guiWidth - 400) / 2f + 20 + 380f / 3, guiHeight - 56, 380f / 3 - 20, 20, mouseX, mouseY);
-        add.render((guiWidth - 400) / 2f + 20 + 380f / 3 * 2, guiHeight - 56, 380f / 3 - 20, 20, mouseX, mouseY);
+        join.renderInScreen(this, (guiWidth - 400) / 2f + 20, guiHeight - 56, 380f / 3 - 20, 20, mouseX, mouseY);
+        connect.renderInScreen(this, (guiWidth - 400) / 2f + 20 + 380f / 3, guiHeight - 56, 380f / 3 - 20, 20, mouseX, mouseY);
+        add.renderInScreen(this, (guiWidth - 400) / 2f + 20 + 380f / 3 * 2, guiHeight - 56, 380f / 3 - 20, 20, mouseX, mouseY);
 
-        edit.render((guiWidth - 400) / 2f + 20, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
-        remove.render((guiWidth - 400) / 2f + 20 + 380f / 4, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
-        refresh.render((guiWidth - 400) / 2f + 20 + 380f / 4 * 2, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
-        back.render((guiWidth - 400) / 2f + 20 + 380f / 4 * 3, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
+        edit.renderInScreen(this, (guiWidth - 400) / 2f + 20, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
+        remove.renderInScreen(this, (guiWidth - 400) / 2f + 20 + 380f / 4, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
+        refresh.renderInScreen(this, (guiWidth - 400) / 2f + 20 + 380f / 4 * 2, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
+        back.renderInScreen(this, (guiWidth - 400) / 2f + 20 + 380f / 4 * 3, guiHeight - 26, 380f / 4 - 20, 20, mouseX, mouseY);
+
+        handlePendingClick();
     }
 
 
@@ -204,22 +206,19 @@ public class GuiMultiplayer extends ScaledGuiScreen {
         this.oldServerPinger.clearPendingNetworks();
     }
 
-    @Override
-    public void onClick(int mouseX, int mouseY, int mouseButton) {
-        super.onClick(mouseX, mouseY, mouseButton);
-        join.mouseClick(mouseX, mouseY, mouseButton);
-        connect.mouseClick(mouseX, mouseY, mouseButton);
-        add.mouseClick(mouseX, mouseY, mouseButton);
-        edit.mouseClick(mouseX, mouseY, mouseButton);
-        remove.mouseClick(mouseX, mouseY, mouseButton);
-        refresh.mouseClick(mouseX, mouseY, mouseButton);
-        back.mouseClick(mouseX, mouseY, mouseButton);
+    private void handlePendingClick() {
+        if (!hasPendingClick(0) && !hasPendingClick(1) && !hasPendingClick(2)) {
+            return;
+        }
 
+        int mouseX = getPendingClickX();
+        int mouseY = getPendingClickY();
+        int mouseButton = getPendingClickButton();
 
         float y = 70 + scrollContainer.getScroll();
-
         for (ServerListEntry server : serverListDisplay) {
             if (server.getServerData() == null) {
+                consumePendingClick();
                 return;
             }
             if (Hover.is((guiWidth - 340) / 2f, y, 340, 54, mouseX, mouseY)) {
@@ -237,7 +236,7 @@ public class GuiMultiplayer extends ScaledGuiScreen {
             y += 58;
         }
 
-
+        consumePendingClick();
     }
 
 

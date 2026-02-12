@@ -10,6 +10,8 @@ import top.fpsmaster.features.settings.impl.NumberSetting;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.SettingRender;
 import top.fpsmaster.utils.math.anim.AnimMath;
+import top.fpsmaster.ui.common.binding.SettingBinding;
+import top.fpsmaster.utils.render.gui.ScaledGuiScreen;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -19,10 +21,12 @@ public class NumberSettingRender extends SettingRender<NumberSetting> {
     private static final DecimalFormat df = new DecimalFormat("#.##");
     // animation
     private float aWidth = 0f;
+    private final SettingBinding<Number> binding;
 
     public NumberSettingRender(Module mod, NumberSetting setting) {
         super(setting);
         this.mod = mod;
+        this.binding = new SettingBinding<>(setting);
     }
 
     @Override
@@ -42,29 +46,29 @@ public class NumberSettingRender extends SettingRender<NumberSetting> {
                 new Color(128, 128, 128).getRGB()
         );
         if (!Mouse.isButtonDown(0)) MainPanel.dragLock = "null";
+
+        ScaledGuiScreen screen = ScaledGuiScreen.getActiveScreen();
+        if (screen != null) {
+            float labelWidth = FPSMaster.fontManager.s16.getStringWidth(
+                    FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault()))
+            );
+            ScaledGuiScreen.ConsumedClick click = screen.consumeClickInBounds(x + 16 + labelWidth, y, 160f, height);
+            if (click != null && click.button == 0 && MainPanel.dragLock.equals("null")) {
+                MainPanel.dragLock = mod.name + setting.name + 4;
+            }
+        }
+
         if (MainPanel.dragLock.equals(mod.name + setting.name + 4)) {
             float v = mouseX - x - 16 - FPSMaster.fontManager.s16.getStringWidth(
                     FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault()))
             );
             float mPercent = v / 160;
             float newValue = (setting.max.floatValue() - setting.min.floatValue()) * mPercent + setting.min.floatValue();
-            setting.setValue(newValue);
+            binding.set(newValue);
         }
         this.height = 12f;
     }
 
-    @Override
-    public void mouseClick(float x, float y, float width, float height, float mouseX, float mouseY, int btn) {
-        float fw = FPSMaster.fontManager.s16.drawString(
-                FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
-                x + 10, y + 2, new Color(182, 182, 182).getRGB()
-        );
-        if (Hover.is(x + 16 + fw, y, 160f, height, (int) mouseX, (int) mouseY) && Mouse.isButtonDown(0)) {
-            if (btn == 0 && MainPanel.dragLock.equals("null")) {
-                MainPanel.dragLock = mod.name + setting.name + 4;
-            }
-        }
-    }
 }
 
 

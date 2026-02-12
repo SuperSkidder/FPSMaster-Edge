@@ -13,11 +13,13 @@ import top.fpsmaster.features.settings.impl.ColorSetting;
 import top.fpsmaster.features.settings.impl.utils.CustomColor;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.SettingRender;
+import top.fpsmaster.ui.common.binding.ColorSettingBinding;
 import top.fpsmaster.utils.math.anim.AnimMath;
 import top.fpsmaster.utils.render.gui.UiScale;
 import top.fpsmaster.utils.system.OSUtil;
 import top.fpsmaster.utils.render.gui.GuiScale;
 import top.fpsmaster.utils.render.shader.GradientUtils;
+import top.fpsmaster.utils.render.gui.ScaledGuiScreen;
 
 import java.awt.*;
 import java.util.Locale;
@@ -29,10 +31,12 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
 
     private float aHeight = 0f;
     private boolean expand = false;
+    private final ColorSettingBinding binding;
 
     public ColorSettingRender(Module mod, ColorSetting setting) {
         super(setting);
         this.mod = mod;
+        this.binding = new ColorSettingBinding(setting);
     }
 
     @Override
@@ -45,7 +49,7 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
         );
         Rects.rounded(Math.round(x + tW + 26), Math.round(y + 1), 80, 14, new Color(39, 39, 39));
 
-        CustomColor customColor = setting.getValue();
+        CustomColor customColor = binding.get();
         Rects.rounded(Math.round(x + tW + 27), Math.round(y + 2), 12, 12, customColor.getRGB());
 
         FPSMaster.fontManager.s16.drawString(
@@ -154,28 +158,27 @@ public class ColorSettingRender extends SettingRender<ColorSetting> {
 
             // Apply the modified color
             if (hue != customColor.hue || saturation != customColor.saturation || brightness != customColor.brightness || alpha != customColor.alpha) {
-                setting.setColor(hue, saturation, brightness, alpha);
+                binding.setHsba(hue, saturation, brightness, alpha);
             }
         } else {
             // Keep value stable; no-op
         }
 
         aHeight = expand ? (float) AnimMath.base(aHeight, 80.0, 0.2) : (float) AnimMath.base(aHeight, 0.0, 0.2);
+
+        ScaledGuiScreen screen = ScaledGuiScreen.getActiveScreen();
+        if (screen != null) {
+            float labelW = FPSMaster.fontManager.s16.getStringWidth(
+                    FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault()))
+            );
+            ScaledGuiScreen.ConsumedClick click = screen.consumeClickInBounds(x + labelW + 26, y + 1, 80f, 14f);
+            if (click != null && click.button == 0) {
+                expand = !expand;
+            }
+        }
         this.height = aHeight + 20;
     }
 
-    @Override
-    public void mouseClick(
-            float x, float y, float width, float height, float mouseX, float mouseY, int btn
-    ) {
-        float tW = FPSMaster.fontManager.s16.drawString(
-                FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
-                x + 10, y + 2, new Color(162, 162, 162).getRGB()
-        );
-        if (Hover.is(x + tW + 26, y + 1, 80f, 14f, (int) mouseX, (int) mouseY) && btn == 0) {
-            expand = !expand;
-        }
-    }
 }
 
 

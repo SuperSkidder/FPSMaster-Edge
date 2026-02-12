@@ -7,11 +7,12 @@ import top.fpsmaster.utils.render.draw.Rects;
 
 import net.minecraft.util.ResourceLocation;
 import top.fpsmaster.FPSMaster;
+import top.fpsmaster.ui.common.control.UiControl;
 import top.fpsmaster.utils.math.anim.AnimMath;
 
 import java.awt.*;
 
-public class MenuButton {
+public class MenuButton implements UiControl {
     private final String text;
     private final Runnable runnable;
     private float x;
@@ -66,7 +67,7 @@ public class MenuButton {
         }
     }
 
-    public void mouseClick(float mouseX, float mouseY, int btn) {
+    public void mouseClicked(float mouseX, float mouseY, int btn) {
         if (Hover.is(x, y, width, height, (int) mouseX, (int) mouseY) && btn == 0) {
             runnable.run();
         }

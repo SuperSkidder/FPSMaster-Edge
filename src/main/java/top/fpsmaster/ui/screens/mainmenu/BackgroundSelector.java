@@ -77,7 +77,7 @@ public class BackgroundSelector extends ScaledGuiScreen {
         Rects.rounded(Math.round(panelX), Math.round(panelY), Math.round(panelWidth), 44, 12, new Color(30, 30, 36, (int) (210 * alpha)));
         FPSMaster.fontManager.s20.drawCenteredString(FPSMaster.i18n.get("backgroundselector.title"), panelX + panelWidth / 2f, panelY + 24f, new Color(255, 255, 255, (int) (255 * alpha)).getRGB());
 
-        backButton.render(panelX + panelWidth - 68f, panelY + panelHeight - 34f, 56f, 22f, mouseX, mouseY);
+        backButton.renderInScreen(this, panelX + panelWidth - 68f, panelY + panelHeight - 34f, 56f, 22f, mouseX, mouseY);
 
         float contentX = panelX + 12f;
         float contentY = panelY + 52f;
@@ -101,6 +101,8 @@ public class BackgroundSelector extends ScaledGuiScreen {
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GL11.glPopMatrix();
+
+        handlePendingClick(panelX, panelY, panelWidth, panelHeight);
     }
 
     private void renderCard(float x, float y, float width, BackgroundOption option, int mouseX, int mouseY, float alpha) {
@@ -168,19 +170,13 @@ public class BackgroundSelector extends ScaledGuiScreen {
         FPSMaster.fontManager.s14.drawCenteredString(FPSMaster.i18n.get("backgroundselector.pick"), x + w / 2f, y + h / 2f - 4f, new Color(255, 255, 255, (int) (255 * alpha)).getRGB());
     }
 
-    @Override
-    public void onClick(int mouseX, int mouseY, int mouseButton) {
-        super.onClick(mouseX, mouseY, mouseButton);
-        backButton.mouseClick(mouseX, mouseY, mouseButton);
-        if (mouseButton != 0) {
+    private void handlePendingClick(float panelX, float panelY, float panelWidth, float panelHeight) {
+        if (!hasPendingClick(0)) {
             return;
         }
 
-        float panelWidth = Math.min(410f, guiWidth - 40f);
-        float panelHeight = Math.min(320f, guiHeight - 40f);
-        float panelX = (guiWidth - panelWidth) / 2f;
-        float panelY = (guiHeight - panelHeight) / 2f;
-
+        int mouseX = getPendingClickX();
+        int mouseY = getPendingClickY();
         float contentX = panelX + 12f;
         float contentY = panelY + 52f;
         float contentWidth = panelWidth - 24f;
@@ -207,6 +203,7 @@ public class BackgroundSelector extends ScaledGuiScreen {
                 } else {
                     FPSMaster.configManager.configure.background = option.id;
                 }
+                consumePendingClick();
                 return;
             }
             listY += CARD_HEIGHT + CARD_GAP;

@@ -5,10 +5,11 @@ import top.fpsmaster.utils.render.draw.Rects;
 
 import top.fpsmaster.FPSMaster;
 import top.fpsmaster.utils.math.anim.ColorAnimator;
+import top.fpsmaster.ui.common.control.UiControl;
 
 import java.awt.*;
 
-public class GuiButton {
+public class GuiButton implements UiControl {
 
     private final String text;
     private final Runnable runnable;
@@ -54,7 +55,9 @@ public class GuiButton {
         );
     }
 
-    public void mouseClick(float mouseX, float mouseY, int btn) {
+    @Override
+    public void mouseClicked(float mouseX, float mouseY, int button) {
+        int btn = button;
         if (Hover.is(x, y, width, height, (int) mouseX, (int) mouseY) && btn == 0) {
             runnable.run();
         }

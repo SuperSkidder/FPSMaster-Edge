@@ -12,6 +12,8 @@ import top.fpsmaster.features.settings.impl.ModeSetting;
 import top.fpsmaster.ui.click.modules.SettingRender;
 import top.fpsmaster.utils.math.anim.AnimMath;
 import top.fpsmaster.utils.render.gui.UiScale;
+import top.fpsmaster.ui.common.binding.SettingBinding;
+import top.fpsmaster.utils.render.gui.ScaledGuiScreen;
 
 import java.awt.*;
 import java.util.Locale;
@@ -19,10 +21,12 @@ import java.util.Locale;
 public class ModeSettingRender extends SettingRender<ModeSetting> {
     private boolean expand = false;
     private float expandH = 0f;
+    private final SettingBinding<Integer> binding;
 
     public ModeSettingRender(Module mod, ModeSetting setting) {
         super(setting);
         this.mod = mod;
+        this.binding = new SettingBinding<>(setting);
     }
 
     @Override
@@ -81,26 +85,29 @@ public class ModeSettingRender extends SettingRender<ModeSetting> {
         } else {
             expandH = (float) AnimMath.base(expandH, 0.0, 0.2);
         }
-        this.height = 24 + expandH;
-    }
 
-    @Override
-    public void mouseClick(float x, float y, float width, float height, float mouseX, float mouseY, int btn) {
-        String label = FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault()));
-        float fw = FPSMaster.fontManager.s16.getStringWidth(label);
-        float maxWidth = Math.max(80f, fw + 10);
-        if (Hover.is(x + 16 + fw, y + 4, maxWidth, 16f, (int) mouseX, (int) mouseY)) {
-            expand = !expand;
-        }
-        if (expand) {
-            for (int i = 1; i <= setting.getModesSize(); i++) {
-                if (Hover.is(x + 20 + fw, y + 4 + i * 14, maxWidth, 16f, (int) mouseX, (int) mouseY)) {
-                    setting.setValue(i - 1);
-                    expand = false;
+        ScaledGuiScreen screen = ScaledGuiScreen.getActiveScreen();
+        if (screen != null) {
+            String label = FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault()));
+            float labelW = FPSMaster.fontManager.s16.getStringWidth(label);
+            float clickWidth = Math.max(80f, labelW + 10);
+            ScaledGuiScreen.ConsumedClick headClick = screen.consumeClickInBounds(x + 16 + labelW, y + 4, clickWidth, 16f);
+            if (headClick != null) {
+                expand = !expand;
+            } else if (expand) {
+                for (int i = 1; i <= setting.getModesSize(); i++) {
+                    ScaledGuiScreen.ConsumedClick itemClick = screen.consumeClickInBounds(x + 20 + labelW, y + 4 + i * 14, clickWidth, 16f);
+                    if (itemClick != null) {
+                        binding.set(i - 1);
+                        expand = false;
+                        break;
+                    }
                 }
             }
         }
+        this.height = 24 + expandH;
     }
+
 }
 
 

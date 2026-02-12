@@ -251,6 +251,8 @@ public class MainPanel extends ScaledGuiScreen {
         }
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         Alpha.set(1f);
+
+        handlePendingClick();
     }
 
     @Override
@@ -320,29 +322,23 @@ public class MainPanel extends ScaledGuiScreen {
         super.keyTyped(typedChar, keyCode);
     }
 
-    @Override
-    public void onClick(int mouseX, int mouseY, int mouseButton) {
-//        aiChatPanel.click(mouseX, mouseY, mouseButton);
-        if (!Hover.is(x, y, width, height, mouseX, mouseY)) return;
-
-//        if (mouseButton == 0 && Hover.isWithoutScale(
-//                x + leftWidth, y, width - leftWidth, 20f, mouseX, mouseY
-//        )) {
-//            drag = true;
-//            dragX = mouseX - x;
-//            dragY = mouseY - y;
-//        }
-
-//        if (mouseButton == 0 && Hover.isWithoutScale(
-//                x + width - 20, y + height - 20, 20f, 20f, mouseX, mouseY
-//        ) && "null".equals(dragLock)) {
-//            sizeDrag = true;
-//            dragLock = "sizeDrag";
-//            sizeDragX = x + width - mouseX;
-//            sizeDragY = y + height - mouseY;
-//        }
-        if (!dragLock.equals("null"))
+    private void handlePendingClick() {
+        if (!hasPendingClick(0) && !hasPendingClick(1) && !hasPendingClick(2)) {
             return;
+        }
+
+        int mouseX = getPendingClickX();
+        int mouseY = getPendingClickY();
+        int mouseButton = getPendingClickButton();
+
+        if (!Hover.is(x, y, width, height, mouseX, mouseY)) {
+            return;
+        }
+
+        if (!dragLock.equals("null")) {
+            return;
+        }
+
         float my = getCategoryStartY();
         for (Category c : Category.values()) {
             if (Hover.is(x, my - 8, leftWidth, 24f, mouseX, mouseY)) {
@@ -355,20 +351,9 @@ public class MainPanel extends ScaledGuiScreen {
             }
             my += 27f;
         }
-        float modsY = y + 22f + modsContainer.getRealScroll();
-        for (ModuleRenderer m : mods) {
-            if (m.mod.category == curType) {
-                m.mouseClick(
-                        x + leftWidth,
-                        modsY,
-                        width - leftWidth,
-                        40f,
-                        mouseX,
-                        mouseY,
-                        mouseButton
-                );
-                modsY += 45 + m.height;
-            }
+
+        if (mouseButton == 0) {
+            consumePendingClick();
         }
     }
 }

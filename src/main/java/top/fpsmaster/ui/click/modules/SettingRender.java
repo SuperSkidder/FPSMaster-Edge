@@ -17,12 +17,6 @@ public class SettingRender<T extends Setting<?>> extends ValueRender {
     }
 
     @Override
-    public void mouseClick(
-            float x, float y, float width, float height, float mouseX, float mouseY, int btn
-    ) {
-    }
-
-    @Override
     public void keyTyped(char typedChar, int keyCode) {
     }
 }

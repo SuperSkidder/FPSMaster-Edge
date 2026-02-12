@@ -22,11 +22,21 @@ public class MultipleItemSetting extends Setting<ArrayList<ItemStack>> {
     }
 
     public void addItemAndNotify(ItemStack itemStack) {
-        int before = this.getValue().size();
-        addItem(itemStack);
-        if (this.getValue().size() != before) {
-            notifyValueChanged();
+        if (itemStack == null) {
+            return;
         }
+        ArrayList<ItemStack> current = this.getValue();
+        if (current.size() >= MAX_CAPACITY) {
+            return;
+        }
+        ArrayList<ItemStack> oldSnapshot = new ArrayList<>(current);
+        ArrayList<ItemStack> newSnapshot = new ArrayList<>(current);
+        newSnapshot.add(itemStack);
+        if (!fireValueChangeEvent(oldSnapshot, newSnapshot)) {
+            return;
+        }
+        current.add(itemStack);
+        notifyChangeListeners(oldSnapshot, newSnapshot);
     }
 
     public void removeItem(int index) {
@@ -35,11 +45,18 @@ public class MultipleItemSetting extends Setting<ArrayList<ItemStack>> {
     }
 
     public void removeItemAndNotify(int index) {
-        if (index < 0 || index >= this.getValue().size()) {
+        ArrayList<ItemStack> current = this.getValue();
+        if (index < 0 || index >= current.size()) {
+            return;
+        }
+        ArrayList<ItemStack> oldSnapshot = new ArrayList<>(current);
+        ArrayList<ItemStack> newSnapshot = new ArrayList<>(current);
+        newSnapshot.remove(index);
+        if (!fireValueChangeEvent(oldSnapshot, newSnapshot)) {
             return;
         }
         removeItem(index);
-        notifyValueChanged();
+        notifyChangeListeners(oldSnapshot, newSnapshot);
     }
 
 }

@@ -100,10 +100,10 @@ public class MainMenu extends ScaledGuiScreen {
         // Position buttons and render them
         float x = guiWidth / 2f - 50;
         float y = guiHeight / 2f - 30;
-        singlePlayer.render(x, y, 100f, 20f, mouseX, mouseY);
-        multiPlayer.render(x, y + 24f, 100f, 20f, mouseX, mouseY);
-        options.render(x, y + 48f, 70f, 20f, mouseX, mouseY);
-        exit.render(x + 74f, y + 48f, 26f, 20f, mouseX, mouseY);
+        singlePlayer.renderInScreen(this, x, y, 100f, 20f, mouseX, mouseY);
+        multiPlayer.renderInScreen(this, x, y + 24f, 100f, 20f, mouseX, mouseY);
+        options.renderInScreen(this, x, y + 48f, 70f, 20f, mouseX, mouseY);
+        exit.renderInScreen(this, x + 74f, y + 48f, 26f, 20f, mouseX, mouseY);
 
         // Render copyright and other text info
         float w = FPSMaster.fontManager.s16.getStringWidth("Copyright Mojang AB. Do not distribute!");
@@ -119,20 +119,23 @@ public class MainMenu extends ScaledGuiScreen {
         }
         Rects.fill(0, 0, width, height, new Color(20, 20, 20, (int) (255 - 255 * Math.max(0, (float) backgroundAnimation.get() - 0.5f))));
         Images.draw(new ResourceLocation("client/gui/logo.png"), guiWidth / 2f - 153 / 4f, guiHeight / 2f - 30 - 70 * ((float) Math.min(startAnimation.get(), 1)), 153 / 2f, 67f, -1);
+        handlePendingClick();
     }
 
-    @Override
-    public void onClick(int mouseX, int mouseY, int mouseButton) {
-        singlePlayer.mouseClick(mouseX, mouseY, mouseButton);
-        multiPlayer.mouseClick(mouseX, mouseY, mouseButton);
-        options.mouseClick(mouseX, mouseY, mouseButton);
-        exit.mouseClick(mouseX, mouseY, mouseButton);
-
-        if (mouseButton == 0) {
-            if (Hover.is(guiWidth - 22, 13, 12, 12, mouseX, mouseY)) {
-                mc.displayGuiScreen(new BackgroundSelector());
-            }
+    private void handlePendingClick() {
+        if (!hasPendingClick(0) && !hasPendingClick(1) && !hasPendingClick(2)) {
+            return;
         }
+
+        int mouseX = getPendingClickX();
+        int mouseY = getPendingClickY();
+        int mouseButton = getPendingClickButton();
+
+        if (mouseButton == 0 && Hover.is(guiWidth - 22, 13, 12, 12, mouseX, mouseY)) {
+            mc.displayGuiScreen(new BackgroundSelector());
+        }
+
+        consumePendingClick();
     }
 }
 

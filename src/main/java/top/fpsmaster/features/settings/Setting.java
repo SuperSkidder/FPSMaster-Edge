@@ -58,20 +58,20 @@ public class Setting<T> {
 
     public void setValue(T value) {
         T oldValue = this.value;
-        EventValueChange event = new EventValueChange(this, oldValue, value);
-        EventDispatcher.dispatchEvent(event);
-        if (!event.isCanceled()) {
-            this.value = value;
-            notifyChangeListeners(oldValue, value);
+        if (!fireValueChangeEvent(oldValue, value)) {
+            return;
         }
+        this.value = value;
+        notifyChangeListeners(oldValue, value);
     }
 
-    public void notifyValueChanged() {
-        EventDispatcher.dispatchEvent(new EventValueChange(this, this.value, this.value));
-        notifyChangeListeners(this.value, this.value);
+    protected boolean fireValueChangeEvent(T oldValue, T newValue) {
+        EventValueChange event = new EventValueChange(this, oldValue, newValue);
+        EventDispatcher.dispatchEvent(event);
+        return !event.isCanceled();
     }
 
-    private void notifyChangeListeners(T oldValue, T newValue) {
+    protected void notifyChangeListeners(T oldValue, T newValue) {
         for (ChangeListener<T> listener : changeListeners) {
             try {
                 listener.onValueChanged(this, oldValue, newValue);

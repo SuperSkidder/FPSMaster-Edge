@@ -11,16 +11,20 @@ import top.fpsmaster.font.impl.UFontRenderer;
 import top.fpsmaster.ui.click.MainPanel;
 import top.fpsmaster.ui.click.modules.SettingRender;
 import top.fpsmaster.utils.math.anim.ColorAnimator;
+import top.fpsmaster.ui.common.binding.SettingBinding;
+import top.fpsmaster.utils.render.gui.ScaledGuiScreen;
 
 import java.awt.*;
 import java.util.Locale;
 
 public class BindSettingRender extends SettingRender<BindSetting> {
     ColorAnimator colorAnimation = new ColorAnimator();
+    private final SettingBinding<Integer> binding;
 
     public BindSettingRender(Module module, BindSetting setting) {
         super(setting);
         this.mod = module;
+        this.binding = new SettingBinding<>(setting);
     }
 
     @Override
@@ -29,7 +33,7 @@ public class BindSettingRender extends SettingRender<BindSetting> {
             FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
             x + 10, y + 2, new Color(234, 234, 234).getRGB()
         );
-        String keyName = Keyboard.getKeyName(setting.getValue());
+        String keyName = Keyboard.getKeyName(binding.get());
         UFontRenderer s16b = FPSMaster.fontManager.s16;
         float width1 = 10 + s16b.getStringWidth(keyName);
         if (Hover.is(x + 15 + fw, y, width1, 14f, (int) mouseX, (int) mouseY)) {
@@ -48,34 +52,21 @@ public class BindSettingRender extends SettingRender<BindSetting> {
         } else {
             colorAnimation.base(new Color(0,0,0,80));
         }
-        this.height = 16f;
-    }
 
-    @Override
-    public void mouseClick(float x, float y, float width, float height, float mouseX, float mouseY, int btn) {
-        float fw = FPSMaster.fontManager.s16.getStringWidth(
-            FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault()))
-        );
-        String keyName = Keyboard.getKeyName(setting.getValue());
-        UFontRenderer s16b = FPSMaster.fontManager.s16;
-        if (Hover.is(
-                x + 25 + fw,
-                y,
-                10f + s16b.getStringWidth(keyName),
-                12f,
-                (int) mouseX, (int) mouseY
-            ) && btn == 0
-        ) {
-            if (MainPanel.bindLock.isEmpty()) {
+        ScaledGuiScreen screen = ScaledGuiScreen.getActiveScreen();
+        if (screen != null) {
+            ScaledGuiScreen.ConsumedClick click = screen.consumeClickInBounds(x + 25 + fw, y, 10f + s16b.getStringWidth(keyName), 12f);
+            if (click != null && click.button == 0 && MainPanel.bindLock.isEmpty()) {
                 MainPanel.bindLock = setting.name;
             }
         }
+        this.height = 16f;
     }
 
     @Override
     public void keyTyped(char typedChar, int keyCode) {
         if (MainPanel.bindLock.equals(setting.name)) {
-            setting.setValue(Keyboard.getEventKey());
+            binding.set(Keyboard.getEventKey());
             MainPanel.bindLock = "";
         }
     }

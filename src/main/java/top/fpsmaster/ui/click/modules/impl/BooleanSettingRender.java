@@ -7,8 +7,10 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.BooleanSetting;
 import top.fpsmaster.ui.click.modules.SettingRender;
+import top.fpsmaster.ui.common.binding.SettingBinding;
 import top.fpsmaster.utils.math.anim.ColorAnimator;
 import top.fpsmaster.utils.math.anim.Easings;
+import top.fpsmaster.utils.render.gui.ScaledGuiScreen;
 
 import java.awt.*;
 import java.util.Locale;
@@ -16,16 +18,18 @@ import java.util.Locale;
 public class BooleanSettingRender extends SettingRender<BooleanSetting> {
     // animation
     private final ColorAnimator box = new ColorAnimator(new Color(255, 255, 255, 0));
+    private final SettingBinding<Boolean> binding;
 
     public BooleanSettingRender(Module mod, BooleanSetting setting) {
         super(setting);
         this.mod = mod;
+        this.binding = new SettingBinding<>(setting);
     }
 
     @Override
     public void render(float x, float y, float width, float height, float mouseX, float mouseY, boolean custom) {
         box.update();
-        if (setting.getValue()) {
+        if (binding.get()) {
             box.animateTo(new Color(255, 255, 255), 0.2f, Easings.QUAD_IN_OUT);
         } else {
             box.animateTo(new Color(129, 129, 129), 0.2f, Easings.QUAD_IN_OUT);
@@ -35,15 +39,14 @@ public class BooleanSettingRender extends SettingRender<BooleanSetting> {
             FPSMaster.i18n.get((mod.name + "." + setting.name).toLowerCase(Locale.getDefault())),
             x + 26, y + 1, new Color(162, 162, 162).getRGB()
         );
+
+        ScaledGuiScreen screen = ScaledGuiScreen.getActiveScreen();
+        if (screen != null && screen.consumeClickInBounds(x, y, width, height) != null) {
+            binding.set(!binding.get());
+        }
         this.height = 12f;
     }
 
-    @Override
-    public void mouseClick(float x, float y, float width, float height, float mouseX, float mouseY, int btn) {
-        if (Hover.is(x, y, width, height, (int) mouseX, (int) mouseY)) {
-            setting.toggle();
-        }
-    }
 }
 
 

@@ -33,14 +33,24 @@ public class ColorSetting extends Setting<CustomColor> {
 
     public void setColor(float hue, float saturation, float brightness, float alpha) {
         CustomColor v = getValue();
+        CustomColor oldSnapshot = new CustomColor(v.hue, v.brightness, v.saturation, v.alpha);
+        CustomColor newSnapshot = new CustomColor(hue, brightness, saturation, alpha);
+        if (!fireValueChangeEvent(oldSnapshot, newSnapshot)) {
+            return;
+        }
         v.setColor(hue, saturation, brightness, alpha);
-        notifyValueChanged();
+        notifyChangeListeners(oldSnapshot, newSnapshot);
     }
 
     public void setColor(Color color) {
         CustomColor v = getValue();
+        CustomColor oldSnapshot = new CustomColor(v.hue, v.brightness, v.saturation, v.alpha);
+        CustomColor newSnapshot = new CustomColor(color);
+        if (!fireValueChangeEvent(oldSnapshot, newSnapshot)) {
+            return;
+        }
         v.setColor(color);
-        notifyValueChanged();
+        notifyChangeListeners(oldSnapshot, newSnapshot);
     }
 }
 

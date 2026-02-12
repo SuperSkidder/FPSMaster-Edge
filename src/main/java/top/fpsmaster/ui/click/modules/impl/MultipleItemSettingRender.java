@@ -8,8 +8,10 @@ import top.fpsmaster.FPSMaster;
 import top.fpsmaster.features.manager.Module;
 import top.fpsmaster.features.settings.impl.MultipleItemSetting;
 import top.fpsmaster.ui.click.modules.SettingRender;
+import top.fpsmaster.ui.common.binding.MultipleItemSettingBinding;
 import top.fpsmaster.utils.core.Utility;
 import top.fpsmaster.utils.world.ItemsUtil;
+import top.fpsmaster.utils.render.gui.ScaledGuiScreen;
 
 import java.awt.*;
 import java.util.Locale;
@@ -23,8 +25,10 @@ public class MultipleItemSettingRender extends SettingRender<MultipleItemSetting
     public MultipleItemSettingRender(Module module, MultipleItemSetting setting) {
         super(setting);
         this.mod = module;
+        this.binding = new MultipleItemSettingBinding(setting);
     }
     private float itemWidth;
+    private final MultipleItemSettingBinding binding;
     @Override
     public void render(float x, float y, float width, float height, float mouseX, float mouseY, boolean custom) {
         FPSMaster.fontManager.s16.drawString(
@@ -40,18 +44,40 @@ public class MultipleItemSettingRender extends SettingRender<MultipleItemSetting
 
         int index = 0;
         this.itemWidth = width - (xOffset * 2);
-        for (ItemStack itemStack : setting.getValue()) {
+        for (ItemStack itemStack : binding.get()) {
             Rects.rounded(Math.round(x + xOffset + padding), Math.round(y + FPSMaster.fontManager.s16.getHeight() + 5 + padding + (index * (itemHeight + padding))), Math.round(itemWidth - padding), itemHeight, new Color(50, 50, 50, 120));
             ItemsUtil.renderItem(itemStack, x + (padding * 2) + 20f, (y + FPSMaster.fontManager.s16.getHeight() + 5 + padding * 2) + (index * (itemHeight + padding)));
             renderButton(x + xOffset + itemWidth - (padding * 2) - buttonSize, (y + FPSMaster.fontManager.s16.getHeight() + 5 + padding * 2) + (index * (buttonSize + (padding * 3))), mouseX,mouseY ,"-");
             FPSMaster.fontManager.s14.drawString(itemStack.getDisplayName(), x + (padding * 2) + 45f, (y + FPSMaster.fontManager.s16.getHeight() + 5 + padding * 2) + (index * (buttonSize + (padding * 3))) + 5, -1);
             index++;
         }
-        if(setting.getValue().isEmpty()){
+        if (binding.get().isEmpty()) {
             this.height = itemHeight + 10;
             FPSMaster.fontManager.s14.drawString(FPSMaster.i18n.get("ItemsSetting.isEmpty".toLowerCase(Locale.getDefault())), x + ((itemWidth - (padding * 2)) / 2), (y + FPSMaster.fontManager.s16.getHeight() + 5 + padding * 2) + 5, -1);
         }else{
             this.height = (index * (itemHeight + padding)) + 10;
+        }
+
+        ScaledGuiScreen screen = ScaledGuiScreen.getActiveScreen();
+        if (screen != null) {
+            ScaledGuiScreen.ConsumedClick addClick = screen.consumeClickInBounds(x + 10 + xOffset + itemWidth - 15, y - 3, 10, 10);
+            if (addClick != null && addClick.button == 0) {
+                ItemStack heldItem = Utility.mc.thePlayer.getHeldItem();
+                if (heldItem != null) {
+                    binding.addItem(heldItem);
+                    return;
+                }
+            }
+
+            for (int i = 0; i < binding.get().size(); i++) {
+                float rx = x + 10 + xOffset + itemWidth - (padding * 2) - buttonSize;
+                float ry = (y + FPSMaster.fontManager.s16.getHeight() + 5 + padding * 2) + (i * (buttonSize + (padding * 3)));
+                ScaledGuiScreen.ConsumedClick removeClick = screen.consumeClickInBounds(rx, ry, buttonSize, buttonSize);
+                if (removeClick != null && removeClick.button == 0) {
+                    binding.removeItem(i);
+                    break;
+                }
+            }
         }
 
     }
@@ -65,22 +91,6 @@ public class MultipleItemSettingRender extends SettingRender<MultipleItemSetting
         FPSMaster.fontManager.s16.drawString(icon, x + (buttonSize / 2.0f) - 2, y + (buttonSize / 2.0f) - 6, -1);
     }
 
-    @Override
-    public void mouseClick(float x, float y, float width, float height, float mouseX, float mouseY, int btn) {
-        if(Hover.is(x + 10 + xOffset + itemWidth - 15, y - 3,10,10,(int)mouseX,(int)mouseY) && btn == 0){
-            ItemStack heldItem = Utility.mc.thePlayer.getHeldItem();
-            if(heldItem != null){
-                this.setting.addItemAndNotify(heldItem);
-                return;
-            }
-        }
-        //TODO: 转为使用迭代器Iterator实现
-        for (int index = 0; index < setting.getValue().size(); index++) {
-            if (Hover.is(x + 10 + xOffset + itemWidth - (padding * 2) - buttonSize, (y + FPSMaster.fontManager.s16.getHeight() + 5 + padding * 2) + (index * (buttonSize + (padding * 3))), buttonSize, buttonSize, (int) mouseX, (int) mouseY) && btn == 0) {
-                this.setting.removeItemAndNotify(index);
-            }
-        }
-    }
 }
 
 
